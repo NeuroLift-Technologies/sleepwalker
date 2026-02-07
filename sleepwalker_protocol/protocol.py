@@ -29,7 +29,7 @@ class SleepwalkerProtocol:
         >>> swp = SWP(
         ...     user_toi_path="path/to/user/toi.yaml",
         ...     privacy_mode="local_only",
-        ...     logging=True
+        ...     logging_enabled=True
         ... )
         >>> user_state = swp.assess_interaction(user_input, session_history)
         >>> response = swp.generate_response(user_input, user_state)
@@ -39,7 +39,7 @@ class SleepwalkerProtocol:
         self,
         user_toi_path: Optional[str] = None,
         privacy_mode: str = "local_only",
-        logging: bool = True,
+        logging_enabled: bool = True,
         storage_path: Optional[str] = None
     ):
         """
@@ -48,13 +48,13 @@ class SleepwalkerProtocol:
         Args:
             user_toi_path: Path to user's Terms of Interaction (TOI) file
             privacy_mode: Privacy mode for state storage ("local_only", "encrypted")
-            logging: Whether to enable logging
+            logging_enabled: Whether to enable logging
             storage_path: Path for storing session continuity data
         """
         self.privacy_mode = privacy_mode
         self.storage_path = storage_path or ".swp_storage"
         
-        if logging:
+        if logging_enabled:
             logging.basicConfig(level=logging.INFO)
         
         # Load user's TOI configuration

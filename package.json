@@ -1,0 +1,62 @@
+{
+  "name": "sleepwalker-protocol",
+  "version": "0.1.0",
+  "description": "Emotional Continuity Governance for AI Systems",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "ai",
+    "emotional-safety",
+    "mental-health",
+    "neurodivergent",
+    "ai-ethics",
+    "trauma-informed"
+  ],
+  "author": "NeuroLift Technologies / HAIEF <hello@elevaitionfoundation.org>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NeuroLift-Technologies/sleepwalker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NeuroLift-Technologies/sleepwalker/issues"
+  },
+  "homepage": "https://github.com/NeuroLift-Technologies/sleepwalker#readme",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/*.d.ts"
+    ]
+  }
+}

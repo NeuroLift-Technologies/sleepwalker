@@ -140,7 +140,7 @@ class StateDetector:
         # Avoidance patterns
         self.avoidance_patterns = [
             r'\bnot ready to (talk|discuss|think)\b',
-            r'\bcan\'t (talk|think) about\b',
+            r'\bcan\'t (talk|think|discuss) (about|this)\b',
             r'\bavoid(ing)?\b',
             r'\bdon\'t want to go there\b',
             r'\bnot now\b',
@@ -174,6 +174,7 @@ class StateDetector:
             ],
             'safety_concern': [
                 r'\bnot safe\b',
+                r'\bdon\'t feel safe\b',
                 r'\bcan\'t keep (myself )?safe\b',
                 r'\bgonna hurt\b',
                 r'\blose control\b'

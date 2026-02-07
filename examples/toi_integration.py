@@ -30,7 +30,7 @@ try:
     swp = SWP(
         user_toi_path=toi_path,
         privacy_mode="local_only",
-        logging=True
+        logging_enabled=True
     )
     
     print("=" * 60)

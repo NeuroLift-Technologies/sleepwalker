@@ -9,7 +9,7 @@ from sleepwalker_protocol import SWP
 # Initialize SWP
 swp = SWP(
     privacy_mode="local_only",
-    logging=True
+    logging_enabled=True
 )
 
 # Example user inputs demonstrating different emotional states
