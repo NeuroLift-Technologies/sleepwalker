@@ -28,7 +28,7 @@ This project is governed by those with lived experience of neurodivergence, ment
 
 **How to submit:**
 - Open a GitHub issue with the label `user-experience`
-- Anonymous submissions welcome via email: hello@elevaitionfoundation.org
+- Anonymous submissions welcome via email: haief@neuroliftsolutions.com
 
 ### 2. Clinical Expertise
 
@@ -69,7 +69,7 @@ Academic researchers interested in studying SWP effectiveness:
 - Contribute to evidence base
 
 **How to submit:**
-- Email research proposals to: hello@elevaitionfoundation.org
+- Email research proposals to: haief@neuroliftsolutions.com
 - Open GitHub discussion for community input
 
 ## Development Guidelines
@@ -181,7 +181,7 @@ We are committed to providing a welcoming, safe, and inclusive environment:
 - Trolling, inflammatory comments, or personal attacks
 - Privacy violations or doxxing
 
-**Reporting:** Contact hello@elevaitionfoundation.org or open a private issue.
+**Reporting:** Contact haief@neuroliftsolutions.com or open a private issue.
 
 ## Governance
 
@@ -214,7 +214,7 @@ We value all contributions equally - user experience reports are just as importa
 ## Questions?
 
 - **General Questions:** Open a GitHub discussion
-- **Private Inquiries:** hello@elevaitionfoundation.org
+- **Private Inquiries:** haief@neuroliftsolutions.com
 - **Technical Issues:** Open a GitHub issue with appropriate label
 
 ## License

@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Emotional Continuity Governance for AI Systems"
 readme = "README.md"
 authors = [
-    {name = "NeuroLift Technologies / HAIEF", email = "hello@elevaitionfoundation.org"}
+    {name = "NeuroLift Technologies / HAIEF", email = "haief@neuroliftsolutions.com"}
 ]
 license = {text = "MIT"}
 classifiers = [
