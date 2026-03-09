@@ -1,0 +1,41 @@
+# Sample Terms of Interaction (TOI) Configuration for Sleepwalker Protocol
+#
+# This file demonstrates how to configure the Sleepwalker Protocol (SWP)
+# for your AI interactions. Copy this file and customize it to your needs.
+#
+# Save as: toi.yaml or user_toi.yaml
+
+swp:
+  # Enable/disable Sleepwalker Protocol
+  active: true
+  
+  # Current protective state (optional - for documentation)
+  protective_state: "managing emotions, not ready to process"
+  
+  # When should AI offer emotional support?
+  # Options:
+  #   - "user_initiated_only": Only respond if user explicitly asks (most protective)
+  #   - "offer_support_without_pressure": Can gently offer support (balanced)
+  intervention_threshold: "user_initiated_only"
+  
+  # Do you consent to emotional processing support right now?
+  processing_consent: false
+  
+  # Topics you're not ready to discuss
+  protected_topics:
+    - "family trauma"
+    - "past relationships"
+    - "work stress"
+  
+  # Preferred response style when in protective state
+  # Options: "maintenance", "low_demand", "task_focused"
+  stability_mode: "maintenance"
+
+# Optional: Integration with other frameworks
+# otoi:
+#   multi_agent_coordination: true
+#   share_emotional_state: false  # Keep emotional state private across agents
+
+# rrta:
+#   crisis_threshold: "safety_risk_only"
+#   auto_activate: false  # Require explicit consent before RRTA activation

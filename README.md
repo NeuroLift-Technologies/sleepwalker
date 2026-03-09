@@ -492,7 +492,7 @@ See [LICENSE](LICENSE) for full terms.
 
 **HAIEF (Human & AI ElevAItion Foundation)**  
 Website: [elevaitionfoundation.org](https://elevaitionfoundation.org)  
-Email: hello@elevaitionfoundation.org  
+Email: haief@neuroliftsolutions.com  
 GitHub: [@NeuroLift-Technologies](https://github.com/NeuroLift-Technologies)
 
 **For Crisis Support:**
