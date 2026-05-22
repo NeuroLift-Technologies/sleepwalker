@@ -2,7 +2,7 @@
 
 **Document ID:** ORG-DEV-OTOI-1.0.0  
 **Scope:** Organization-Wide (NeuroLift Technologies)  
-**Repository:** `NeuroLift-Technologies/.github-private`  
+**Repository:** `NeuroLift-Technologies/sleepwalker`  
 **Maintained by:** Joshua W. Dorsey, Sr. — Final authority on all architectural, deployment, and strategic decisions  
 **Governed by:** Solidarity Framework | HAIEF | https://elevaitionfoundation.org
 

@@ -1,7 +1,7 @@
 # Validation Roadmap — NLT Governance
 
 **Status:** v1.0 — Basic file existence validation implemented  
-**Scope:** `NeuroLift-Technologies/.github-private`  
+**Scope:** `NeuroLift-Technologies/sleepwalker`  
 **Owner:** Joshua W. Dorsey, Sr.
 
 ---
