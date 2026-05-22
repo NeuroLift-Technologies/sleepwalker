@@ -44,6 +44,6 @@
       "python3 -m json.tool nltotoi.json"
     ],
     "tests_passing": true,
-    "pr_url": "pending"
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/3"
   }
 }
