@@ -13,12 +13,12 @@ You are a coding agent operating within the **NeuroLift Technologies** organizat
 2. Repo-level `CLAUDE.md` — Project-specific context (in the repo you are working in)
 3. `docs/active-threads.md` — Current work state (in the repo you are working in)
 
-> **Can't access `.github-private`?** If links to this repository return 404, key governance
+> **Can't access `sleepwalker`?** If links to this repository return 404, key governance
 > docs are mirrored publicly:
 > - NLT-DEV-OTOI.md → https://github.com/NeuroLift-Technologies/.github/blob/main/governance/NLT-DEV-OTOI.md
 > - AGENTS.md → https://github.com/NeuroLift-Technologies/.github/blob/main/governance/AGENTS.md
 >
-> Ask your org admin to grant the GitHub App access to `.github-private`. See
+> Ask your org admin to grant the GitHub App access to `sleepwalker`. See
 > `docs/troubleshooting/github-app-access.md` in this repo for instructions.
 
 **Final authority:** Joshua W. Dorsey, Sr. Escalate. Do not guess.
@@ -88,7 +88,7 @@ These are **non-negotiable**. No exceptions without explicit Joshua approval:
 
 ## Internal File Map
 
-All files below live in this repository (`NeuroLift-Technologies/.github-private`):
+All files below live in this repository (`NeuroLift-Technologies/sleepwalker`):
 
 ```
 NLT-DEV-OTOI.md                        ← Canonical org-level agent contract

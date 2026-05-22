@@ -47,11 +47,11 @@ You are working in a NeuroLift Technologies repository.
 
 **Mandatory reading (in order):**
 1. Org-level governance (private, primary):
-   https://github.com/NeuroLift-Technologies/.github-private/blob/main/NLT-DEV-OTOI.md
+   https://github.com/NeuroLift-Technologies/sleepwalker/blob/main/NLT-DEV-OTOI.md
    Public mirror (if the link above returns 404):
    https://github.com/NeuroLift-Technologies/.github/blob/main/governance/NLT-DEV-OTOI.md
 2. Internal gateway (private, primary):
-   https://github.com/NeuroLift-Technologies/.github-private/blob/main/AGENTS.md
+   https://github.com/NeuroLift-Technologies/sleepwalker/blob/main/AGENTS.md
    Public mirror (if the link above returns 404):
    https://github.com/NeuroLift-Technologies/.github/blob/main/governance/AGENTS.md
 3. Project context: `docs/context/README_TO_AI.md` (this repo, if present)
@@ -114,7 +114,7 @@ This directory contains agent registration records and session handoff documents
 - `registrations/` — Agent self-registration files (one per session start)
 - `handoffs/` — Session handoff records (written at session end)
 
-Format reference: `NeuroLift-Technologies/.github-private` templates directory.
+Format reference: `NeuroLift-Technologies/sleepwalker` templates directory.
 ```
 
 ### Step 4: (Optional) Create `docs/escalations/` Directory
@@ -135,24 +135,24 @@ docs/
 This directory contains escalation records for this repository.
 Each escalation document corresponds to a GitHub issue filed via the agent-escalation template.
 
-Format reference: `templates/escalation.md` in `NeuroLift-Technologies/.github-private`.
+Format reference: `templates/escalation.md` in `NeuroLift-Technologies/sleepwalker`.
 ```
 
-### Step 5: Grant GitHub App Access to `.github-private`
+### Step 5: Grant GitHub App Access to `sleepwalker`
 
 Coding agents (e.g., GitHub Copilot, Codex) must be able to read the governance files in
-`.github-private` from within the new repository. If the GitHub App installation is scoped
-to **"Selected repositories"**, you must add `.github-private` to its access list.
+`sleepwalker` from within the new repository. If the GitHub App installation is scoped
+to **"Selected repositories"**, you must add `sleepwalker` to its access list.
 
 1. Go to `https://github.com/organizations/NeuroLift-Technologies/settings/installations`
 2. Find the GitHub App used by agents in this repo (e.g., **Copilot**, **Codex**) and click **Configure**.
-3. Under **Repository access → Selected repositories**, add **`.github-private`**.
+3. Under **Repository access → Selected repositories**, add **`sleepwalker`**.
 4. Click **Save**.
 
 > If you cannot complete this step immediately, the `CLAUDE.md` template above includes
 > public mirror URLs as fallback. See
 > [`docs/troubleshooting/github-app-access.md`](../docs/troubleshooting/github-app-access.md)
-> in `.github-private` for full instructions.
+> in `sleepwalker` for full instructions.
 
 ### Step 6: Commit the Governance Setup
 
@@ -169,17 +169,17 @@ Confirm the following exist and contain correct content:
 - [ ] `CLAUDE.md` references `ORG-DEV-OTOI-1.0.0`
 - [ ] `docs/active-threads.md` exists and is readable
 - [ ] `docs/agent-log/` directory structure created
-- [ ] GitHub App has access to `.github-private` (or public mirror fallback is in place)
+- [ ] GitHub App has access to `sleepwalker` (or public mirror fallback is in place)
 
 ---
 
 ## Validation
 
-Run the org-level validation script to check `.github-private` is healthy:
+Run the org-level validation script to check `sleepwalker` is healthy:
 
 ```bash
-git clone https://github.com/NeuroLift-Technologies/.github-private
-cd .github-private
+git clone https://github.com/NeuroLift-Technologies/sleepwalker
+cd sleepwalker
 bash .nltotoi/scripts/validate-governance.sh
 ```
 
