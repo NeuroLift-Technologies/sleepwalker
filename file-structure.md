@@ -197,7 +197,7 @@ Drop this `CLAUDE.md` in each repo root:
 You are working in a NeuroLift Technologies repository.
 
 **Mandatory reading (in order):**
-1. Org-level governance: https://github.com/NeuroLift-Technologies/sleepwalker/blob/main/NLT-DEV-OTOI.md
+1. Repo-local governance: https://github.com/NeuroLift-Technologies/sleepwalker/blob/main/NLT-DEV-OTOI.md
 2. Project context: `docs/context/README_TO_AI.md` (this repo)
 3. Active threads: `docs/active-threads.md` (this repo)
 

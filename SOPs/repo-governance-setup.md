@@ -46,14 +46,14 @@ Create `CLAUDE.md` at the repository root using the following template:
 You are working in a NeuroLift Technologies repository.
 
 **Mandatory reading (in order):**
-1. Org-level governance (private, primary):
+1. Repo-local governance (private, primary):
    https://github.com/NeuroLift-Technologies/sleepwalker/blob/main/NLT-DEV-OTOI.md
    Public mirror (if the link above returns 404):
-   https://github.com/NeuroLift-Technologies/.github/blob/main/governance/NLT-DEV-OTOI.md
+   https://github.com/NeuroLift-Technologies/sleepwalker/blob/main/governance/NLT-DEV-OTOI.md
 2. Internal gateway (private, primary):
    https://github.com/NeuroLift-Technologies/sleepwalker/blob/main/AGENTS.md
    Public mirror (if the link above returns 404):
-   https://github.com/NeuroLift-Technologies/.github/blob/main/governance/AGENTS.md
+   https://github.com/NeuroLift-Technologies/sleepwalker/blob/main/governance/AGENTS.md
 3. Project context: `docs/context/README_TO_AI.md` (this repo, if present)
 4. Active threads: `docs/active-threads.md` (this repo)
 

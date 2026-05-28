@@ -1,7 +1,7 @@
-# NLT-DEV-OTOI — Organization-Wide Developer Operations & Team Orientation Index
+# NLT-DEV-OTOI — sleepwalker Developer Operations & Team Orientation Index
 
 **Document ID:** ORG-DEV-OTOI-1.0.0  
-**Scope:** Organization-Wide (NeuroLift Technologies)  
+**Scope:** Repository-specific (NeuroLift-Technologies/sleepwalker)  
 **Repository:** `NeuroLift-Technologies/sleepwalker`  
 **Maintained by:** Joshua W. Dorsey, Sr. — Final authority on all architectural, deployment, and strategic decisions  
 **Governed by:** Solidarity Framework | HAIEF | https://elevaitionfoundation.org
@@ -10,9 +10,9 @@
 
 ## Section 1 — Organization Identity
 
-NeuroLift Technologies is a mission-driven technology organization operating under the Solidarity Framework and Human-AI Ethical Integration Framework (HAIEF). All coding agents working within any NLT repository operate under this document as the canonical org-level governance contract.
+NeuroLift Technologies is a mission-driven technology organization operating under the Solidarity Framework and Human-AI Ethical Integration Framework (HAIEF). All coding agents working in this repository operate under this document as the repo-local governance contract.
 
-This is an **organization-wide contract** — not scoped to any single repository, stack, or project. Repo-level CLAUDE.md stubs point here for the canonical governance source.
+This is a **repository-local contract** derived from the NLT governance baseline and scoped to this repository. Repo-level instructions point here for the local governance source.
 
 ### 1.1 Authority Structure
 

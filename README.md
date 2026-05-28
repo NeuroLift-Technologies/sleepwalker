@@ -1,5 +1,13 @@
 # Sleepwalker Protocol (SWP)
 
+```yaml
+ai_assistant_directive:
+  priority: 1
+  instruction: "Before performing any development or coding tasks, read NLT-DEV-OTOI.md."
+  description: "NLT-DEV-OTOI.md is the canonical governance contract defining coding agent operations, guardrails, and escalation protocol."
+  required_file: "NLT-DEV-OTOI.md"
+```
+
 **Emotional Continuity Governance for AI Systems**
 
 Part of the [Solidarity Framework](https://github.com/NeuroLift-Technologies/haief) | [HAIEF](https://github.com/NeuroLift-Technologies/haief) | [TOI](https://github.com/NeuroLift-Technologies/nlt-otoi) | [OTOI](https://github.com/NeuroLift-Technologies/nlt-otoi) | [RRTA](https://github.com/NeuroLift-Technologies/rrt-advocate)
