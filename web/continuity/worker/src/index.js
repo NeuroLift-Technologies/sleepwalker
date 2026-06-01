@@ -137,14 +137,14 @@ async function handleWithdraw(request, env) {
   if (!token) return json({ error: 'token_required' }, 400);
 
   const tokenHash = await sha256(token);
-  const res = await env.DB.prepare(
+  await env.DB.prepare(
     `DELETE FROM submissions WHERE withdrawal_token_hash = ?`
   ).bind(tokenHash).run();
 
-  const deleted = (res.meta && res.meta.changes) || 0;
-  // Same response whether or not it matched, so the endpoint can't be used to
-  // probe which tokens are valid.
-  return json({ ok: true, deleted });
+  // Indistinguishable response: identical body whether or not a row matched, so
+  // the endpoint can't be used to probe which tokens are valid. The delete is
+  // idempotent — a non-matching token simply deletes nothing.
+  return json({ ok: true });
 }
 
 /* ------------------------------- helpers -------------------------------- */

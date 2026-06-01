@@ -72,11 +72,9 @@
       });
       const out = await r.json();
       if(!r.ok || out.error) throw new Error(out.error || ('HTTP ' + r.status));
-      if(out.deleted > 0){
-        show('Done — your record has been permanently deleted. Nothing of it remains.', 'ok');
-      } else {
-        show('No matching record found. It may already have been withdrawn, or the token is mistyped.', 'warn');
-      }
+      // The API returns an indistinguishable response on purpose (a valid token
+      // can't be told apart from an invalid one), so show one generic message.
+      show('Done. If that token matched a record, it has now been permanently deleted — nothing of it remains.', 'ok');
     } catch(err){
       // Friendly note for the not-yet-deployed case and transient failures alike.
       show('Could not reach the withdrawal service. If the backend is not live yet, there is nothing stored to withdraw.', 'warn');
