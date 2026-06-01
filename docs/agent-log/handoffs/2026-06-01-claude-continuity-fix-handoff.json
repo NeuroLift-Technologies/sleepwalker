@@ -38,6 +38,6 @@
       "Negative control: new behavioral tests run against pre-fix protocol.py — confirmed failing"
     ],
     "tests_passing": true,
-    "pr_url": "(to be filled after PR creation)"
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/6"
   }
 }
