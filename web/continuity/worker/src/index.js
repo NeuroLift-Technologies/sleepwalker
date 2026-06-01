@@ -43,7 +43,9 @@ export default {
       }
       return cors(json({ error: 'not_found' }, 404), origin);
     } catch (err) {
-      return cors(json({ error: 'server_error', detail: String(err && err.message || err) }, 500), origin);
+      // Log server-side only; never return error/stack details to the client.
+      console.error('continuity-api error:', err && err.stack || err);
+      return cors(json({ error: 'server_error' }, 500), origin);
     }
   },
 };
