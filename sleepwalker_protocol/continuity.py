@@ -7,6 +7,7 @@ Maintains emotional state and boundary awareness across sessions.
 from typing import Dict, Any, Optional
 import json
 import os
+import hashlib
 from pathlib import Path
 from datetime import datetime
 
@@ -31,12 +32,20 @@ class ContinuityManager:
 
     def _user_file(self, user_id: str) -> Path:
         """
-        Resolve the storage file for a user, guarding against path traversal.
+        Resolve the storage file for a user — traversal-safe and collision-safe.
 
-        ``user_id`` becomes part of a filename, so an unsanitized value (e.g.
-        ``"../../etc/passwd"``) could read or write outside ``storage_path``.
-        Strip it to alphanumerics, underscores, and hyphens — which removes any
-        path separators or ``..`` sequences — before building the path.
+        ``user_id`` becomes part of a filename, which raises two risks:
+
+        * **Path traversal.** A raw value like ``"../../etc/passwd"`` must not
+          read or write outside ``storage_path``.
+        * **Collisions.** Simply stripping disallowed characters would map
+          distinct ids onto the same file (``"a/b"`` and ``"ab"``, or
+          ``"alice@example.com"`` and ``"aliceexample.com"``), letting one
+          user's continuity overwrite or leak into another's.
+
+        We therefore key the file on a SHA-256 of the *full* id — deterministic,
+        collision-resistant, and filesystem-safe (hex only) — prefixed with a
+        sanitized, human-readable slug purely for debuggability.
 
         Args:
             user_id: User identifier
@@ -44,10 +53,10 @@ class ContinuityManager:
         Returns:
             Path to the user's JSON file, always inside ``storage_path``
         """
-        safe_user_id = "".join(
-            c for c in str(user_id) if c.isalnum() or c in "_-"
-        ) or "default_user"
-        return self.storage_path / f"{safe_user_id}.json"
+        raw = str(user_id)
+        slug = "".join(c for c in raw if c.isalnum() or c in "_-")[:32] or "user"
+        digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
+        return self.storage_path / f"{slug}-{digest}.json"
     
     def save_session(
         self,
