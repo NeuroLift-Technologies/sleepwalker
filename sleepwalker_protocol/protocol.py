@@ -69,8 +69,15 @@ class SleepwalkerProtocol:
 
         # Stable continuity identity for this instance. Never derive this from the
         # user's input text — doing so makes every interaction look like a brand new
-        # user and continuity can never be retrieved.
-        self.user_id = user_id or self.user_toi.get('user_id') or 'default_user'
+        # user and continuity can never be retrieved. Accept an explicit id, then a
+        # top-level or swp-nested TOI id, tolerating a None / non-dict TOI. The id is
+        # sanitized against path traversal where it becomes a filename (see
+        # ContinuityManager._user_file).
+        toi = self.user_toi if isinstance(self.user_toi, dict) else {}
+        swp_toi = toi.get('swp') if isinstance(toi.get('swp'), dict) else {}
+        self.user_id = (
+            user_id or toi.get('user_id') or swp_toi.get('user_id') or 'default_user'
+        )
         
         # Initialize components
         self.state_detector = StateDetector()

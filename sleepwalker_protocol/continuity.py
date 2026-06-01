@@ -22,12 +22,32 @@ class ContinuityManager:
     def __init__(self, storage_path: str = ".swp_storage"):
         """
         Initialize continuity manager with storage location.
-        
+
         Args:
             storage_path: Path for storing session continuity data
         """
         self.storage_path = Path(storage_path)
         self.storage_path.mkdir(exist_ok=True)
+
+    def _user_file(self, user_id: str) -> Path:
+        """
+        Resolve the storage file for a user, guarding against path traversal.
+
+        ``user_id`` becomes part of a filename, so an unsanitized value (e.g.
+        ``"../../etc/passwd"``) could read or write outside ``storage_path``.
+        Strip it to alphanumerics, underscores, and hyphens — which removes any
+        path separators or ``..`` sequences — before building the path.
+
+        Args:
+            user_id: User identifier
+
+        Returns:
+            Path to the user's JSON file, always inside ``storage_path``
+        """
+        safe_user_id = "".join(
+            c for c in str(user_id) if c.isalnum() or c in "_-"
+        ) or "default_user"
+        return self.storage_path / f"{safe_user_id}.json"
     
     def save_session(
         self,
@@ -41,8 +61,8 @@ class ContinuityManager:
             user_id: User identifier
             session_data: Session data to preserve
         """
-        user_file = self.storage_path / f"{user_id}.json"
-        
+        user_file = self._user_file(user_id)
+
         # Add timestamp
         session_data['timestamp'] = datetime.now().isoformat()
         
@@ -127,9 +147,9 @@ class ContinuityManager:
         
         user_data['declared_boundaries'][boundary_type] = boundary_value
         user_data['boundary_updated'] = datetime.now().isoformat()
-        
+
         # Save updated data
-        user_file = self.storage_path / f"{user_id}.json"
+        user_file = self._user_file(user_id)
         with open(user_file, 'w') as f:
             json.dump(user_data, f, indent=2)
     
@@ -143,8 +163,8 @@ class ContinuityManager:
         Returns:
             User data dictionary
         """
-        user_file = self.storage_path / f"{user_id}.json"
-        
+        user_file = self._user_file(user_id)
+
         if not user_file.exists():
             return {}
         

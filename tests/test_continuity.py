@@ -118,6 +118,30 @@ def test_retrieve_last_session_state(temp_storage):
     assert 'timestamp' in last_state
 
 
+def test_user_id_path_traversal_is_contained(temp_storage):
+    """A malicious user_id must not escape the storage directory."""
+    manager = ContinuityManager(storage_path=temp_storage)
+
+    malicious_id = "../../etc/passwd"
+    manager.save_session(malicious_id, {'emotional_state': 'neutral'})
+
+    storage_root = Path(temp_storage).resolve()
+
+    # No file (or directory) was created outside the storage root.
+    for created in storage_root.rglob('*'):
+        assert storage_root in created.resolve().parents or created.resolve() == storage_root
+    assert not (storage_root.parent / 'etc' / 'passwd').exists()
+
+    # The sanitized id still round-trips: read uses the same sanitization.
+    context = manager.get_context(malicious_id)
+    assert context['has_history'] is True
+
+    # Everything written stays directly inside the storage root.
+    json_files = list(storage_root.glob('*.json'))
+    assert len(json_files) == 1
+    assert json_files[0].parent == storage_root
+
+
 def test_boundary_persistence(temp_storage):
     """Test that boundaries persist across sessions."""
     manager = ContinuityManager(storage_path=temp_storage)
