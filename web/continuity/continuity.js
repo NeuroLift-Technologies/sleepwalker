@@ -7,22 +7,23 @@
 /* ---------------- DUAL ARC ---------------- */
 const C = { coral:'#d2552f', teal:'#3d7c8a' };
 
-/* fail-safe visibility: fires cb when el enters view, on scroll, or after a
-   hard timeout — never leaves content stuck hidden if IntersectionObserver
-   doesn't fire in a given environment. */
+/* fail-safe visibility: fires cb when el enters view via IntersectionObserver,
+   with a scroll listener + initial/load checks as fallback. No blanket timer —
+   a hard timeout fired reveals off-screen if the user lingered at the top,
+   defeating the lazy reveal (and pre-drawing the arcs out of view). */
 function whenVisible(el, cb, threshold){
   let done = false;
   const run = ()=>{ if(done) return; done = true; cb(); cleanup(); };
   const check = ()=>{ const r = el.getBoundingClientRect(); if(r.top < innerHeight*0.9 && r.bottom > 0) run(); };
   let io;
-  function cleanup(){ window.removeEventListener('scroll', check); if(io) io.disconnect(); }
+  function cleanup(){ window.removeEventListener('scroll', check); window.removeEventListener('load', check); if(io) io.disconnect(); }
   if('IntersectionObserver' in window){
     io = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting) run(); }); }, {threshold: threshold||0.15});
     io.observe(el);
   }
   window.addEventListener('scroll', check, {passive:true});
+  window.addEventListener('load', check);
   check();
-  setTimeout(run, 1900);
 }
 
 const ARCS = [
@@ -144,7 +145,20 @@ function drawArc(lane, a){
 const arcStack = document.getElementById('arcStack');
 const arcLanes = ARCS.map(a=>{ const l=buildArc(a); arcStack.appendChild(l); return {l,a}; });
 function redrawArcs(){ arcLanes.forEach(({l,a})=>drawArc(l,a)); }
-window.addEventListener('resize', ()=>{ clearTimeout(window.__rt); window.__rt=setTimeout(redrawArcs,150); });
+// ResizeObserver draws each lane as soon as it actually has width — covers
+// background-tab / pre-layout loads where clientWidth starts at 0 (a plain
+// resize listener never fires in that case, leaving the SVG blank).
+if('ResizeObserver' in window){
+  const ro = new ResizeObserver(entries=>{
+    entries.forEach(entry=>{
+      const item = arcLanes.find(al=>al.l === entry.target);
+      if(item && entry.target.querySelector('.arc-canvas').clientWidth) drawArc(item.l, item.a);
+    });
+  });
+  arcLanes.forEach(({l})=>ro.observe(l));
+} else {
+  window.addEventListener('resize', ()=>{ clearTimeout(window.__rt); window.__rt=setTimeout(redrawArcs,150); });
+}
 requestAnimationFrame(redrawArcs);
 
 /* ---------------- VOICES WALL ---------------- */
@@ -207,11 +221,24 @@ renderWall();
 const toiBody = document.getElementById('toiBody');
 const toggles = {};
 document.querySelectorAll('.toggle-row[data-key]').forEach(row=>{
-  toggles[row.dataset.key] = row.classList.contains('on');
-  row.addEventListener('click', ()=>{
+  const on = row.classList.contains('on');
+  toggles[row.dataset.key] = on;
+  // A consent-first control must be operable by keyboard and announced to AT.
+  row.setAttribute('role','switch');
+  row.setAttribute('tabindex','0');
+  row.setAttribute('aria-checked', on ? 'true' : 'false');
+  const label = row.querySelector('.tt');
+  if(label) row.setAttribute('aria-label', label.textContent.trim());
+  const toggle = ()=>{
     row.classList.toggle('on');
-    toggles[row.dataset.key] = row.classList.contains('on');
+    const isOn = row.classList.contains('on');
+    toggles[row.dataset.key] = isOn;
+    row.setAttribute('aria-checked', isOn ? 'true' : 'false');
     renderToi();
+  };
+  row.addEventListener('click', toggle);
+  row.addEventListener('keydown', e=>{
+    if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); toggle(); }
   });
 });
 
@@ -219,8 +246,11 @@ function getRadio(name){ const el = document.querySelector(`input[name="${name}"
 document.querySelectorAll('#segFlashpoint input, #segPlatform input, #segSentiment input, #segAttribution input, #inHandle, #inEmail, #inExperience')
   .forEach(el=> el.addEventListener('input', renderToi));
 
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 function bool(v){ return v ? `<span class="bool-t">true</span>` : `<span class="bool-f">false</span>`; }
-function str(v){ return `<span class="str">"${v}"</span>`; }
+function str(v){ return `<span class="str">"${escapeHTML(v)}"</span>`; }
 function row(indent, key, val){ return `<div class="${indent?'ind':''}"><span class="key">${key}</span><span class="k">:</span> ${val}</div>`; }
 
 function renderToi(){
@@ -261,8 +291,19 @@ document.getElementById('submitBtn').addEventListener('click', (e)=>{
   e.preventDefault();
   const exp = document.getElementById('inExperience');
   if(!exp.value.trim()){ exp.style.borderColor = '#d2552f'; exp.focus(); exp.scrollIntoView({block:'center'}); return; }
+  // Show the preview note without destroying the button/note, so the visitor
+  // can keep editing and re-checking the live .toi record.
   const final = document.querySelector('.submit-final');
-  final.innerHTML = `<span style="font-family:var(--serif);font-size:21px;color:var(--ink);line-height:1.4;">Preview — no server yet, so nothing was sent or stored. This is the <span style="font-family:var(--mono);font-size:.8em;color:var(--coral-deep);">.toi</span> record your submission would create.</span>`;
+  let msg = final.querySelector('.submit-message');
+  if(!msg){
+    msg = document.createElement('div');
+    msg.className = 'submit-message';
+    msg.setAttribute('role','status');
+    msg.setAttribute('aria-live','polite');
+    msg.style.cssText = 'flex-basis:100%;margin-top:6px;';
+    final.appendChild(msg);
+  }
+  msg.innerHTML = `<span style="font-family:var(--serif);font-size:21px;color:var(--ink);line-height:1.4;">Preview — no server yet, so nothing was sent or stored. This is the <span style="font-family:var(--mono);font-size:.8em;color:var(--coral-deep);">.toi</span> record your submission would create.</span>`;
 });
 
 /* ---------------- REVEAL ON SCROLL ---------------- */

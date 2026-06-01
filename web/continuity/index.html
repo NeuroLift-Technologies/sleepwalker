@@ -244,7 +244,7 @@
   .submit-section{background:var(--paper-2);}
   .submit-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
   @media(max-width:920px){.submit-grid{grid-template-columns:1fr;gap:30px;}}
-  .form-col label.field{display:block;margin-bottom:20px;}
+  .form-col .field{display:block;margin-bottom:20px;}
   .form-col .flab{display:block;font-family:var(--sans);font-size:14px;font-weight:600;margin-bottom:8px;color:var(--ink);}
   .form-col .fhint{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);font-weight:400;letter-spacing:.02em;}
   .form-col input[type=text],.form-col textarea,.form-col select{
@@ -501,20 +501,20 @@
     <div class="submit-grid">
       <!-- LEFT: the inputs -->
       <div class="form-col">
-        <label class="field">
+        <div class="field" role="group" aria-label="Which model changed?">
           <span class="flab">Which model changed? <span class="fhint">required</span></span>
           <div class="seg" id="segFlashpoint">
             <input type="radio" name="fp" id="fp-opus" value="Opus (Anthropic)" checked><label for="fp-opus">Opus 4.6→4.8</label>
             <input type="radio" name="fp" id="fp-fo" value="GPT-4o (OpenAI)"><label for="fp-fo">GPT-4o</label>
             <input type="radio" name="fp" id="fp-other" value="another model"><label for="fp-other">Another</label>
           </div>
-        </label>
+        </div>
         <label class="field">
           <span class="flab">What changed, and how did it land? <span class="fhint">required · your words</span></span>
           <textarea id="inExperience" required placeholder="The voice I’d worked with for months was just… different. No warning."></textarea>
         </label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <label class="field" style="margin-bottom:0;">
+          <div class="field" role="group" aria-label="Where did this happen?" style="margin-bottom:0;">
             <span class="flab">Where?</span>
             <div class="seg" id="segPlatform">
               <input type="radio" name="plat" id="pl-reddit" value="Reddit" checked><label for="pl-reddit">Reddit</label>
@@ -522,26 +522,26 @@
               <input type="radio" name="plat" id="pl-app" value="in-app"><label for="pl-app">In-app</label>
               <input type="radio" name="plat" id="pl-else" value="elsewhere"><label for="pl-else">Else</label>
             </div>
-          </label>
-          <label class="field" style="margin-bottom:0;">
+          </div>
+          <div class="field" role="group" aria-label="How did it land?" style="margin-bottom:0;">
             <span class="flab">How did it land?</span>
             <div class="seg" id="segSentiment">
               <input type="radio" name="sent" id="se-upset" value="upset" checked><label for="se-upset">Upset</label>
               <input type="radio" name="sent" id="se-mixed" value="mixed"><label for="se-mixed">Mixed</label>
               <input type="radio" name="sent" id="se-won" value="won over"><label for="se-won">Won over</label>
             </div>
-          </label>
+          </div>
         </div>
         <div style="height:20px;"></div>
-        <label class="field">
+        <div class="field" role="group" aria-label="How should we credit you?">
           <span class="flab">How should we credit you?</span>
           <div class="seg" id="segAttribution">
             <input type="radio" name="attr" id="at-anon" value="anonymous" checked><label for="at-anon">Anonymous</label>
             <input type="radio" name="attr" id="at-first" value="first name"><label for="at-first">First name</label>
             <input type="radio" name="attr" id="at-handle" value="handle"><label for="at-handle">Handle</label>
           </div>
-          <input type="text" id="inHandle" placeholder="optional — name or @handle" style="margin-top:10px;">
-        </label>
+          <input type="text" id="inHandle" aria-label="Your name or handle (optional)" placeholder="optional — name or @handle" style="margin-top:10px;">
+        </div>
         <label class="field">
           <span class="flab">Contact email <span class="fhint">optional — only used if you switch on follow-up</span></span>
           <input type="text" id="inEmail" placeholder="optional — you@example.com">
