@@ -15,8 +15,23 @@ shipped as refined vanilla HTML/CSS/JS per Josh's direction.
 |---|---|
 | `index.html` | The single-scroll page. All CSS is inline in `<head>`; type via Google Fonts CDN. |
 | `continuity.js` | Dual-arc SVG comparison, sentiment-wall filter, live `.toi` record preview, submit handler. |
+| `withdraw.html` | Standalone "withdraw your record" page; takes a token (`?t=…`) and calls the API. |
+| `worker/` | Cloudflare Worker backend (D1 + Turnstile + withdrawal tokens). See `worker/README.md`. |
 
 No build step, no bundler, no raster assets — just static files plus CDN fonts.
+
+## Backend (Cloudflare Worker)
+
+The consent-first form is wired to a Cloudflare Worker (`worker/`) — **disabled by
+default**. `continuity.js` ships with `CONTINUITY_API.base` blank, so the page
+sends nothing and shows the honest preview message. After deploying the Worker
+(see `worker/README.md`), set `CONTINUITY_API.base` + `turnstileSiteKey` in
+`continuity.js` to switch the form to real submission, Turnstile verification, and
+a one-time withdrawal link. Until then nothing leaves the browser.
+
+Decisions made for the backend (Josh): **D1** for storage · **Cloudflare
+Turnstile** for abuse protection · **withdrawal-token link** for the
+"withdraw any time" promise.
 
 ## Preview locally
 
@@ -53,8 +68,9 @@ python3 -m http.server 8000   # then open http://localhost:8000
 
 ## Open decisions (Josh's calls — see the handoff brief §7)
 
-1. Does the form write to a real backend at launch (enabling real counts), or is v1
-   collection-only / manual review?
+1. ~~Backend at launch?~~ **Decided:** Cloudflare Worker (D1 + Turnstile + withdrawal
+   tokens), built in `worker/`. Remaining sub-call: *when* to flip it live (deploy +
+   set `CONTINUITY_API`) vs. launch the page in preview-only mode first.
 2. Any sourced stats wanted at launch, or qualitative-only first?
 3. Single micro-site (`continuity.haief.org`) vs. splitting report/act onto subpaths?
 

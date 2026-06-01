@@ -286,13 +286,47 @@ function renderToi(){
 }
 renderToi();
 
-/* submit (no backend — honest confirmation) */
-document.getElementById('submitBtn').addEventListener('click', (e)=>{
-  e.preventDefault();
-  const exp = document.getElementById('inExperience');
-  if(!exp.value.trim()){ exp.style.borderColor = '#d2552f'; exp.focus(); exp.scrollIntoView({block:'center'}); return; }
-  // Show the preview note without destroying the button/note, so the visitor
-  // can keep editing and re-checking the live .toi record.
+/* ---------------- SUBMIT (live backend, or honest preview) ----------------
+   CONTINUITY_API is blank on purpose. Until a deployed Worker base URL (and a
+   Turnstile site key) are filled in below, the form sends NOTHING and says so —
+   no live URL should ever claim "recorded" without a real backend behind it.
+   After deploying worker/, set base (e.g. 'https://continuity.haief.org') and
+   turnstileSiteKey here. */
+const CONTINUITY_API = { base: '', turnstileSiteKey: '' };
+
+let __turnstileWidget = null;
+(function initTurnstile(){
+  if(!CONTINUITY_API.base || !CONTINUITY_API.turnstileSiteKey) return;
+  const host = document.createElement('div');
+  host.id = 'turnstile'; host.style.marginTop = '14px';
+  const final = document.querySelector('.submit-final');
+  final.parentNode.insertBefore(host, final);
+  window.__tsReady = ()=>{ __turnstileWidget = window.turnstile.render('#turnstile', { sitekey: CONTINUITY_API.turnstileSiteKey }); };
+  const s = document.createElement('script');
+  s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__tsReady';
+  s.async = true; s.defer = true;
+  document.head.appendChild(s);
+})();
+
+function collectSubmission(){
+  return {
+    experience: document.getElementById('inExperience').value.trim(),
+    model: getRadio('fp'),
+    platform: getRadio('plat'),
+    sentiment: getRadio('sent'),
+    attribution: getRadio('attr'),
+    handle: document.getElementById('inHandle').value.trim(),
+    email: document.getElementById('inEmail').value.trim(),
+    consent: {
+      public_wall: !!toggles.public_wall,
+      quote_verbatim: !!toggles.allow_quote,
+      aggregate_signal: !!toggles.share_research,
+      may_contact: !!toggles.contact_ok
+    }
+  };
+}
+
+function submitMessage(html){
   const final = document.querySelector('.submit-final');
   let msg = final.querySelector('.submit-message');
   if(!msg){
@@ -303,7 +337,48 @@ document.getElementById('submitBtn').addEventListener('click', (e)=>{
     msg.style.cssText = 'flex-basis:100%;margin-top:6px;';
     final.appendChild(msg);
   }
-  msg.innerHTML = `<span style="font-family:var(--serif);font-size:21px;color:var(--ink);line-height:1.4;">Preview — no server yet, so nothing was sent or stored. This is the <span style="font-family:var(--mono);font-size:.8em;color:var(--coral-deep);">.toi</span> record your submission would create.</span>`;
+  msg.innerHTML = html;
+  return msg;
+}
+
+const PREVIEW_MSG = `<span style="font-family:var(--serif);font-size:21px;color:var(--ink);line-height:1.4;">Preview — no server yet, so nothing was sent or stored. This is the <span style="font-family:var(--mono);font-size:.8em;color:var(--coral-deep);">.toi</span> record your submission would create.</span>`;
+
+document.getElementById('submitBtn').addEventListener('click', async (e)=>{
+  e.preventDefault();
+  const exp = document.getElementById('inExperience');
+  if(!exp.value.trim()){ exp.style.borderColor = '#d2552f'; exp.focus(); exp.scrollIntoView({block:'center'}); return; }
+
+  // No backend configured -> stay honest: nothing is sent.
+  if(!CONTINUITY_API.base){ submitMessage(PREVIEW_MSG); return; }
+
+  const data = collectSubmission();
+  if(CONTINUITY_API.turnstileSiteKey){
+    data.turnstileToken = window.turnstile ? window.turnstile.getResponse(__turnstileWidget) : '';
+    if(!data.turnstileToken){ submitMessage(`<span style="font-family:var(--serif);font-size:18px;color:var(--coral-deep);">Please complete the verification just above the button, then submit.</span>`); return; }
+  }
+
+  submitMessage(`<span style="font-family:var(--serif);font-size:18px;color:var(--ink-soft);">Sending…</span>`);
+  try{
+    const r = await fetch(`${CONTINUITY_API.base}/api/submit`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+    });
+    const out = await r.json();
+    if(!r.ok || out.error){ throw new Error(out.error || ('HTTP '+r.status)); }
+
+    if(out.persisted === false){
+      submitMessage(`<span style="font-family:var(--serif);font-size:21px;color:var(--ink);line-height:1.4;">${escapeHTML(out.message || 'Nothing was stored — every consent switch was off, exactly as you asked.')}</span>`);
+    } else {
+      const link = out.withdrawal_token ? `${CONTINUITY_API.base}/withdraw.html?t=${encodeURIComponent(out.withdrawal_token)}` : '';
+      submitMessage(
+        `<span style="font-family:var(--serif);font-size:21px;color:var(--ink);line-height:1.4;">Recorded — only the lines you switched on were kept, exactly as shown.</span>` +
+        (link ? `<div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink-soft);line-height:1.6;">Your private withdrawal link — save it now, it is shown only once:<br><a href="${escapeHTML(link)}" style="color:var(--coral-deep);word-break:break-all;">${escapeHTML(link)}</a></div>` : '')
+      );
+    }
+    if(window.turnstile && __turnstileWidget!=null) window.turnstile.reset(__turnstileWidget);
+  } catch(err){
+    submitMessage(`<span style="font-family:var(--serif);font-size:18px;color:var(--coral-deep);line-height:1.4;">Could not send right now — nothing was stored. Please try again in a moment.</span>`);
+    if(window.turnstile && __turnstileWidget!=null) window.turnstile.reset(__turnstileWidget);
+  }
 });
 
 /* ---------------- REVEAL ON SCROLL ---------------- */

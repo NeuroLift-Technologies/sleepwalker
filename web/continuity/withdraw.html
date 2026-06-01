@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Withdraw your record — Continuity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f3ec;--ink:#1e1b17;--ink-soft:#5b554b;--ink-faint:#8b8478;
+    --line-strong:#c4bcab;--coral:#d2552f;--coral-deep:#b8431f;
+    --sans:'Hanken Grotesk',system-ui,sans-serif;--serif:'Newsreader',Georgia,serif;--mono:'Space Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;
+    display:flex;min-height:100vh;align-items:center;justify-content:center;padding:32px;}
+  .card{max-width:540px;width:100%;}
+  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--coral-deep);}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,6vw,46px);letter-spacing:-.02em;line-height:1.05;margin:14px 0 0;}
+  p{margin:18px 0 0;color:var(--ink-soft);}
+  .field{margin-top:24px;}
+  label{display:block;font-size:14px;font-weight:600;margin-bottom:8px;}
+  input{width:100%;font-family:var(--mono);font-size:14px;color:var(--ink);background:#fff;
+    border:1.5px solid var(--line-strong);border-radius:11px;padding:12px 14px;}
+  input:focus{outline:none;border-color:var(--coral);}
+  .btn{margin-top:22px;display:inline-flex;align-items:center;gap:9px;font-size:15.5px;font-weight:600;cursor:pointer;
+    padding:13px 24px;border-radius:999px;border:1.5px solid var(--coral);background:var(--coral);color:#fff;transition:background .15s;}
+  .btn:hover{background:var(--coral-deep);border-color:var(--coral-deep);}
+  .btn[disabled]{opacity:.55;cursor:default;}
+  .result{margin-top:24px;font-family:var(--serif);font-size:20px;line-height:1.4;min-height:1.4em;}
+  .result.ok{color:var(--ink);}
+  .result.warn{color:var(--coral-deep);}
+  .back{margin-top:30px;display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink-faint);text-decoration:none;}
+  .back:hover{color:var(--ink);}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="eyebrow">Continuity · your terms</div>
+  <h1>Withdraw your record</h1>
+  <p>Paste the private withdrawal link or token you were shown when you submitted. This permanently deletes the record — there is no account to look it up any other way, by design.</p>
+
+  <div class="field">
+    <label for="token">Withdrawal token</label>
+    <input id="token" type="text" autocomplete="off" spellcheck="false" placeholder="the token from your withdrawal link">
+  </div>
+  <button class="btn" id="go">Withdraw &amp; delete my record</button>
+  <div class="result" id="result" role="status" aria-live="polite"></div>
+
+  <a class="back" href="./index.html">← back to Continuity</a>
+</main>
+<script>
+  // Token may arrive in the link as ?t=…
+  const params = new URLSearchParams(location.search);
+  const tokenInput = document.getElementById('token');
+  if(params.get('t')) tokenInput.value = params.get('t');
+
+  const result = document.getElementById('result');
+  const btn = document.getElementById('go');
+
+  function show(msg, cls){ result.textContent = msg; result.className = 'result ' + (cls||''); }
+
+  btn.addEventListener('click', async ()=>{
+    const token = tokenInput.value.trim();
+    if(!token){ show('Enter your withdrawal token first.', 'warn'); tokenInput.focus(); return; }
+    btn.disabled = true; show('Withdrawing…');
+    try{
+      const r = await fetch('/api/withdraw', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token })
+      });
+      const out = await r.json();
+      if(!r.ok || out.error) throw new Error(out.error || ('HTTP ' + r.status));
+      if(out.deleted > 0){
+        show('Done — your record has been permanently deleted. Nothing of it remains.', 'ok');
+      } else {
+        show('No matching record found. It may already have been withdrawn, or the token is mistyped.', 'warn');
+      }
+    } catch(err){
+      // Friendly note for the not-yet-deployed case and transient failures alike.
+      show('Could not reach the withdrawal service. If the backend is not live yet, there is nothing stored to withdraw.', 'warn');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

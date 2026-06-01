@@ -1,0 +1,25 @@
+# Cloudflare Worker — Continuity submissions API
+# Deploy is a human action (production sign-off required). See README.md.
+
+name = "continuity-api"
+main = "src/index.js"
+compatibility_date = "2026-05-01"
+
+# Public, non-secret config. TURNSTILE_SECRET is set separately as a secret:
+#   wrangler secret put TURNSTILE_SECRET
+[vars]
+ALLOWED_ORIGIN = "https://continuity.haief.org"
+AGGREGATE_MIN = "25"
+
+# D1 database binding. Create once, then paste the returned database_id:
+#   wrangler d1 create continuity
+#   wrangler d1 execute continuity --file=./schema.sql
+[[d1_databases]]
+binding = "DB"
+database_name = "continuity"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# Route is bound by Josh at deploy time, e.g.:
+# [[routes]]
+# pattern = "continuity.haief.org/api/*"
+# zone_name = "haief.org"
