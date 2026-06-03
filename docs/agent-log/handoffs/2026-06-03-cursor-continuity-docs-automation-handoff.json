@@ -43,6 +43,6 @@
       "Python source/docs parity check for Continuity Worker routes, consent keys, config variables, preview/live contract, aggregate API note, and file inventory"
     ],
     "tests_passing": true,
-    "pr_url": "Pending creation after handoff commit"
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/9"
   }
 }
