@@ -30,7 +30,7 @@ Each NLT repo should have:
 |---|---|
 | `CLAUDE.md` | Agent session directive — points to org-level OTOI |
 | `docs/active-threads.md` | Current work state tracker |
-| `docs/agent-log/` | Directory for agent registration and handoff records |
+| `docs/agent-log/` | Directory for agent registration, intent, and handoff records |
 
 ---
 
@@ -101,6 +101,7 @@ docs/
 └── agent-log/
     ├── README.md
     ├── registrations/     ← Agent self-registrations
+    ├── intent/            ← Intent logs for significant actions
     └── handoffs/          ← Handoff records between sessions
 ```
 
@@ -109,12 +110,18 @@ docs/
 ```markdown
 # Agent Log
 
-This directory contains agent registration records and session handoff documents.
+This directory contains agent registration records, intent logs, and session
+handoff documents.
 
 - `registrations/` — Agent self-registration files (one per session start)
+- `intent/` — Intent logs for broad-scope, architectural, or irreversible actions
 - `handoffs/` — Session handoff records (written at session end)
 
-Format reference: `NeuroLift-Technologies/sleepwalker` templates directory.
+Format references:
+
+- `templates/agent-registration.json`
+- `templates/intent-log.md`
+- `templates/handoff-record.json`
 ```
 
 ### Step 4: (Optional) Create `docs/escalations/` Directory
@@ -169,6 +176,7 @@ Confirm the following exist and contain correct content:
 - [ ] `CLAUDE.md` references `ORG-DEV-OTOI-1.0.0`
 - [ ] `docs/active-threads.md` exists and is readable
 - [ ] `docs/agent-log/` directory structure created
+- [ ] `docs/agent-log/intent/` is available when significant actions require intent logs
 - [ ] GitHub App has access to `sleepwalker` (or public mirror fallback is in place)
 
 ---

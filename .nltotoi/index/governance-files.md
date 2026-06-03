@@ -1,8 +1,26 @@
 # Governance File Index — NeuroLift Technologies `sleepwalker`
 
-**Last updated:** 2026-05-22  
+**Last updated:** 2026-06-03  
 **Maintained by:** `.nltotoi/` namespace tooling  
 **Scope:** `NeuroLift-Technologies/sleepwalker`
+
+---
+
+## Inventory Scope
+
+This index is the human-readable registry for governance-adjacent files in this
+repository. It is broader than the CI-required file list:
+
+- `nltotoi.json` `required_files` is the machine-readable minimum contract.
+- `.nltotoi/scripts/validate-governance.sh` is the executable CI check and
+  currently mirrors the `required_files` minimum.
+- This index also tracks coordination records, troubleshooting docs, agent
+  profiles, and agent tooling so reviewers can understand the full operating
+  surface.
+
+`Required` in the tables below means the file is required for the documented
+`sleepwalker` governance operating model. If a file must also be enforced by
+CI, add it to both `nltotoi.json` and `validate-governance.sh`.
 
 ---
 
@@ -69,12 +87,25 @@
 
 ---
 
+## Agent Tooling References
+
+| File | Purpose | Required |
+|---|---|---|
+| `links.md` | Curated links for agent skills, Cloudflare MCP references, and platform docs | ✅ |
+| `mcp-config.yaml` | Example MCP host configuration for GitHub and Cloudflare remote MCP servers | ✅ |
+
+These files are operational references for agents, not active CI gates. Keep
+secret values in environment variables only; do not commit `.env` files.
+
+---
+
 ## Agent Coordination Records
 
 | File or directory | Purpose | Required |
 |---|---|---|
 | `docs/active-threads.md` | Tracks active and resolved work threads | ✅ |
 | `docs/agent-log/README.md` | Explains registration and handoff directories | ✅ |
+| `docs/agent-log/intent/README.md` | Explains intent-log storage convention | ✅ |
 | `docs/escalations/README.md` | Explains escalation record storage | ✅ |
 | `docs/troubleshooting/github-app-access.md` | Explains GitHub App access requirements for private governance files | ✅ |
 
@@ -83,7 +114,7 @@
 ## Roadmap / Not Yet Present
 
 The following workflow and agent-profile families are referenced by SOPs or roadmap
-discussion but are not present in this repository as of 2026-05-22:
+discussion but are not present in this repository as of 2026-06-03:
 
 - Reusable org-wide governance checks beyond `.github/workflows/validate-governance.yml`
 - Agent commit-format and handoff-gate workflows
@@ -116,8 +147,9 @@ index only when files land in the repository.
 | CI workflows | 1 |
 | SOPs | 3 |
 | Agent profiles | 1 |
-| Agent coordination records | 4 |
-| **Total** | **28** |
+| Agent tooling references | 2 |
+| Agent coordination records | 5 |
+| **Total** | **31** |
 
 ---
 

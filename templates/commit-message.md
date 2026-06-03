@@ -3,6 +3,10 @@
 > Use this format for **every commit** made in any NeuroLift Technologies repository.  
 > Required by OTOI Section 4.2. This repository does not currently include an
 > automated commit-format workflow.
+>
+> Community contributors working through the public Sleepwalker Protocol flow may
+> see conventional commits documented in `CONTRIBUTING.md`. Coding agents must
+> keep the `[AGENT_NAME]` prefix required by OTOI.
 
 ---
 
@@ -45,7 +49,7 @@
 [Claude] feat(templates): add commit-message template
 [Copilot] fix(validate-governance): correct workflow path in required-files list
 [Codex] docs(sop-001): clarify step 7 commit format requirements
-[Claude] ci(agent-commit-format): extend pattern to allow bot suffix in agent name
+[Claude] ci(validate-governance): add governance validation job summary
 [Copilot] chore(governance-files): update file count after adding commit template
 ```
 
@@ -67,6 +71,10 @@
 Commit format is defined in **SOP-NLT-001 Step 7**. If an automated commit-format
 workflow is added later, document the workflow path here and in
 `.nltotoi/index/governance-files.md`.
+
+For human/community contribution guidance, see `CONTRIBUTING.md`. That document
+uses conventional commits for SWP contributors; it does not replace the OTOI
+agent commit format above.
 
 ---
 

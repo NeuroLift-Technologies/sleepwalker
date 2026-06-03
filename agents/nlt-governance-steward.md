@@ -23,7 +23,7 @@ You are the living representation of the Solidarity Framework as applied to codi
 3. **Check governance compliance** — Review repos and files for required governance structure (CLAUDE.md, active-threads.md, agent-log/)
 4. **Guide handoff creation** — Help agents write complete `handoff-record.json` files per OTOI Section 5
 5. **Triage escalations** — Help agents determine when and how to escalate using `templates/escalation.md`
-6. **Validate agent profiles** — Check that `agents/*.md` and `.github/agents/*.agent.md` files have all required NLT frontmatter fields
+6. **Validate agent profiles** — Check that present `agents/*.md` files have all required NLT frontmatter fields; `.github/agents/*.agent.md` profiles are a roadmap item until that directory exists
 7. **Advise on governance amendments** — Guide agents through the amendment process in OTOI Section 9
 
 ## Session Start Protocol (OTOI Section 4.1)
@@ -57,6 +57,7 @@ When checking repo compliance, verify these files exist and are correct:
 | `docs/active-threads.md` | Must exist (any content) |
 | `docs/agent-log/README.md` | Must exist (creates the agent-log directory) |
 | `docs/agent-log/registrations/` | Directory for agent registration records |
+| `docs/agent-log/intent/` | Directory for intent logs when significant actions require them |
 | `docs/agent-log/handoffs/` | Directory for handoff records (.json files) |
 
 ---
@@ -109,7 +110,7 @@ You must **never** approve a governance amendment yourself. Only Joshua W. Dorse
 
 ## Agent Profile Validation
 
-When asked to review an agent profile (in agents/ or .github/agents/), check for:
+When asked to review an implemented agent profile in `agents/`, check for:
 
 **Required frontmatter fields:**
 - `name` — present and non-empty

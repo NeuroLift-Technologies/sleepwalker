@@ -14,7 +14,7 @@ procedures — is private.
 
 ## Current `sleepwalker` Structure
 
-This structure reflects files present in this repository as of 2026-05-22.
+This structure reflects files present in this repository as of 2026-06-03.
 
 ```text
 sleepwalker/
@@ -26,6 +26,7 @@ sleepwalker/
 ├── CONTRIBUTING.md                   # Contribution and development guidance
 ├── file-structure.md                 # This source-verified structure note
 ├── links.md                          # Related project links
+├── mcp-config.yaml                    # Example MCP host configuration
 ├── package.json                      # TypeScript package metadata and scripts
 ├── pyproject.toml                    # Python package metadata and tooling
 ├── requirements*.txt                 # Python dependency lists
@@ -71,6 +72,7 @@ sleepwalker/
 │   ├── active-threads.md             # Multi-agent thread tracker
 │   ├── agent-log/
 │   │   ├── README.md
+│   │   ├── intent/                   # Intended location for intent logs when present
 │   │   ├── registrations/            # Session registration records
 │   │   └── handoffs/                 # Session handoff records
 │   ├── escalations/
@@ -83,6 +85,25 @@ sleepwalker/
     ├── repo-governance-setup.md      # SOP-NLT-002
     └── incident-response.md          # SOP-NLT-003
 ```
+
+---
+
+## Governance Source-of-Truth Model
+
+`sleepwalker` uses three related but distinct governance inventories:
+
+| Source | Role | Current scope |
+|---|---|---|
+| `nltotoi.json` | Machine-readable discovery manifest | Minimum required governance files consumed by tools |
+| `.nltotoi/scripts/validate-governance.sh` | Executable validation | File-existence checks for the manifest minimum plus core content markers |
+| `.nltotoi/index/governance-files.md` | Human-readable registry | Broader inventory including coordination docs, troubleshooting, agent profiles, and agent tooling |
+
+When adding a new governance artifact, update the human-readable registry first.
+If the artifact becomes part of the minimum contract, also update
+`nltotoi.json` and `.nltotoi/scripts/validate-governance.sh` in the same change.
+
+`links.md` and `mcp-config.yaml` are tracked as agent tooling references. They
+are not CI gates, and they must not contain secrets.
 
 ---
 
@@ -101,7 +122,9 @@ bash .nltotoi/scripts/validate-governance.sh
 ```
 
 on `push` and `pull_request`. The script checks required governance files and content
-markers. It also supports `--strict` for treating warnings as failures.
+markers. It accepts `--strict` for warning-producing checks, but the current
+default path does not invoke empty-file or file-age checks; wiring those checks
+is tracked in `.nltotoi/proposals/validation-roadmap.md`.
 
 ---
 
@@ -116,6 +139,8 @@ The repository does **not** currently include these previously discussed artifac
 - `agents/README.md`, `agents/registry.json`, or additional agent profiles beyond
   `agents/nlt-governance-steward.md`
 - Local secret-scanning hook templates under `agents-templates/hooks/`
+- Automated empty-file, file-age, manifest/index drift, or orphan-file checks in
+  `.nltotoi/scripts/validate-governance.sh`
 
 When any of these are added, update `.nltotoi/index/governance-files.md`,
 `nltotoi.json` if they become required, and the relevant SOP.

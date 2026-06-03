@@ -14,8 +14,13 @@ The `validate-governance.sh` script provides:
 - ✅ Document ID header validation (`ORG-DEV-OTOI-1.0.0`)
 - ✅ Authority marker checks
 - ✅ Repository marker checks for `NeuroLift-Technologies/sleepwalker`
-- ✅ `--strict` mode for treating warnings as failures
+- ✅ `--strict` flag accepted for treating warning-producing checks as failures
 - ✅ Exit code reporting for CI integration
+
+The script defines helper functions for empty-file and file-age checks, but the
+current validation path does not invoke them. Until those helpers are wired into
+the required-file loop, strict mode should be treated as a compatibility flag
+rather than evidence that freshness or non-empty checks are enforced.
 
 ---
 
@@ -31,6 +36,8 @@ The `validate-governance.sh` script provides:
 
 - [ ] Verify all paths referenced in `nltotoi.json` exist on disk
 - [ ] Verify all paths in `.nltotoi/index/governance-files.md` exist on disk
+- [ ] Report drift between `nltotoi.json` `required_files`,
+      `.nltotoi/scripts/validate-governance.sh`, and the broader governance index
 - [ ] Detect orphaned files not listed in the index
 
 ### v1.3 — Content Validation
@@ -38,6 +45,8 @@ The `validate-governance.sh` script provides:
 - [ ] Check that OTOI sections (1–10) are all present
 - [ ] Check that escalation template sections are complete
 - [ ] Verify ethical framework markers (Solidarity Framework, HAIEF references)
+- [ ] Invoke empty-file and file-age checks for required files, with warnings in
+      default mode and failures in `--strict` mode
 
 ### v1.4 — Downstream Repo Validation
 

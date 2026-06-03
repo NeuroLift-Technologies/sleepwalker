@@ -44,7 +44,7 @@ Run governance validation from the repository root:
 bash .nltotoi/scripts/validate-governance.sh
 ```
 
-Strict mode treats warnings as failures:
+The script accepts a strict-mode flag for warning-producing checks:
 
 ```bash
 bash .nltotoi/scripts/validate-governance.sh --strict
@@ -56,7 +56,11 @@ The script currently verifies:
 - Core content markers are present, including `ORG-DEV-OTOI-1.0.0`,
   `Joshua W. Dorsey`, `Solidarity Framework`, `HAIEF`, and
   `NeuroLift-Technologies/sleepwalker`
-- Empty or stale file checks produce warnings unless `--strict` is used
+
+`--strict` is available for warning-producing checks. As of
+`ORG-DEV-OTOI-1.0.0`, the default validation path does not invoke empty-file or
+file-age checks; wiring those checks into the script is tracked in
+`.nltotoi/proposals/validation-roadmap.md`.
 
 GitHub Actions runs the same command through
 `.github/workflows/validate-governance.yml` on `push` and `pull_request`.

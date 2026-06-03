@@ -94,6 +94,9 @@ All files below live in this repository (`NeuroLift-Technologies/sleepwalker`):
 NLT-DEV-OTOI.md                        ← Canonical org-level agent contract
 AGENTS.md                               ← This file
 nltotoi.json                            ← Discovery manifest
+file-structure.md                       ← Source-verified repository structure note
+links.md                                ← Agent skills and platform reference links
+mcp-config.yaml                         ← Example MCP host configuration
 
 .nltotoi/
 ├── README.md                           ← Namespace overview
@@ -124,7 +127,10 @@ agents/
 
 docs/
 ├── active-threads.md                  ← Multi-agent work tracker
-├── agent-log/                         ← Registration and handoff records
+├── agent-log/                         ← Registration, intent, and handoff records
+│   ├── registrations/                 ← Agent self-registration records
+│   ├── intent/                        ← Intent logs when significant actions require them
+│   └── handoffs/                      ← Session handoff records
 ├── escalations/                       ← Escalation records
 └── troubleshooting/                   ← Developer and agent troubleshooting
 

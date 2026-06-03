@@ -120,7 +120,7 @@ npm test
 
 ### Commit Messages
 
-Follow conventional commits format:
+Community contributors should follow conventional commits format:
 
 ```
 type(scope): brief description
@@ -137,6 +137,16 @@ Types:
 - `test`: Adding or updating tests
 - `refactor`: Code refactoring
 - `chore`: Maintenance tasks
+
+Coding agents operating under NLT governance must use the OTOI commit format
+instead:
+
+```
+[AGENT_NAME] type(scope): description
+```
+
+See `templates/commit-message.md` and SOP-NLT-001 for the agent-specific
+requirements.
 
 ### Pull Request Process
 
