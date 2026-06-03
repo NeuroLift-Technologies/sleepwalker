@@ -5,6 +5,7 @@ Tests for Sleepwalker Protocol Core Functionality
 import pytest
 import tempfile
 import shutil
+from pathlib import Path
 from sleepwalker_protocol import SWP, EmotionalState, ConsentLevel
 
 
@@ -169,6 +170,28 @@ def test_assess_interaction_uses_stable_instance_user_id(temp_storage):
     # And an unrelated user genuinely has no history.
     other = swp.assess_interaction("hello", user_id="bob")
     assert other['continuity_context']['has_history'] is False
+
+
+def test_swp_tolerates_malformed_non_dict_toi(temp_storage):
+    """A TOI file that parses to a non-dict must not break the instance.
+
+    TOILoader can return a non-dict for a malformed TOI (e.g. a YAML list), so
+    self.user_toi is coerced to a dict. Methods that read it (_is_swp_active,
+    get_context, assess_interaction) must keep working rather than raising
+    AttributeError on a list/scalar.
+    """
+    toi_path = Path(temp_storage) / "bad_toi.yaml"
+    toi_path.write_text("- just\n- a\n- list\n")
+
+    swp = SWP(user_toi_path=str(toi_path), logging_enabled=False, storage_path=temp_storage)
+
+    assert isinstance(swp.user_toi, dict)
+    assert isinstance(swp._is_swp_active(), bool)
+    context = swp.get_context()
+    assert 'swp_active' in context
+    # The full assessment path also reads the TOI and must not raise.
+    assessment = swp.assess_interaction("hello", user_id="u1")
+    assert 'swp_active' in assessment
 
 
 def test_get_swp_context():

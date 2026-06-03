@@ -28,7 +28,9 @@
     "next_agent_notes": "Task B lives on branch claude/friendly-bardeen-5kuHW with its own PR. Do NOT fold the continuity fix into the governance PRs. Leave the contested governance files (AGENTS.md, NLT-DEV-OTOI.md, file-structure.md, nltotoi.json, the SOPs, agents/nlt-governance-steward.md, docs/*/README.md) untouched until Joshua decides #4 vs #5.",
     "files_modified": [
       "sleepwalker_protocol/protocol.py",
+      "sleepwalker_protocol/continuity.py",
       "tests/test_protocol.py",
+      "tests/test_continuity.py",
       "docs/active-threads.md",
       "docs/agent-log/registrations/2026-06-01-claude-continuity-fix.json",
       "docs/agent-log/handoffs/2026-06-01-claude-continuity-fix-handoff.json"

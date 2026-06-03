@@ -55,7 +55,9 @@ class ContinuityManager:
         """
         raw = str(user_id)
         slug = "".join(c for c in raw if c.isalnum() or c in "_-")[:32] or "user"
-        digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
+        # Full SHA-256 hex (the filename is the user-isolation boundary; the
+        # extra length is free and maximizes separation between users).
+        digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
         return self.storage_path / f"{slug}-{digest}.json"
     
     def save_session(

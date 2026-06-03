@@ -63,20 +63,22 @@ class SleepwalkerProtocol:
         if logging_enabled:
             logging.basicConfig(level=logging.INFO)
 
-        # Load user's TOI configuration
+        # Load user's TOI configuration. A malformed TOI file can parse to a
+        # non-dict (e.g. a YAML list or scalar), so coerce to {} here — that way
+        # this instance's user_toi is always a dict and every downstream
+        # ``.get(...)`` (here and in _is_swp_active() / get_context()) is safe.
         self.toi_loader = TOILoader(user_toi_path)
-        self.user_toi = self.toi_loader.load() if user_toi_path else {}
+        loaded_toi = self.toi_loader.load() if user_toi_path else {}
+        self.user_toi = loaded_toi if isinstance(loaded_toi, dict) else {}
 
         # Stable continuity identity for this instance. Never derive this from the
         # user's input text — doing so makes every interaction look like a brand new
         # user and continuity can never be retrieved. Accept an explicit id, then a
-        # top-level or swp-nested TOI id, tolerating a None / non-dict TOI. The id is
-        # sanitized against path traversal where it becomes a filename (see
-        # ContinuityManager._user_file).
-        toi = self.user_toi if isinstance(self.user_toi, dict) else {}
-        swp_toi = toi.get('swp') if isinstance(toi.get('swp'), dict) else {}
+        # top-level or swp-nested TOI id. The id is sanitized against path traversal
+        # where it becomes a filename (see ContinuityManager._user_file).
+        swp_toi = self.user_toi.get('swp') if isinstance(self.user_toi.get('swp'), dict) else {}
         self.user_id = (
-            user_id or toi.get('user_id') or swp_toi.get('user_id') or 'default_user'
+            user_id or self.user_toi.get('user_id') or swp_toi.get('user_id') or 'default_user'
         )
         
         # Initialize components
