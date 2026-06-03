@@ -1,0 +1,49 @@
+{
+  "handoff_record": {
+    "session_id": "158b2152-7214-45b1-9efe-a458133e75b6",
+    "agent_name": "Cursor Automation GPT-5.5",
+    "date": "2026-05-22",
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "cursor/technical-documentation-updates-224b",
+    "work_completed": [
+      "Aligned the governance file index with source-verified files present in sleepwalker",
+      "Rewrote file-structure.md to distinguish implemented repository layout from roadmap items",
+      "Documented validation workflow behavior and strict mode in .nltotoi docs",
+      "Corrected operational templates and SOP claims about absent CI gates and secret-scanning automation",
+      "Added GitHub App access troubleshooting for agents that cannot read private governance files",
+      "Updated active thread and registration records for this session"
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Kept changes documentation-only and source-verified against repository files",
+      "Left unimplemented workflow families as roadmap/not-yet-present rather than documenting them as active controls"
+    ],
+    "decisions_pending": [
+      "Joshua W. Dorsey, Sr. or maintainers should decide whether commit-format, handoff-gate, and secret-scanning workflows should be implemented"
+    ],
+    "escalations": [],
+    "next_agent_notes": "Governance validation passed. The updated docs intentionally do not claim that absent workflow gates or local secret-scanning hooks exist.",
+    "files_modified": [
+      ".nltotoi/README.md",
+      ".nltotoi/index/governance-files.md",
+      ".nltotoi/proposals/validation-roadmap.md",
+      "AGENTS.md",
+      "PULL_REQUEST_TEMPLATE/agent-contribution.md",
+      "SOPs/incident-response.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-05-22-cursor-documentation-automation.json",
+      "docs/troubleshooting/github-app-access.md",
+      "file-structure.md",
+      "nltotoi.json",
+      "templates/commit-message.md"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "python3 -m json.tool nltotoi.json"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/3"
+  }
+}

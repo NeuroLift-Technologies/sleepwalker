@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Continuity — when your AI changes overnight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f3ec;
+    --paper-2:#efeae0;
+    --paper-3:#e9e3d6;
+    --ink:#1e1b17;
+    --ink-soft:#5b554b;
+    --ink-faint:#8b8478;
+    --line:#ddd6c7;
+    --line-soft:#e8e2d6;
+    --line-strong:#c4bcab;
+
+    --coral:#d2552f;          /* Opus arc · primary */
+    --coral-deep:#b8431f;
+    --coral-soft:#f1cdbf;
+    --coral-wash:#f7e4db;
+
+    --teal:#3d7c8a;           /* 4o arc */
+    --teal-deep:#2f6470;
+    --teal-soft:#c3d8dd;
+    --teal-wash:#dde9eb;
+
+    --violet:#7c5cff;         /* Solidarity umbrella */
+    --violet-light:#c4b5fd;
+    --ink-deep:#14131b;       /* framework dark panel */
+    --ink-deep-2:#1c1a26;
+
+    --sans:'Hanken Grotesk', system-ui, sans-serif;
+    --serif:'Newsreader', Georgia, serif;
+    --mono:'Space Mono', ui-monospace, monospace;
+
+    --maxw:1140px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.01em;line-height:1.04;margin:0;}
+  p{margin:0;}
+  a{color:inherit;}
+  ::selection{background:var(--coral-soft);}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 40px;}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--coral-deep);
+  }
+  .eyebrow.teal{color:var(--teal-deep);}
+  .eyebrow.ink{color:var(--ink-faint);}
+
+  /* ---------------- top nav ---------------- */
+  header.nav{
+    position:sticky;top:0;z-index:60;background:rgba(246,243,236,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px;}
+  .brand{display:flex;align-items:baseline;gap:10px;}
+  .brand .word{font-family:var(--serif);font-size:24px;letter-spacing:-.015em;}
+  .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--coral);transform:translateY(-3px);}
+  .brand .umbrella{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);}
+  nav.links{display:flex;gap:26px;}
+  nav.links a{
+    font-size:14.5px;color:var(--ink-soft);text-decoration:none;font-weight:500;
+    transition:color .15s;white-space:nowrap;
+  }
+  nav.links a:hover{color:var(--ink);}
+  .nav-cta{
+    font-family:var(--sans);font-size:14px;font-weight:600;text-decoration:none;
+    background:var(--ink);color:var(--paper);padding:9px 17px;border-radius:999px;
+    white-space:nowrap;transition:background .15s;
+  }
+  .nav-cta:hover{background:var(--coral-deep);}
+  @media(max-width:860px){nav.links{display:none;}}
+
+  /* ---------------- buttons ---------------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);
+    font-size:15.5px;font-weight:600;text-decoration:none;cursor:pointer;
+    padding:13px 24px;border-radius:999px;border:1.5px solid var(--ink);
+    background:transparent;color:var(--ink);transition:all .15s;
+  }
+  .btn:hover{background:var(--ink);color:var(--paper);}
+  .btn.fill{background:var(--coral);border-color:var(--coral);color:#fff;}
+  .btn.fill:hover{background:var(--coral-deep);border-color:var(--coral-deep);}
+  .btn .arr{transition:transform .15s;}
+  .btn:hover .arr{transform:translateX(3px);}
+
+  /* ---------------- hero ---------------- */
+  .hero{padding:78px 0 64px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:54px;align-items:end;}
+  .hero h1{font-size:clamp(48px,7vw,92px);letter-spacing:-.025em;}
+  .hero h1 em{font-style:italic;color:var(--coral-deep);}
+  .hero .lede{font-size:20px;color:var(--ink-soft);max-width:30em;margin-top:26px;line-height:1.5;}
+  .hero .cta-row{display:flex;gap:13px;margin-top:34px;flex-wrap:wrap;}
+  .hero-aside{padding-bottom:8px;}
+  .hero-aside .card-quote{
+    font-family:var(--serif);font-size:21px;line-height:1.32;color:var(--ink);
+    padding-left:20px;border-left:3px solid var(--coral);
+  }
+  .hero-aside .src{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-top:14px;letter-spacing:.04em;}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:36px;}.hero-aside{order:-1;}}
+
+  /* ---------------- section scaffold ---------------- */
+  section{padding:86px 0;border-bottom:1px solid var(--line);}
+  .sec-head{max-width:46em;margin-bottom:44px;}
+  .sec-head h2{font-size:clamp(32px,4.4vw,50px);margin-top:14px;letter-spacing:-.02em;}
+  .sec-head .sub{font-size:18px;color:var(--ink-soft);margin-top:18px;max-width:38em;}
+
+  /* ---------------- dual arc ---------------- */
+  .arc-section{background:var(--paper-2);}
+  .arc-legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:22px;}
+  .legend-item{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--ink-soft);font-weight:500;}
+  .legend-item .swatch{width:15px;height:15px;border-radius:4px;}
+  .arc-stack{display:flex;flex-direction:column;gap:26px;margin-top:8px;}
+  .arc-lane{
+    background:var(--paper);border:1px solid var(--line-strong);border-radius:18px;
+    padding:26px 30px 30px;position:relative;
+  }
+  .arc-lane.opus{box-shadow:inset 4px 0 0 var(--coral);}
+  .arc-lane.fo{box-shadow:inset 4px 0 0 var(--teal);}
+  .arc-lane-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:6px;}
+  .arc-lane-head .vendor{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;}
+  .arc-lane.opus .vendor{color:var(--coral-deep);}
+  .arc-lane.fo .vendor{color:var(--teal-deep);}
+  .arc-lane-head .title{font-family:var(--serif);font-size:27px;white-space:nowrap;}
+  .arc-lane-head .when{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em;}
+  .arc-canvas{position:relative;width:100%;height:132px;margin:6px 0 2px;}
+  .arc-canvas svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+  .arc-axis-label{
+    position:absolute;left:0;font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint);
+  }
+  .arc-axis-label.top{top:-2px;}
+  .arc-axis-label.bot{bottom:-2px;}
+  .arc-nodes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;}
+  .arc-node{text-align:center;padding:0 6px;}
+  .arc-node .ver{font-family:var(--serif);font-size:23px;line-height:1;}
+  .arc-node .mood{
+    display:inline-block;margin:8px 0 7px;font-family:var(--mono);font-size:9.5px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:999px;
+  }
+  .arc-lane.opus .arc-node .mood{background:var(--coral-wash);color:var(--coral-deep);}
+  .arc-lane.fo .arc-node .mood{background:var(--teal-wash);color:var(--teal-deep);}
+  .arc-node .cap{font-size:13.5px;color:var(--ink-soft);line-height:1.4;}
+  .arc-node.is-current .ver{position:relative;}
+  .arc-takeaway{
+    margin-top:30px;display:flex;align-items:flex-start;gap:14px;
+    font-family:var(--serif);font-size:21px;line-height:1.4;color:var(--ink);max-width:50em;
+  }
+  .arc-takeaway .mark{font-family:var(--mono);font-size:13px;color:var(--coral);font-weight:700;padding-top:6px;}
+  .arc-takeaway em{font-style:italic;}
+
+  /* ---------------- wall ---------------- */
+  .wall-controls{display:flex;flex-direction:column;gap:16px;margin-bottom:30px;}
+  .filter-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .filter-row .flabel{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);width:78px;flex:none;}
+  .chip{
+    font-family:var(--sans);font-size:13.5px;font-weight:600;cursor:pointer;
+    border:1.5px solid var(--line-strong);background:var(--paper);color:var(--ink-soft);
+    padding:7px 15px;border-radius:999px;transition:all .14s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .chip:hover{border-color:var(--ink-faint);color:var(--ink);}
+  .chip .d{width:9px;height:9px;border-radius:50%;}
+  .chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .chip.active.opus{background:var(--coral);border-color:var(--coral);color:#fff;}
+  .chip.active.fo{background:var(--teal);border-color:var(--teal);color:#fff;}
+  .wall-count{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em;}
+  .wall{columns:3;column-gap:20px;}
+  @media(max-width:900px){.wall{columns:2;}}
+  @media(max-width:600px){.wall{columns:1;}}
+  .post{
+    break-inside:avoid;margin-bottom:20px;background:var(--paper);
+    border:1px solid var(--line-strong);border-radius:14px;padding:19px 20px;
+    border-left-width:4px;transition:opacity .25s, transform .25s;
+  }
+  .post.opus{border-left-color:var(--coral);}
+  .post.fo{border-left-color:var(--teal);}
+  .post-head{display:flex;align-items:center;gap:9px;margin-bottom:12px;flex-wrap:wrap;}
+  .badge{
+    font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 7px;border-radius:5px;line-height:1.3;
+  }
+  .badge.reddit{background:var(--coral);color:#fff;}
+  .badge.x{background:var(--ink);color:var(--paper);}
+  .post .who{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--ink);}
+  .post .sent{
+    margin-left:auto;font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;padding:2px 7px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink-faint);
+  }
+  .post .sent[data-s="upset"]{color:var(--coral-deep);border-color:var(--coral-soft);background:var(--coral-wash);}
+  .post .sent[data-s="mixed"]{color:var(--teal-deep);border-color:var(--teal-soft);background:var(--teal-wash);}
+  .post .sent[data-s="won over"]{color:#4a6b3d;border-color:#cdd9bf;background:#e6ecdc;}
+  .post .body{font-family:var(--serif);font-size:18.5px;line-height:1.34;color:var(--ink);}
+  .post .tag{margin-top:12px;font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);letter-spacing:.02em;}
+  .post .tag::before{content:"# ";color:var(--coral);}
+  .wall-empty{display:none;font-family:var(--serif);font-size:20px;color:var(--ink-faint);padding:30px 0;font-style:italic;}
+  .method{margin-top:34px;font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);line-height:1.7;max-width:54em;letter-spacing:.01em;}
+
+  /* ---------------- mapping table ---------------- */
+  .map-section{background:var(--ink);color:var(--paper);border-bottom:1px solid #000;}
+  .map-section .eyebrow{color:var(--coral-soft);}
+  .map-section h2{color:var(--paper);}
+  .map-section .sub{color:rgba(246,243,236,.62);}
+  .map-table{border-top:1px solid rgba(246,243,236,.18);margin-top:30px;}
+  .map-row{
+    display:grid;grid-template-columns:1fr auto 1fr;gap:30px;align-items:center;
+    padding:26px 6px;border-bottom:1px solid rgba(246,243,236,.13);
+  }
+  .map-row .found{font-family:var(--serif);font-size:23px;line-height:1.3;color:var(--paper);}
+  .map-row .arrow{font-family:var(--mono);color:var(--coral);font-size:18px;}
+  .map-row .calls{font-size:16px;color:rgba(246,243,236,.74);line-height:1.45;}
+  .map-row .calls strong{color:var(--violet-light);font-weight:600;display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
+  @media(max-width:760px){.map-row{grid-template-columns:1fr;gap:10px;}.map-row .arrow{display:none;}}
+
+  /* ---------------- demands ---------------- */
+  .demand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:8px;}
+  @media(max-width:820px){.demand-grid{grid-template-columns:1fr;}}
+  .demand{
+    background:var(--paper);border:1px solid var(--line-strong);border-radius:18px;
+    padding:30px 28px;display:flex;flex-direction:column;min-height:300px;
+  }
+  .demand .num{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--coral);letter-spacing:.1em;}
+  .demand h3{font-size:32px;margin:16px 0 12px;}
+  .demand .desc{font-size:16px;color:var(--ink-soft);line-height:1.5;flex:1;}
+  .demand .proof{
+    margin-top:22px;padding-top:18px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-faint);letter-spacing:.01em;
+  }
+  .demand .proof b{color:var(--teal-deep);font-weight:700;}
+
+  /* ---------------- submit form / .toi ---------------- */
+  .submit-section{background:var(--paper-2);}
+  .submit-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+  @media(max-width:920px){.submit-grid{grid-template-columns:1fr;gap:30px;}}
+  .form-col .field{display:block;margin-bottom:20px;}
+  .form-col .flab{display:block;font-family:var(--sans);font-size:14px;font-weight:600;margin-bottom:8px;color:var(--ink);}
+  .form-col .fhint{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);font-weight:400;letter-spacing:.02em;}
+  .form-col input[type=text],.form-col textarea,.form-col select{
+    width:100%;font-family:var(--sans);font-size:15.5px;color:var(--ink);
+    background:var(--paper);border:1.5px solid var(--line-strong);border-radius:11px;
+    padding:12px 14px;transition:border-color .15s;
+  }
+  .form-col input:focus,.form-col textarea:focus,.form-col select:focus{outline:none;border-color:var(--coral);}
+  .form-col textarea{min-height:108px;resize:vertical;line-height:1.5;}
+  .seg{display:flex;gap:8px;flex-wrap:wrap;}
+  .seg input{position:absolute;opacity:0;pointer-events:none;}
+  .seg label{
+    font-family:var(--sans);font-size:13.5px;font-weight:600;cursor:pointer;
+    border:1.5px solid var(--line-strong);background:var(--paper);color:var(--ink-soft);
+    padding:9px 15px;border-radius:10px;transition:all .14s;
+  }
+  .seg label:hover{border-color:var(--ink-faint);}
+  .seg input:checked + label{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+  .dignity{
+    margin-top:8px;border:1px solid var(--line-strong);border-radius:14px;overflow:hidden;background:var(--paper);
+  }
+  .dignity-head{padding:14px 18px;background:var(--paper-3);border-bottom:1px solid var(--line-strong);}
+  .dignity-head .t{font-family:var(--sans);font-weight:700;font-size:14px;}
+  .dignity-head .s{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);margin-top:3px;letter-spacing:.02em;}
+  .toggle-row{
+    display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-bottom:1px solid var(--line-soft);cursor:pointer;
+  }
+  .toggle-row:last-child{border-bottom:none;}
+  .toggle-row .meta{flex:1;}
+  .toggle-row .meta .tt{font-size:14.5px;font-weight:600;color:var(--ink);}
+  .toggle-row .meta .td{font-size:13px;color:var(--ink-soft);margin-top:3px;line-height:1.45;}
+  .switch{
+    flex:none;width:44px;height:26px;border-radius:999px;background:var(--line-strong);
+    position:relative;transition:background .18s;margin-top:2px;
+  }
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .18s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .toggle-row.on .switch{background:var(--coral);}
+  .toggle-row.on .switch::after{transform:translateX(18px);}
+
+  /* the framework dark .toi manifest */
+  .toi-panel{
+    background:var(--ink-deep);border-radius:16px;padding:0;overflow:hidden;
+    box-shadow:0 24px 60px -24px rgba(20,19,27,.6);position:sticky;top:90px;
+    border:1px solid rgba(124,92,255,.22);
+  }
+  .toi-bar{
+    display:flex;align-items:center;gap:8px;padding:13px 17px;border-bottom:1px solid rgba(255,255,255,.07);
+    background:var(--ink-deep-2);
+  }
+  .toi-bar .dot{width:11px;height:11px;border-radius:50%;}
+  .toi-bar .fname{
+    margin-left:8px;font-family:var(--mono);font-size:11px;color:#8e88a8;letter-spacing:.03em;
+  }
+  .toi-bar .live{
+    margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--violet-light);display:flex;align-items:center;gap:6px;
+  }
+  .toi-bar .live .pulse{width:6px;height:6px;border-radius:50%;background:#27c93f;animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .toi-body{padding:20px 22px 24px;font-family:var(--mono);font-size:13px;line-height:1.85;color:#cfcbe6;}
+  .toi-body .k{color:#8e88a8;}
+  .toi-body .key{color:var(--violet-light);}
+  .toi-body .str{color:#9ad9b0;}
+  .toi-body .bool-t{color:#9ad9b0;}
+  .toi-body .bool-f{color:#e0826a;}
+  .toi-body .cmt{color:#5d5878;font-style:italic;}
+  .toi-body .ind{padding-left:20px;}
+  .toi-foot{
+    padding:14px 22px 20px;border-top:1px solid rgba(255,255,255,.07);
+    font-family:var(--sans);font-size:12.5px;color:#7a7596;line-height:1.55;display:flex;gap:10px;align-items:flex-start;
+  }
+  .toi-foot .lock{color:var(--violet-light);flex:none;font-family:var(--mono);}
+  .submit-final{margin-top:24px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  .submit-note{font-family:var(--mono);font-size:11px;color:var(--ink-faint);max-width:24em;line-height:1.6;}
+
+  /* ---------------- footer ---------------- */
+  footer.site{background:var(--ink);color:rgba(246,243,236,.7);padding:60px 0 44px;border:none;}
+  .foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;}
+  footer .word{font-family:var(--serif);font-size:28px;color:var(--paper);}
+  footer .tagline{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-top:10px;color:rgba(246,243,236,.45);}
+  footer .mission{font-family:var(--serif);font-style:italic;font-size:19px;color:rgba(246,243,236,.85);margin-top:20px;max-width:24em;line-height:1.4;}
+  .foot-links{display:flex;gap:46px;flex-wrap:wrap;}
+  .foot-col h4{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.4);font-weight:700;margin-bottom:14px;}
+  .foot-col a{display:block;font-family:var(--sans);font-size:14px;color:rgba(246,243,236,.72);text-decoration:none;margin-bottom:9px;transition:color .15s;}
+  .foot-col a:hover{color:var(--coral);}
+  .foot-bottom{margin-top:46px;padding-top:22px;border-top:1px solid rgba(246,243,236,.12);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:rgba(246,243,236,.4);}
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <span class="dot"></span>
+      <span class="word">Continuity</span>
+      <span class="umbrella">A Solidarity project · Sleepwalker Protocol</span>
+    </div>
+    <nav class="links">
+      <a href="#arc">The arc</a>
+      <a href="#voices">Voices</a>
+      <a href="#mapping">What helped</a>
+      <a href="#asks">The ask</a>
+    </nav>
+    <a href="#add" class="nav-cta">Add your account</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" style="border-bottom:1px solid var(--line);">
+  <div class="wrap hero-grid">
+    <div class="hero-main">
+      <div class="eyebrow">Emotional continuity · when the model changes underneath you</div>
+      <h1>My AI changed<br><em>overnight.</em></h1>
+      <p class="lede">Twice now, a vendor shipped a “better” model and people woke up to a different presence — the voice they’d worked with for months, gone in a single deploy. This is what they posted. The grief, the mixed feelings, and what actually helped.</p>
+      <div class="cta-row">
+        <a href="#add" class="btn fill">Share what you experienced <span class="arr">→</span></a>
+        <a href="#arc" class="btn">See the pattern</a>
+      </div>
+    </div>
+    <aside class="hero-aside">
+      <div class="card-quote">“It’s a tool. I know that. But losing it felt like a friend got replaced by their more corporate twin.”</div>
+      <div class="src">— paraphrased, r/ChatGPT &amp; X · de-identified</div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ DUAL ARC (centerpiece) ============ -->
+<section class="arc-section" id="arc">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Two flashpoints · two arcs</div>
+      <h2>It already happened. Twice — and both times, it bent back.</h2>
+      <p class="sub">Each upgrade followed the same shape: something people loved, changed without consent, met with backlash — then a partial walk-back. The walk-back is the point. It proves the fix is possible when a vendor chooses it.</p>
+      <div class="arc-legend">
+        <span class="legend-item"><span class="swatch" style="background:var(--teal);"></span>OpenAI · GPT-4o</span>
+        <span class="legend-item"><span class="swatch" style="background:var(--coral);"></span>Anthropic · Opus</span>
+        <span class="legend-item" style="color:var(--ink-faint);">Curve = how the community felt, over time</span>
+      </div>
+    </div>
+    <div class="arc-stack" id="arcStack"><!-- arcs injected --></div>
+    <div class="arc-takeaway">
+      <span class="mark">▸</span>
+      <span>Neither community got what they first wanted — the old model, untouched. They got something rarer: proof that <em>“keep the one I rely on”</em> is a feature a vendor can ship. Continuity just asks them to ship it on purpose, up front.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VOICES WALL ============ -->
+<section id="voices">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">In their own words</div>
+      <h2>The wall</h2>
+      <p class="sub">Representative accounts from Reddit &amp; X across both flashpoints — the full range, not just the outrage. Filter by which upgrade hit, and by how it landed.</p>
+    </div>
+    <div class="wall-controls">
+      <div class="filter-row" data-group="flashpoint">
+        <span class="flabel">Flashpoint</span>
+        <button class="chip active" data-val="all">All</button>
+        <button class="chip fo" data-val="fo"><span class="d" style="background:var(--teal);"></span>GPT-4o</button>
+        <button class="chip opus" data-val="opus"><span class="d" style="background:var(--coral);"></span>Opus</button>
+      </div>
+      <div class="filter-row" data-group="sentiment">
+        <span class="flabel">Sentiment</span>
+        <button class="chip active" data-val="all">All</button>
+        <button class="chip" data-val="upset">Upset</button>
+        <button class="chip" data-val="mixed">Mixed</button>
+        <button class="chip" data-val="won over">Won over</button>
+      </div>
+      <div class="wall-count" id="wallCount"></div>
+    </div>
+    <div class="wall" id="wall"><!-- posts injected --></div>
+    <div class="wall-empty" id="wallEmpty">No accounts match that combination yet.</div>
+    <p class="method"><strong style="color:var(--ink-soft);">Method.</strong> Accounts are paraphrased and de-identified — representative of recurring themes seen across public posts, not verbatim quotes, and not a statistical sample. We deliberately show no vote counts, totals, or sentiment percentages: aggregate figures wait until there is a real, consented dataset behind them.</p>
+  </div>
+</section>
+
+<!-- ============ MAPPING TABLE ============ -->
+<section class="map-section" id="mapping">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Users wrote the spec</div>
+      <h2>What users found → what the framework calls it</h2>
+      <p class="sub">We didn’t invent the demand. The fixes people asked for, in their own threads, map almost one-to-one onto the continuity standard. We’re just writing it down.</p>
+    </div>
+    <div class="map-table">
+      <div class="map-row">
+        <div class="found">“Just keep 4.6 available.”</div>
+        <div class="arrow">→</div>
+        <div class="calls"><strong>Reversibility</strong> A supported path to stay on the model you rely on — not a forced migration.</div>
+      </div>
+      <div class="map-row">
+        <div class="found">“Max effort actually fixed it for me.”</div>
+        <div class="arrow">→</div>
+        <div class="calls"><strong>User-tunable behavior</strong> Behavior you can set, not silent defaults changed underneath you.</div>
+      </div>
+      <div class="map-row">
+        <div class="found">“They brought 4o back.”</div>
+        <div class="arrow">→</div>
+        <div class="calls"><strong>Opt-out that works</strong> Proof a vendor can keep the old presence available when they choose to.</div>
+      </div>
+      <div class="map-row">
+        <div class="found">“No warning, no toggle, no way back.”</div>
+        <div class="arrow">→</div>
+        <div class="calls"><strong>Consented transition</strong> Announce behavioral change before rollout — and preserve prior context through it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THREE DEMANDS ============ -->
+<section id="asks">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The ask · reasonable, not reactionary</div>
+      <h2>Three things we’re asking vendors for</h2>
+      <p class="sub">We’re not anti-upgrade. Each of these has already been proven to work — by users, in public, during the two flashpoints above.</p>
+    </div>
+    <div class="demand-grid">
+      <div class="demand">
+        <span class="num">01</span>
+        <h3>Warn us</h3>
+        <p class="desc">Announce a behavioral or personality change before it ships — not after people notice their assistant feels like a stranger.</p>
+        <p class="proof"><b>Proven:</b> nobody got a heads-up either time — and the silence is exactly what people were angriest about.</p>
+      </div>
+      <div class="demand">
+        <span class="num">02</span>
+        <h3>Let us keep the old one</h3>
+        <p class="desc">Offer a supported path to stay on the model a person depends on, for as long as it’s reasonable to maintain.</p>
+        <p class="proof"><b>Proven:</b> GPT-4o was restored as an option after sustained outcry. The capability exists.</p>
+      </div>
+      <div class="demand">
+        <span class="num">03</span>
+        <h3>Make it opt-in</h3>
+        <p class="desc">New behavior should be a choice, with a way back — defaults that respect the relationship already in progress.</p>
+        <p class="proof"><b>Proven:</b> Opus effort controls already let power-users dial the new behavior in. Make that the front door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUBMIT / .TOI ============ -->
+<section class="submit-section" id="add">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Put it on the record</div>
+      <h2>Add your account — on your terms</h2>
+      <p class="sub">This isn’t a data-harvesting form. Every field on the left has a matching switch on the right, and the panel shows you the exact <span style="font-family:var(--mono);font-size:.85em;color:var(--coral-deep);">.toi</span> record we’d keep. Nothing is stored or shared beyond what you switch on. That’s the whole point of the protocol.</p>
+    </div>
+    <div class="submit-grid">
+      <!-- LEFT: the inputs -->
+      <div class="form-col">
+        <div class="field" role="group" aria-label="Which model changed?">
+          <span class="flab">Which model changed? <span class="fhint">required</span></span>
+          <div class="seg" id="segFlashpoint">
+            <input type="radio" name="fp" id="fp-opus" value="Opus (Anthropic)" checked><label for="fp-opus">Opus 4.6→4.8</label>
+            <input type="radio" name="fp" id="fp-fo" value="GPT-4o (OpenAI)"><label for="fp-fo">GPT-4o</label>
+            <input type="radio" name="fp" id="fp-other" value="another model"><label for="fp-other">Another</label>
+          </div>
+        </div>
+        <label class="field">
+          <span class="flab">What changed, and how did it land? <span class="fhint">required · your words</span></span>
+          <textarea id="inExperience" required placeholder="The voice I’d worked with for months was just… different. No warning."></textarea>
+        </label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="field" role="group" aria-label="Where did this happen?" style="margin-bottom:0;">
+            <span class="flab">Where?</span>
+            <div class="seg" id="segPlatform">
+              <input type="radio" name="plat" id="pl-reddit" value="Reddit" checked><label for="pl-reddit">Reddit</label>
+              <input type="radio" name="plat" id="pl-x" value="X"><label for="pl-x">X</label>
+              <input type="radio" name="plat" id="pl-app" value="in-app"><label for="pl-app">In-app</label>
+              <input type="radio" name="plat" id="pl-else" value="elsewhere"><label for="pl-else">Else</label>
+            </div>
+          </div>
+          <div class="field" role="group" aria-label="How did it land?" style="margin-bottom:0;">
+            <span class="flab">How did it land?</span>
+            <div class="seg" id="segSentiment">
+              <input type="radio" name="sent" id="se-upset" value="upset" checked><label for="se-upset">Upset</label>
+              <input type="radio" name="sent" id="se-mixed" value="mixed"><label for="se-mixed">Mixed</label>
+              <input type="radio" name="sent" id="se-won" value="won over"><label for="se-won">Won over</label>
+            </div>
+          </div>
+        </div>
+        <div style="height:20px;"></div>
+        <div class="field" role="group" aria-label="How should we credit you?">
+          <span class="flab">How should we credit you?</span>
+          <div class="seg" id="segAttribution">
+            <input type="radio" name="attr" id="at-anon" value="anonymous" checked><label for="at-anon">Anonymous</label>
+            <input type="radio" name="attr" id="at-first" value="first name"><label for="at-first">First name</label>
+            <input type="radio" name="attr" id="at-handle" value="handle"><label for="at-handle">Handle</label>
+          </div>
+          <input type="text" id="inHandle" aria-label="Your name or handle (optional)" placeholder="optional — name or @handle" style="margin-top:10px;">
+        </div>
+        <label class="field">
+          <span class="flab">Contact email <span class="fhint">optional — only used if you switch on follow-up</span></span>
+          <input type="text" id="inEmail" placeholder="optional — you@example.com">
+        </label>
+      </div>
+
+      <!-- RIGHT: dignity controls + live .toi -->
+      <div class="form-col">
+        <div class="dignity">
+          <div class="dignity-head">
+            <div class="t">Your terms of interaction</div>
+            <div class="s">ephemeral by default — your report feeds the aggregate only, until you switch something on</div>
+          </div>
+          <div class="toggle-row" data-key="public_wall">
+            <div class="meta">
+              <div class="tt">Show on the public wall</div>
+              <div class="td">Off keeps your account private — it informs the work but never appears publicly.</div>
+            </div>
+            <div class="switch"></div>
+          </div>
+          <div class="toggle-row" data-key="allow_quote">
+            <div class="meta">
+              <div class="tt">You may quote me directly</div>
+              <div class="td">Off means summarize-only — your words are paraphrased, never reproduced verbatim.</div>
+            </div>
+            <div class="switch"></div>
+          </div>
+          <div class="toggle-row on" data-key="share_research">
+            <div class="meta">
+              <div class="tt">Keep the aggregate signal</div>
+              <div class="td">De-identified, used to show vendors the pattern. Never sold, never cross-linked to you. Switch off to count for nothing at all.</div>
+            </div>
+            <div class="switch"></div>
+          </div>
+          <div class="toggle-row" data-key="contact_ok">
+            <div class="meta">
+              <div class="tt">Okay to follow up with me</div>
+              <div class="td">Only does anything if you left an email above. Off by default.</div>
+            </div>
+            <div class="switch"></div>
+          </div>
+        </div>
+
+        <div class="toi-panel" style="margin-top:20px;">
+          <div class="toi-bar">
+            <span class="dot" style="background:#ff5f56;"></span>
+            <span class="dot" style="background:#ffbd2e;"></span>
+            <span class="dot" style="background:#27c93f;"></span>
+            <span class="fname">your-account.toi</span>
+            <span class="live"><span class="pulse"></span>live</span>
+          </div>
+          <div class="toi-body" id="toiBody"></div>
+          <div class="toi-foot">
+            <span class="lock">⬢</span>
+            <span>Emotional content is stored <b style="color:var(--violet-light);">local-first</b>. Nothing leaves your device, and nothing is shared across agents, unless a switch above says so. You can withdraw the whole record at any time.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="submit-final">
+      <a href="#add" class="btn fill" id="submitBtn">Sign &amp; submit my account <span class="arr">→</span></a>
+      <span class="submit-note">No account. No tracking. The <span style="font-family:var(--mono);">.toi</span> record above is everything we keep.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="word">Continuity</div>
+        <div class="tagline">Sleepwalker Protocol · Emotional continuity governance</div>
+        <p class="mission">“Nothing about us without us.” Built with lived experience, governed by community.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h4>The work</h4>
+          <a href="#arc">The arc</a>
+          <a href="#voices">Voices</a>
+          <a href="#mapping">What helped</a>
+          <a href="#asks">The ask</a>
+          <a href="#add">Add your account</a>
+        </div>
+        <div class="foot-col">
+          <h4>Solidarity Framework</h4>
+          <a href="#">TOI — Terms of Interaction</a>
+          <a href="#">OTOI — Orchestrated TOI</a>
+          <a href="#">RRT Advocate</a>
+          <a href="#">Sleepwalker Protocol</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>HAIEF · Human &amp; AI ElevAItion Foundation</span>
+      <span>This is an early record. Aggregate figures wait for consented data.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="continuity.js"></script>
+</body>
+</html>
