@@ -2,11 +2,19 @@
 
 > This file tracks active work threads. Agents must read this at session start and update it during and at the end of each session.
 
-**Last updated:** 2026-06-01
+**Last updated:** 2026-06-03
 
 ---
 
 ## Active Threads
+
+### Documentation context follow-up after PR #5
+- **Agent:** Cursor Automation GPT-5.5 — session `158b2152-7214-45b1-9efe-a458133e75b6`
+- **Branch:** `cursor/engineering-documentation-updates-908d`
+- **Status:** In progress.
+- **Summary:** Adding source-verified AI project context after PR #5 restored governance framing, without changing the contested canonical governance contract/SOP files.
+- **Blockers:** None for the context/inventory update; canonical-home decisions remain blocked on Joshua under the governance fork thread below.
+- **Next action:** Run governance/JSON/diff validation, then commit and push the documentation-only follow-up.
 
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`

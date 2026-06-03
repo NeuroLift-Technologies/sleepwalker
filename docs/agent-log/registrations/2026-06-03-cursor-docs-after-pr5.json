@@ -1,0 +1,24 @@
+{
+  "agent_registration": {
+    "agent_name": "Cursor Automation GPT-5.5",
+    "platform": "Cursor Cloud Automation",
+    "version": "GPT-5.5",
+    "session_id": "158b2152-7214-45b1-9efe-a458133e75b6",
+    "entry_date": "2026-06-03",
+    "entry_point": "Pull request closed automation for PR #5: governance documentation restoration",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "working_repo": "NeuroLift-Technologies/sleepwalker",
+    "working_branch": "cursor/engineering-documentation-updates-908d",
+    "capabilities_self_reported": [
+      "Source-verified documentation maintenance",
+      "Repository context mapping",
+      "Governance-aware documentation updates"
+    ],
+    "known_limitations": [
+      "Cannot make architectural, deployment, or canonical-governance decisions",
+      "Does not infer behavior that is not present in source files"
+    ],
+    "preferred_handoff_format": "Structured JSON handoff with files modified, validation run, and remaining gaps"
+  }
+}

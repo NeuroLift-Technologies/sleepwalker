@@ -1,6 +1,6 @@
 # Governance File Index — NeuroLift Technologies `sleepwalker`
 
-**Last updated:** 2026-05-22  
+**Last updated:** 2026-06-03  
 **Maintained by:** `.nltotoi/` namespace tooling  
 **Scope:** `NeuroLift-Technologies/sleepwalker`
 
@@ -13,7 +13,7 @@
 | `NLT-DEV-OTOI.md` | Contract | Org-level coding agent contract (ORG-DEV-OTOI-1.0.0) | ✅ |
 | `AGENTS.md` | Gateway | Internal agent coordination gateway | ✅ |
 | `nltotoi.json` | Manifest | Machine-readable discovery manifest | ✅ |
-| `README.md` | Overview | Repository overview and purpose | ✅ |
+| `README.md` | Overview | Repository overview, purpose, and AI assistant directive | ✅ |
 | `file-structure.md` | ADR | Architecture decision record for this repo structure | ✅ |
 | `CLAUDE.md` | Instructions | Agent session instructions and plan | ✅ |
 
@@ -74,16 +74,27 @@
 | File or directory | Purpose | Required |
 |---|---|---|
 | `docs/active-threads.md` | Tracks active and resolved work threads | ✅ |
+| `docs/context/README_TO_AI.md` | Source-verified project context and codepath map for coding agents | ✅ |
 | `docs/agent-log/README.md` | Explains registration and handoff directories | ✅ |
+| `docs/agent-log/2026-05-28-claude-governance-restoration.md` | Audit log for PR #5 governance restoration | ✅ |
 | `docs/escalations/README.md` | Explains escalation record storage | ✅ |
 | `docs/troubleshooting/github-app-access.md` | Explains GitHub App access requirements for private governance files | ✅ |
+
+---
+
+## Agent Support References
+
+| File | Purpose | Required |
+|---|---|---|
+| `links.md` | Curated external references for agents working in this repo | No |
+| `mcp-config.yaml` | Model Context Protocol configuration reference | No |
 
 ---
 
 ## Roadmap / Not Yet Present
 
 The following workflow and agent-profile families are referenced by SOPs or roadmap
-discussion but are not present in this repository as of 2026-05-22:
+discussion but are not present in this repository as of 2026-06-03:
 
 - Reusable org-wide governance checks beyond `.github/workflows/validate-governance.yml`
 - Agent commit-format and handoff-gate workflows
@@ -116,8 +127,9 @@ index only when files land in the repository.
 | CI workflows | 1 |
 | SOPs | 3 |
 | Agent profiles | 1 |
-| Agent coordination records | 4 |
-| **Total** | **28** |
+| Agent coordination records | 6 |
+| Agent support references | 2 |
+| **Total** | **32** |
 
 ---
 
