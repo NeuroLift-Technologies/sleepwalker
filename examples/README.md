@@ -61,7 +61,9 @@ When creating your own implementations:
 1. **Always respect user boundaries** - Check TOI configuration before intervening
 2. **Log observations, don't intervene** - SWP detects states but doesn't force processing
 3. **Use graduated consent** - Offer support at appropriate levels only
-4. **Maintain continuity** - Preserve emotional boundaries across sessions
+4. **Maintain continuity with a stable user id** - Pass a real per-user id to
+   `SWP(user_id=...)`, `assess_interaction(..., user_id=...)`, and
+   `maintain_continuity(user_id, ...)`; never use message text as the continuity key
 5. **Privacy first** - Store emotional state data locally only
 
 See the main README for detailed API documentation and integration guides.

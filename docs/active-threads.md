@@ -2,7 +2,7 @@
 
 > This file tracks active work threads. Agents must read this at session start and update it during and at the end of each session.
 
-**Last updated:** 2026-06-01
+**Last updated:** 2026-06-03
 
 ---
 
@@ -11,11 +11,20 @@
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
 - **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)
-- **Status:** Implemented, tests passing (43 passed). PR open for Joshua's review.
+- **Status:** Merged in PR #6 on 2026-06-03. Tests passing in the PR (43 passed).
 - **Summary:** `assess_interaction` keyed continuity on the message text instead of a
   stable user id, so continuity always returned "no history". Threaded a real
   `user_id` through `SWP.__init__` and `assess_interaction`; added two behavioral
   tests (second assessment for the same user now sees the first's context).
+
+### Continuity documentation follow-up
+- **Agent:** Cursor Automation GPT-5.5 — session `2026-06-03-continuity-docs-follow-up`
+- **Branch:** `cursor/engineering-documentation-updates-39be`
+- **Status:** In progress.
+- **Summary:** Documentation automation is updating developer-facing docs after PR #6
+  to capture the stable `user_id` continuity contract, explicit read/write workflow,
+  and storage-key constraints verified from `sleepwalker_protocol/protocol.py` and
+  `sleepwalker_protocol/continuity.py`.
 
 ### Governance fork #4 vs #5 (Task A — diagnosis only)
 - **Agent:** Claude Code — read-only diagnosis for Joshua.

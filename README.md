@@ -149,6 +149,27 @@ AI: [Does NOT say "Ready to process those emotions yet?"]
 AI: "Good to see you. What can I help with today?"
 ```
 
+**Developer contract: stable user identity**
+
+The runtime continuity path is split between an explicit read and an explicit
+write:
+
+- `SWP(..., user_id="stable-user-id")` sets the default continuity identity for
+  one protocol instance. If omitted, `SWP` looks for a top-level `user_id` in the
+  loaded TOI, then `swp.user_id`, then falls back to `"default_user"`.
+- `assess_interaction(..., user_id=None)` reads existing continuity context for
+  `user_id or swp.user_id`. This method does **not** persist a new session.
+- `maintain_continuity(user_id, session_data)` is the write path. Call it at a
+  real session boundary after deciding which state and boundaries should be
+  preserved.
+
+Do not derive the continuity key from the user's message text. Message text
+changes every turn, so it cannot retrieve prior context and may leak sensitive
+content into identifiers. In multi-user services, pass a stable per-user id on
+each call (or use one `SWP` instance per user). Use a privacy-appropriate
+pseudonymous id: continuity files are stored under `storage_path` with a
+sanitized filename prefix plus a SHA-256 hash of the full id.
+
 ## Integration with Solidarity Framework
 
 ### SWP + TOI (Terms of Interaction)
@@ -390,11 +411,21 @@ from sleepwalker_protocol import SWP
 swp = SWP(
     user_toi_path="path/to/user/toi.yaml",
     privacy_mode="local_only",
-    logging=True
+    logging_enabled=True,
+    user_id="user-123"  # stable per-user identity; never message text
 )
 
 # Check user's emotional state and preferences
-user_state = swp.assess_interaction(user_input, session_history)
+user_state = swp.assess_interaction(
+    user_input,
+    session_history=session_history
+)
+
+# Persist continuity only at an intentional session boundary.
+swp.maintain_continuity("user-123", {
+    "emotional_state": user_state["emotional_state"].state_type,
+    "protective_state_active": user_state["protective_state_active"],
+})
 
 # Generate SWP-compliant response
 response = swp.generate_response(
