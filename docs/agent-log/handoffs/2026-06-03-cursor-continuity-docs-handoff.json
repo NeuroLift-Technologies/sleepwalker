@@ -1,0 +1,47 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-03-continuity-docs-follow-up",
+    "agent_name": "Cursor Automation GPT-5.5",
+    "date": "2026-06-03",
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "cursor/engineering-documentation-updates-39be",
+    "work_completed": [
+      "Reviewed merged PR #6 and source files sleepwalker_protocol/protocol.py and sleepwalker_protocol/continuity.py to verify the stable user_id continuity fix.",
+      "Updated README.md to document the runtime continuity contract: SWP instance user_id fallback order, assess_interaction read behavior, maintain_continuity write behavior, multi-user constraints, and storage filename safety.",
+      "Updated examples/README.md to warn developers to maintain continuity with stable per-user ids and never message text.",
+      "Updated docs/active-threads.md to mark PR #6 and this documentation follow-up resolved."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Updated existing README/example documentation instead of creating a new page, because the weak documentation was adjacent to the existing public developer usage examples.",
+      "Kept the documentation source-verified and limited to behavior implemented in protocol.py, continuity.py, and the PR #6 tests."
+    ],
+    "decisions_pending": [
+      "Joshua retains final authority over any future architecture, deployment, or governance decisions."
+    ],
+    "escalations": [],
+    "next_agent_notes": "The documentation now treats stable user identity as part of the continuity contract. Future examples should use user_id values that identify the user or pseudonymous account, not the message text, and should keep assess_interaction as a read path while maintain_continuity remains the explicit persistence path.",
+    "files_modified": [
+      "README.md",
+      "examples/README.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-03-cursor-continuity-docs.json",
+      "docs/agent-log/handoffs/2026-06-03-cursor-continuity-docs-handoff.json"
+    ],
+    "tests_run": [
+      "Initial python command check failed because this image has python3 but no python executable.",
+      "Initial python3 -m pytest attempt failed before tests because pytest was not installed.",
+      "python3 -m pip install -e '.[dev]'",
+      "python3 -m pytest tests/test_protocol.py tests/test_continuity.py: 24 passed",
+      "bash .nltotoi/scripts/validate-governance.sh: 29 passed, 0 failed, 0 warned",
+      "python3 -m json.tool docs/agent-log/registrations/2026-06-03-cursor-continuity-docs.json",
+      "Python source/doc consistency check for SWP user_id signatures, README/example contract text, and ContinuityManager traversal-safe filename behavior",
+      "git diff --check HEAD~1..HEAD",
+      "python3 -m pytest: 46 passed, 92% total coverage"
+    ],
+    "tests_passing": true,
+    "pr_url": "To be created by Cursor automation after this handoff commit is pushed."
+  }
+}
