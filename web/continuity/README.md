@@ -14,20 +14,47 @@ shipped as refined vanilla HTML/CSS/JS per Josh's direction.
 | File | What it is |
 |---|---|
 | `index.html` | The single-scroll page. All CSS is inline in `<head>`; type via Google Fonts CDN. |
-| `continuity.js` | Dual-arc SVG comparison, sentiment-wall filter, live `.toi` record preview, submit handler. |
-| `withdraw.html` | Standalone "withdraw your record" page; takes a token (`?t=…`) and calls the API. |
+| `continuity.js` | Dual-arc SVG comparison, sentiment-wall filter, live `.toi` record preview, submit handler, and optional API wiring. |
+| `withdraw.html` | Standalone "withdraw your record" page; takes a token (`?t=...`) and calls same-origin `/api/withdraw`. |
 | `worker/` | Cloudflare Worker backend (D1 + Turnstile + withdrawal tokens). See `worker/README.md`. |
 
 No build step, no bundler, no raster assets — just static files plus CDN fonts.
 
-## Backend (Cloudflare Worker)
+## Runtime modes
 
-The consent-first form is wired to a Cloudflare Worker (`worker/`) — **disabled by
-default**. `continuity.js` ships with `CONTINUITY_API.base` blank, so the page
-sends nothing and shows the honest preview message. After deploying the Worker
-(see `worker/README.md`), set `CONTINUITY_API.base` + `turnstileSiteKey` in
-`continuity.js` to switch the form to real submission, Turnstile verification, and
-a one-time withdrawal link. Until then nothing leaves the browser.
+### Preview-only mode (default)
+
+The consent-first form is wired to a Cloudflare Worker (`worker/`) but **disabled
+by default**. `continuity.js` ships with:
+
+```js
+const CONTINUITY_API = { base: '', turnstileSiteKey: '' };
+```
+
+With `base` blank, submitting the form sends no network request and shows the
+honest preview message:
+
+> Preview — no server yet, so nothing was sent or stored.
+
+This mode is safe for static previews and local design review.
+
+### Live API mode
+
+After a human-approved Worker deploy (see `worker/README.md`), set
+`CONTINUITY_API.base` and `turnstileSiteKey` in `continuity.js` to switch the form
+to real submission, Turnstile verification, and a one-time withdrawal link:
+
+```js
+const CONTINUITY_API = {
+  base: 'https://continuity.haief.org',
+  turnstileSiteKey: '<Cloudflare Turnstile site key>'
+};
+```
+
+The static site and Worker are expected to share the same public host in live
+mode: submit calls `${CONTINUITY_API.base}/api/submit`, while `withdraw.html`
+uses relative `/api/withdraw` so private withdrawal links work at
+`https://continuity.haief.org/withdraw.html?t=...`.
 
 Decisions made for the backend (Josh): **D1** for storage · **Cloudflare
 Turnstile** for abuse protection · **withdrawal-token link** for the
@@ -39,6 +66,10 @@ Turnstile** for abuse protection · **withdrawal-token link** for the
 cd web/continuity
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
+
+Local static preview exercises the page, filters, consent toggles, and live
+`.toi` preview. It does not exercise Worker submission unless you separately run
+`worker/` with Wrangler and point `CONTINUITY_API.base` at that local Worker.
 
 ## Page structure (per the build brief)
 
@@ -54,10 +85,14 @@ python3 -m http.server 8000   # then open http://localhost:8000
 
 ## Hard constraints (do not regress)
 
-- **No backend yet.** The submit button does **not** send or store anything. Its confirmation
-  state says so explicitly ("Preview — no server yet, so nothing was sent or stored. This is the
-  `.toi` record your submission would create."). Do not swap in a "Recorded / kept" message until
-  a real, consented backend exists — on a live public URL a false confirmation is actively harmful.
+- **Preview mode must stay honest.** With `CONTINUITY_API.base` blank, the submit
+  button must not send or store anything. Its confirmation state must say so
+  explicitly. Do not show a "Recorded / kept" message unless the deployed Worker
+  actually accepts the submission.
+- **Live mode needs both halves.** A real launch requires the static files, the
+  Worker route, D1 schema, `TURNSTILE_SECRET`, `ALLOWED_ORIGIN`, and front-end
+  `CONTINUITY_API` values to be aligned. Production deployment remains a human
+  sign-off action under NLT governance.
 - **No fabricated aggregate numbers.** No report counts, sentiment percentages, or signature
   totals as invented precision. Every qualitative section works with zero aggregate stats, so the
   page can launch without them. Counters ship only when backed by real consented submissions or by
@@ -65,6 +100,9 @@ python3 -m http.server 8000   # then open http://localhost:8000
   requirement, not deferred polish.
 - **Quotes are paraphrased and representative**, not verbatim transcription; platform attribution
   is illustrative. Keep them labeled as such.
+- **Aggregate API is backend-only today.** `worker/src/index.js` implements
+  `GET /api/aggregate`, but `index.html`/`continuity.js` do not render live
+  counters yet.
 
 ## Open decisions (Josh's calls — see the handoff brief §7)
 

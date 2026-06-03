@@ -12,6 +12,27 @@ The **Sleepwalker Protocol (SWP)** provides governance for long-term emotional c
 
 **Core Principle:** AI systems must not "wake up" users who are emotionally sleepwalking—managing dissociation, depersonalization, emotional regulation challenges, or protective psychological states—without explicit consent and appropriate support structures.
 
+## Current Repository Surfaces
+
+This repository now carries both protocol material and a public Continuity web
+surface:
+
+| Path | Purpose |
+|---|---|
+| `README.md` | Conceptual Sleepwalker Protocol overview, examples, and contribution entry point. |
+| `sleepwalker_protocol/` | Python package implementation for SWP concepts. |
+| `src/` | TypeScript package implementation surface referenced by `package.json`. |
+| `examples/` | Sample Python usage and TOI configuration examples. |
+| `web/continuity/` | Static Continuity landing page for `continuity.haief.org` plus an optional Cloudflare Worker submissions API. |
+
+The public **Continuity** landing page is a HAIEF/Sleepwalker advocacy and
+evidence-collection surface. It is static and preview-only by default:
+`web/continuity/continuity.js` leaves `CONTINUITY_API.base` blank, so form
+submissions send nothing until a human-approved Worker deployment is wired in.
+See [`web/continuity/README.md`](web/continuity/README.md) and
+[`web/continuity/worker/README.md`](web/continuity/worker/README.md) for the
+front-end and API runbooks.
+
 ## The Problem
 
 **What is "Emotional Sleepwalking"?**

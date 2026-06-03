@@ -14,7 +14,7 @@ procedures — is private.
 
 ## Current `sleepwalker` Structure
 
-This structure reflects files present in this repository as of 2026-05-22.
+This structure reflects files present in this repository as of 2026-06-03.
 
 ```text
 sleepwalker/
@@ -34,6 +34,17 @@ sleepwalker/
 ├── src/                              # TypeScript SWP implementation
 ├── tests/                            # Python pytest suite
 ├── examples/                         # Python examples and sample TOI config
+├── web/
+│   └── continuity/                    # Static Continuity landing page and optional submissions API
+│       ├── README.md                  # Front-end runbook and preview/live-mode notes
+│       ├── index.html                 # Public single-page Continuity landing page
+│       ├── continuity.js              # Front-end interactions and optional API submit wiring
+│       ├── withdraw.html              # Withdrawal-token page calling same-origin /api/withdraw
+│       └── worker/                    # Cloudflare Worker + D1 backend for consented submissions
+│           ├── README.md              # API contract, deploy, and local development notes
+│           ├── schema.sql             # D1 submissions table and indexes
+│           ├── wrangler.toml          # Worker config template; production route is human-bound
+│           └── src/index.js           # /api/submit, /api/aggregate, /api/withdraw
 │
 ├── agents/
 │   └── nlt-governance-steward.md     # Governance steward profile
