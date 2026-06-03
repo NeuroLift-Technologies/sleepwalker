@@ -1,6 +1,6 @@
 # Governance File Index — NeuroLift Technologies `sleepwalker`
 
-**Last updated:** 2026-06-03  
+**Last updated:** 2026-06-03
 **Maintained by:** `.nltotoi/` namespace tooling  
 **Scope:** `NeuroLift-Technologies/sleepwalker`
 
