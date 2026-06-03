@@ -42,6 +42,6 @@
       "python3 -m pytest: 46 passed, 92% total coverage"
     ],
     "tests_passing": true,
-    "pr_url": "To be created by Cursor automation after this handoff commit is pushed."
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/10"
   }
 }
