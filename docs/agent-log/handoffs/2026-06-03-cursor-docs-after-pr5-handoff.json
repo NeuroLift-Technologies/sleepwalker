@@ -1,0 +1,44 @@
+{
+  "handoff_record": {
+    "session_id": "158b2152-7214-45b1-9efe-a458133e75b6",
+    "agent_name": "Cursor Automation GPT-5.5",
+    "date": "2026-06-03",
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "cursor/engineering-documentation-updates-908d",
+    "work_completed": [
+      "Added docs/context/README_TO_AI.md as the source-verified project context page referenced by CLAUDE.md",
+      "Mapped implemented Python, TypeScript, Continuity web, Continuity Worker, test, example, and governance codepaths",
+      "Updated .nltotoi/index/governance-files.md to list the AI context page, PR #5 audit log, and existing agent support references",
+      "Recorded this session in docs/agent-log/registrations/",
+      "Moved the documentation context follow-up thread to resolved in docs/active-threads.md"
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Kept the PR documentation-only and source-verified against files present in the repository",
+      "Avoided editing NLT-DEV-OTOI.md, AGENTS.md, SOPs, file-structure.md, and other contested canonical-governance framing files",
+      "Documented production deployment and external integration work as human-controlled where the repo already says deployment requires Joshua's approval"
+    ],
+    "decisions_pending": [
+      "Joshua W. Dorsey, Sr. still owns the canonical-home decision for the governance fork noted in docs/active-threads.md"
+    ],
+    "escalations": [],
+    "next_agent_notes": "The new context page is intentionally a map of current codepaths, not a governance-contract rewrite. If future work touches the Continuity UI, perform browser validation; this change was docs-only.",
+    "files_modified": [
+      ".nltotoi/index/governance-files.md",
+      "docs/active-threads.md",
+      "docs/agent-log/handoffs/2026-06-03-cursor-docs-after-pr5-handoff.json",
+      "docs/agent-log/registrations/2026-06-03-cursor-docs-after-pr5.json",
+      "docs/context/README_TO_AI.md"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "python3 -m json.tool nltotoi.json",
+      "python3 -m json.tool docs/agent-log/registrations/2026-06-03-cursor-docs-after-pr5.json",
+      "git diff --check origin/main..HEAD",
+      "python3 source-context path and endpoint marker verification script"
+    ],
+    "tests_passing": true
+  }
+}

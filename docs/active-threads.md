@@ -8,14 +8,6 @@
 
 ## Active Threads
 
-### Documentation context follow-up after PR #5
-- **Agent:** Cursor Automation GPT-5.5 — session `158b2152-7214-45b1-9efe-a458133e75b6`
-- **Branch:** `cursor/engineering-documentation-updates-908d`
-- **Status:** In progress.
-- **Summary:** Adding source-verified AI project context after PR #5 restored governance framing, without changing the contested canonical governance contract/SOP files.
-- **Blockers:** None for the context/inventory update; canonical-home decisions remain blocked on Joshua under the governance fork thread below.
-- **Next action:** Run governance/JSON/diff validation, then commit and push the documentation-only follow-up.
-
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
 - **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)
@@ -36,6 +28,15 @@
 ---
 
 ## Resolved Threads
+
+### Thread: 2026-06-03-docs-context-after-pr5
+**Status:** resolved
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-03
+**Last updated:** 2026-06-03
+**Summary:** Added source-verified AI project context after PR #5 restored governance framing, and updated the governance file index to include the context page, PR #5 audit log, and existing agent-support references. The update avoided changing the contested canonical governance contract/SOP files.
+**Blockers:** None.
+**Next action:** Review the documentation PR; canonical-home decisions for the governance fork remain with Joshua under the active Task A thread.
 
 ### Thread: 2026-05-22-docs-governance-inventory
 **Status:** resolved
