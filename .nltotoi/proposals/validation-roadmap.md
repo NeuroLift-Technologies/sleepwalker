@@ -13,6 +13,8 @@ The `validate-governance.sh` script provides:
 - ✅ Required file existence checks
 - ✅ Document ID header validation (`ORG-DEV-OTOI-1.0.0`)
 - ✅ Authority marker checks
+- ✅ Repository marker checks for `NeuroLift-Technologies/sleepwalker`
+- ✅ `--strict` mode for treating warnings as failures
 - ✅ Exit code reporting for CI integration
 
 ---

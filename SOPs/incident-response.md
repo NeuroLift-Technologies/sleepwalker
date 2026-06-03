@@ -159,50 +159,25 @@ The best incident response is prevention. Ensure every agent:
 
 See `SOPs/new-agent-onboarding.md` for the full onboarding checklist.
 
-### Automated Gates — Credential Exposure
+### Credential Exposure Controls
 
-Two complementary automated controls protect against committed credentials:
+As of 2026-05-22, this repository includes the governance validation workflow
+`.github/workflows/validate-governance.yml`, but it does **not** include credential
+scanning workflows or local secret-scanning hook templates.
 
-| Control | File | When it runs | Action |
-|---|---|---|---|
-| **PR gate (preventive)** | `.github/workflows/secret-scan-pr.yml` | On every pull request targeting `main` or `release/**` | Fails the required status check — blocks merge |
-| **Push detector (reactive)** | `.github/workflows/incident-detection.yml` | On every push to any branch | Opens a GitHub incident issue |
+If a credential exposure occurs, do not assume automation has opened an incident or
+blocked the merge. Follow the immediate response steps above, then manually verify:
 
-#### Enable the PR Gate as a Required Status Check
+1. The affected credential was revoked and rotated.
+2. The exposed value was removed from the branch and, if needed, git history.
+3. The incident record was written under `docs/escalations/`.
+4. Joshua W. Dorsey, Sr. reviewed the incident and any required follow-up controls.
 
-To ensure `secret-scan-pr.yml` blocks merges, set it as a required status check on `main`:
+#### Future Automated Gates
 
-1. Go to **Settings → Branches → Branch protection rules → `main`**
-2. Enable **"Require status checks to pass before merging"**
-3. Search for and add: **`Scan PR for Credential Exposure (SOP-NLT-003)`**
-4. Enable **"Require branches to be up to date before merging"**
-5. Enable **"Do not allow bypassing the above settings"** to prevent force-pushes
-
-Once configured, no PR containing detected credential patterns can be merged.
-
-#### Pre-Commit Scanning (Local Defense-in-Depth)
-
-Install the secrets scanner hook from `agents-templates/hooks/secrets-scanner/` in this
-repository (this template already exists inside `sleepwalker`). This catches secrets before
-they are ever committed:
-
-```bash
-# Run from the root of the sleepwalker repository
-cp -r agents-templates/hooks/secrets-scanner .github/hooks/
-chmod +x .github/hooks/secrets-scanner/scan-secrets.sh
-```
-
-Configure Copilot to run the hook in block mode at session end:
-
-```json
-{
-  "event": "sessionEnd",
-  "command": "bash .github/hooks/secrets-scanner/scan-secrets.sh",
-  "env": { "SCAN_MODE": "block", "SCAN_SCOPE": "staged" }
-}
-```
-
-See `agents-templates/hooks/secrets-scanner/README.md` for full configuration options.
+If credential scanning workflows are added later, document the exact workflow files,
+trigger conditions, and required status-check names here. Also add them to
+`.nltotoi/index/governance-files.md` once the files exist.
 
 #### GitHub Native Secret Scanning
 
