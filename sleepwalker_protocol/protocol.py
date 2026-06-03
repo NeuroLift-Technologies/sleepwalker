@@ -40,26 +40,46 @@ class SleepwalkerProtocol:
         user_toi_path: Optional[str] = None,
         privacy_mode: str = "local_only",
         logging_enabled: bool = True,
-        storage_path: Optional[str] = None
+        storage_path: Optional[str] = None,
+        user_id: Optional[str] = None
     ):
         """
         Initialize the Sleepwalker Protocol.
-        
+
         Args:
             user_toi_path: Path to user's Terms of Interaction (TOI) file
             privacy_mode: Privacy mode for state storage ("local_only", "encrypted")
             logging_enabled: Whether to enable logging
             storage_path: Path for storing session continuity data
+            user_id: Stable identifier for the user this instance serves. Used as
+                the continuity key when ``assess_interaction`` is called without an
+                explicit ``user_id``. Falls back to a ``user_id`` declared in the
+                TOI, or to ``"default_user"`` so a single instance still maintains
+                continuity across calls.
         """
         self.privacy_mode = privacy_mode
         self.storage_path = storage_path or ".swp_storage"
-        
+
         if logging_enabled:
             logging.basicConfig(level=logging.INFO)
-        
-        # Load user's TOI configuration
+
+        # Load user's TOI configuration. A malformed TOI file can parse to a
+        # non-dict (e.g. a YAML list or scalar), so coerce to {} here — that way
+        # this instance's user_toi is always a dict and every downstream
+        # ``.get(...)`` (here and in _is_swp_active() / get_context()) is safe.
         self.toi_loader = TOILoader(user_toi_path)
-        self.user_toi = self.toi_loader.load() if user_toi_path else {}
+        loaded_toi = self.toi_loader.load() if user_toi_path else {}
+        self.user_toi = loaded_toi if isinstance(loaded_toi, dict) else {}
+
+        # Stable continuity identity for this instance. Never derive this from the
+        # user's input text — doing so makes every interaction look like a brand new
+        # user and continuity can never be retrieved. Accept an explicit id, then a
+        # top-level or swp-nested TOI id. The id is sanitized against path traversal
+        # where it becomes a filename (see ContinuityManager._user_file).
+        swp_toi = self.user_toi.get('swp') if isinstance(self.user_toi.get('swp'), dict) else {}
+        self.user_id = (
+            user_id or self.user_toi.get('user_id') or swp_toi.get('user_id') or 'default_user'
+        )
         
         # Initialize components
         self.state_detector = StateDetector()
@@ -96,26 +116,32 @@ class SleepwalkerProtocol:
     def assess_interaction(
         self,
         user_input: str,
-        session_history: Optional[list] = None
+        session_history: Optional[list] = None,
+        user_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Assess current interaction context including emotional state and user preferences.
-        
+
         Args:
             user_input: Current user input text
             session_history: List of previous interactions in this session
-            
+            user_id: Stable identifier for the user. Defaults to this instance's
+                ``user_id``. This is the key used to retrieve cross-session
+                continuity — it must identify the *user*, never the message text.
+
         Returns:
             Dictionary containing state assessment and recommendations
         """
         # Detect emotional state
         emotional_state = self.detect_emotional_state(user_input, session_history)
-        
+
         # Check user's consent preferences
         consent_level = self.consent_manager.get_appropriate_level(emotional_state)
-        
-        # Get continuity context
-        continuity_context = self.continuity_manager.get_context(user_input)
+
+        # Get continuity context, keyed by the stable user identifier. Passing
+        # ``user_input`` here (the previous behavior) keyed continuity on the
+        # message text, so it always reported "no history".
+        continuity_context = self.continuity_manager.get_context(user_id or self.user_id)
         
         return {
             'emotional_state': emotional_state,

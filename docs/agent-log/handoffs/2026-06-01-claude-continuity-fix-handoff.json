@@ -1,0 +1,45 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-01-continuity-fix-and-pr-diagnosis",
+    "agent_name": "Claude Code",
+    "date": "2026-06-01",
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "claude/friendly-bardeen-5kuHW",
+    "work_completed": [
+      "Task B: Fixed the continuity bug in sleepwalker_protocol/protocol.py. assess_interaction previously passed user_input (the message text) into ContinuityManager.get_context() as the user_id, so continuity always reported 'no history'.",
+      "Threaded a stable user_id: added a user_id parameter to SWP.__init__ (falls back to a TOI-declared user_id, then to 'default_user') and a user_id parameter to assess_interaction, which now keys continuity on user_id (defaulting to the instance's stable id) instead of the message text.",
+      "Added two behavioral tests in tests/test_protocol.py that assert a second assessment for the same user_id actually sees the first's persisted context (not just return shape). Verified both tests fail against the pre-fix protocol.py and pass after the fix.",
+      "Full suite: 43 passed (was 41).",
+      "Compliance: registered this session and wrote this handoff per AGENTS.md / OTOI Section 3 & 5; updated docs/active-threads.md."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Kept the read/write separation: assess_interaction reads continuity, maintain_continuity persists it. The fix corrects the read KEY only; it does not add an implicit disk write to assess_interaction (consistent with the repo's privacy posture).",
+      "Default instance user_id is 'default_user' so a single SWP instance keeps continuity across calls even when callers do not pass an explicit id."
+    ],
+    "decisions_pending": [
+      "Task A is a READ-ONLY diagnosis only. The PR #4 (governance/otoi-compliance) vs PR #5 (claude/governance-docs-restore-yB5sI) resolution — including whether a separate NeuroLift-Technologies/.github-private repo is the intended canonical home — is reserved for Joshua W. Dorsey, Sr. No merge was recommended or performed."
+    ],
+    "escalations": [
+      "Surfaced to Joshua: the #4/#5 governance fork is DIVERGENT (opposite directions), not a superset. Details in the session report. No action taken on the contested files."
+    ],
+    "next_agent_notes": "Task B lives on branch claude/friendly-bardeen-5kuHW with its own PR. Do NOT fold the continuity fix into the governance PRs. Leave the contested governance files (AGENTS.md, NLT-DEV-OTOI.md, file-structure.md, nltotoi.json, the SOPs, agents/nlt-governance-steward.md, docs/*/README.md) untouched until Joshua decides #4 vs #5.",
+    "files_modified": [
+      "sleepwalker_protocol/protocol.py",
+      "sleepwalker_protocol/continuity.py",
+      "tests/test_protocol.py",
+      "tests/test_continuity.py",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-01-claude-continuity-fix.json",
+      "docs/agent-log/handoffs/2026-06-01-claude-continuity-fix-handoff.json"
+    ],
+    "tests_run": [
+      "python -m pytest (full suite): 43 passed",
+      "Negative control: new behavioral tests run against pre-fix protocol.py — confirmed failing"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/6"
+  }
+}

@@ -7,6 +7,7 @@ Maintains emotional state and boundary awareness across sessions.
 from typing import Dict, Any, Optional
 import json
 import os
+import hashlib
 from pathlib import Path
 from datetime import datetime
 
@@ -22,12 +23,42 @@ class ContinuityManager:
     def __init__(self, storage_path: str = ".swp_storage"):
         """
         Initialize continuity manager with storage location.
-        
+
         Args:
             storage_path: Path for storing session continuity data
         """
         self.storage_path = Path(storage_path)
         self.storage_path.mkdir(exist_ok=True)
+
+    def _user_file(self, user_id: str) -> Path:
+        """
+        Resolve the storage file for a user — traversal-safe and collision-safe.
+
+        ``user_id`` becomes part of a filename, which raises two risks:
+
+        * **Path traversal.** A raw value like ``"../../etc/passwd"`` must not
+          read or write outside ``storage_path``.
+        * **Collisions.** Simply stripping disallowed characters would map
+          distinct ids onto the same file (``"a/b"`` and ``"ab"``, or
+          ``"alice@example.com"`` and ``"aliceexample.com"``), letting one
+          user's continuity overwrite or leak into another's.
+
+        We therefore key the file on a SHA-256 of the *full* id — deterministic,
+        collision-resistant, and filesystem-safe (hex only) — prefixed with a
+        sanitized, human-readable slug purely for debuggability.
+
+        Args:
+            user_id: User identifier
+
+        Returns:
+            Path to the user's JSON file, always inside ``storage_path``
+        """
+        raw = str(user_id)
+        slug = "".join(c for c in raw if c.isalnum() or c in "_-")[:32] or "user"
+        # Full SHA-256 hex (the filename is the user-isolation boundary; the
+        # extra length is free and maximizes separation between users).
+        digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
+        return self.storage_path / f"{slug}-{digest}.json"
     
     def save_session(
         self,
@@ -41,8 +72,8 @@ class ContinuityManager:
             user_id: User identifier
             session_data: Session data to preserve
         """
-        user_file = self.storage_path / f"{user_id}.json"
-        
+        user_file = self._user_file(user_id)
+
         # Add timestamp
         session_data['timestamp'] = datetime.now().isoformat()
         
@@ -127,9 +158,9 @@ class ContinuityManager:
         
         user_data['declared_boundaries'][boundary_type] = boundary_value
         user_data['boundary_updated'] = datetime.now().isoformat()
-        
+
         # Save updated data
-        user_file = self.storage_path / f"{user_id}.json"
+        user_file = self._user_file(user_id)
         with open(user_file, 'w') as f:
             json.dump(user_data, f, indent=2)
     
@@ -143,8 +174,8 @@ class ContinuityManager:
         Returns:
             User data dictionary
         """
-        user_file = self.storage_path / f"{user_id}.json"
-        
+        user_file = self._user_file(user_id)
+
         if not user_file.exists():
             return {}
         

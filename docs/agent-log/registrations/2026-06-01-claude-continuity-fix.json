@@ -1,0 +1,25 @@
+{
+  "agent_registration": {
+    "agent_name": "Claude Code",
+    "platform": "claude-code",
+    "version": "Claude Code on the web",
+    "session_id": "2026-06-01-continuity-fix-and-pr-diagnosis",
+    "entry_date": "2026-06-01",
+    "entry_point": "Follow-up pass: (A) read-only diagnosis of the PR #4 / PR #5 governance fork, and (B) fix the continuity user_id bug in sleepwalker_protocol/protocol.py.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "working_repo": "NeuroLift-Technologies/sleepwalker",
+    "working_branch": "claude/friendly-bardeen-5kuHW",
+    "capabilities_self_reported": [
+      "Python implementation and behavioral test authoring",
+      "Diff/branch relationship analysis (read-only)",
+      "Governance compliance logging"
+    ],
+    "known_limitations": [
+      "No architectural decisions without Joshua approval",
+      "No OTOI amendment authority",
+      "Did not touch the contested governance files in the #4/#5 fork — that resolution is reserved for Joshua W. Dorsey, Sr."
+    ],
+    "preferred_handoff_format": "structured JSON plus concise narrative summary"
+  }
+}
