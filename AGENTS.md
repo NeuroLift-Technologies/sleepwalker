@@ -106,7 +106,8 @@ templates/
 ├── agent-registration.json            ← OTOI Section 3 registration format
 ├── handoff-record.json                ← OTOI Section 5 handoff format
 ├── escalation.md                      ← OTOI Section 4.3 escalation format
-└── intent-log.md                      ← Intent logging template
+├── intent-log.md                      ← Intent logging template
+└── commit-message.md                  ← Agent commit format reference
 
 ISSUE_TEMPLATE/
 ├── agent-escalation.md                ← GitHub escalation issue form
@@ -115,8 +116,17 @@ ISSUE_TEMPLATE/
 PULL_REQUEST_TEMPLATE/
 └── agent-contribution.md              ← Agent PR checklist
 
-workflows/
+.github/workflows/
 └── validate-governance.yml            ← CI: runs validate-governance.sh
+
+agents/
+└── nlt-governance-steward.md          ← Governance steward profile
+
+docs/
+├── active-threads.md                  ← Multi-agent work tracker
+├── agent-log/                         ← Registration and handoff records
+├── escalations/                       ← Escalation records
+└── troubleshooting/                   ← Developer and agent troubleshooting
 
 SOPs/
 ├── new-agent-onboarding.md            ← How to onboard a new coding agent
