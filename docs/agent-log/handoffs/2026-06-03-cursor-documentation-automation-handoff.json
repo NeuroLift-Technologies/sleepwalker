@@ -50,6 +50,6 @@
       "git diff --check origin/main..HEAD"
     ],
     "tests_passing": true,
-    "pr_url": "Pending OpenGitPr automation"
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/8"
   }
 }
