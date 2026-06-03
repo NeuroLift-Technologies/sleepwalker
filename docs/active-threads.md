@@ -8,14 +8,7 @@
 
 ## Active Threads
 
-### Thread: 2026-06-03-docs-governance-follow-up
-**Status:** open
-**Owner:** Cursor Automation GPT-5.5
-**Started:** 2026-06-03
-**Last updated:** 2026-06-03
-**Summary:** Documentation automation is following up on PR #3 by clarifying source-verified governance inventory, validation, agent tooling, intent-log, and commit-convention docs.
-**Blockers:** None.
-**Next action:** Update existing governance docs, run validation checks, and write a session handoff.
+*(No active threads yet)*
 
 ---
 
@@ -29,3 +22,12 @@
 **Summary:** Documentation automation is aligning governance inventory and operational docs with the source-verified `sleepwalker` repository contents after PR #2 made governance artifacts repository-specific.
 **Blockers:** None.
 **Next action:** Review the documentation PR and decide whether roadmap items should become implemented governance automation.
+
+### Thread: 2026-06-03-docs-governance-follow-up
+**Status:** resolved
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-03
+**Last updated:** 2026-06-03
+**Summary:** Documentation automation followed up on PR #3 by clarifying source-verified governance inventory, validation, agent tooling, intent-log, and commit-convention docs.
+**Blockers:** None.
+**Next action:** Review the documentation PR and decide whether roadmap validation items should become implemented checks.
