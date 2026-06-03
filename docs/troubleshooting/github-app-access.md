@@ -45,4 +45,4 @@ public mirror URLs for the governance documents:
 - `https://github.com/NeuroLift-Technologies/.github/blob/main/governance/NLT-DEV-OTOI.md`
 - `https://github.com/NeuroLift-Technologies/.github/blob/main/governance/AGENTS.md`
 
-The private `sleepwalker` files remain canonical when accessible.
+The private `sleepwalker` files remain the authoritative primary source when accessible.

@@ -15,7 +15,7 @@
     "validation_script": ".nltotoi/scripts/validate-governance.sh",
     "contracts_namespace": ".nltotoi/contracts/README.md",
     "agents_directory": "agents/",
-    "workflow_directory": ".github/workflows/"
+    "vscode_agents_directory": ".github/agents/"
   },
   "required_files": [
     "NLT-DEV-OTOI.md",
@@ -25,16 +25,14 @@
     ".nltotoi/index/governance-files.md",
     ".nltotoi/contracts/README.md",
     ".nltotoi/scripts/validate-governance.sh",
-    ".nltotoi/proposals/validation-roadmap.md",
     "templates/agent-registration.json",
     "templates/handoff-record.json",
     "templates/escalation.md",
     "templates/intent-log.md",
-    "templates/commit-message.md",
     "ISSUE_TEMPLATE/agent-escalation.md",
     "ISSUE_TEMPLATE/governance-proposal.md",
     "PULL_REQUEST_TEMPLATE/agent-contribution.md",
-    ".github/workflows/validate-governance.yml",
+    "workflows/validate-governance.yml",
     "SOPs/new-agent-onboarding.md",
     "SOPs/repo-governance-setup.md",
     "SOPs/incident-response.md"
@@ -53,6 +51,6 @@
   "metadata": {
     "created": "2026-03-31",
     "version": "1.0.0",
-    "last_updated": "2026-05-22"
+    "last_updated": "2026-05-28"
   }
 }
