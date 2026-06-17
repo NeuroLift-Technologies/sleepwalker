@@ -36,7 +36,7 @@
 **Last updated:** 2026-06-17
 **Summary:** Documentation automation aligned developer and operations docs with PR #19 by documenting the verified npm publish-workflow gap: PR #19 was intended to add trusted publishing, but the merge commit and `origin/main` contain no `.github/workflows/publish-npm.yml`.
 **Blockers:** None.
-**Next action:** Review the documentation PR and decide whether npm trusted publishing should be reintroduced in a separate maintainer-approved workflow change.
+**Next action:** Review PR #20 and decide whether npm trusted publishing should be reintroduced in a separate maintainer-approved workflow change.
 
 ### Thread: 2026-06-17-docs-follow-up-pr14
 **Status:** resolved
