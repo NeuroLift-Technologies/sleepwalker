@@ -1,0 +1,48 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-17-docs-follow-up-pr16",
+    "agent_name": "Cursor Automation GPT-5.5",
+    "date": "2026-06-17",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "cursor/engineering-documentation-updates-3d0e",
+    "work_completed": [
+      "Inspected merged PR #16 metadata and diff, confirming package metadata only changed in package.json and package-lock.json.",
+      "Updated README TypeScript install/import examples to use @neurolift-technologies/sleepwalker-protocol.",
+      "Documented the scoped npm package name, version 1.0.0, public publishConfig access, and publish dry-run verification in README, CONTRIBUTING, and docs/context/README_TO_AI.md.",
+      "Confirmed Python package metadata still uses the separate sleepwalker-protocol name, so the pip install example remains unchanged."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Updated existing docs instead of creating a new page because the package rename affected setup and contributor workflow sections already present.",
+      "Left Python package install documentation unchanged after verifying pyproject.toml still names the Python project sleepwalker-protocol."
+    ],
+    "decisions_pending": [
+      "Maintainers should decide separately whether npm audit warnings in the existing dependency tree should be remediated."
+    ],
+    "escalations": [],
+    "next_agent_notes": "The documentation changes are source-verified against package.json, package-lock.json, pyproject.toml, tsconfig.json, and src/index.ts. npm ci reported existing dependency audit warnings but build, tests, and pack dry-run passed.",
+    "files_modified": [
+      "README.md",
+      "CONTRIBUTING.md",
+      "docs/context/README_TO_AI.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-17-cursor-docs-automation-pr16.json",
+      "docs/agent-log/handoffs/2026-06-17-cursor-docs-automation-pr16-handoff.json"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "python3 -m json.tool docs/agent-log/registrations/2026-06-17-cursor-docs-automation-pr16.json",
+      "python3 package metadata assertion for package.json and package-lock.json",
+      "rg stale unscoped TypeScript package references in markdown",
+      "git diff --check origin/main..HEAD",
+      "npm ci",
+      "npm run build",
+      "npm test",
+      "npm pack --dry-run"
+    ],
+    "tests_passing": true,
+    "pr_url": ""
+  }
+}

@@ -8,15 +8,6 @@
 
 ## Active Threads
 
-### Thread: 2026-06-17-docs-follow-up-pr16
-**Status:** open
-**Owner:** Cursor Automation GPT-5.5
-**Started:** 2026-06-17
-**Last updated:** 2026-06-17
-**Summary:** Documentation automation is inspecting merged PR #16 (`@neurolift-technologies/sleepwalker-protocol@1.0.0` package-scope update) and will align source-verified developer docs with the changed TypeScript package surface.
-**Blockers:** None.
-**Next action:** Inspect PR #16 diff and update the closest existing docs for any package metadata, setup, or publish workflow drift.
-
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
 - **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)
@@ -37,6 +28,15 @@
 ---
 
 ## Resolved Threads
+
+### Thread: 2026-06-17-docs-follow-up-pr16
+**Status:** resolved
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation aligned developer-facing docs with PR #16 by documenting the scoped npm package `@neurolift-technologies/sleepwalker-protocol@1.0.0`, public publish access, updated TypeScript install/import examples, and release dry-run checks.
+**Blockers:** None.
+**Next action:** Review the documentation PR and decide whether the npm audit warnings from the existing dependency tree need a separate maintainer-directed follow-up.
 
 ### Thread: 2026-06-17-docs-follow-up-pr14
 **Status:** resolved
