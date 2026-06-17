@@ -1,6 +1,6 @@
-# NLT-DEV-OTOI — Organization-Wide Developer Operations & Team Orientation Index
+# NLT-DEV-OTOI — Orchestrated Terms of Interaction
 
-**Document ID:** ORG-DEV-OTOI-1.0.0  
+**Document ID:** ORG-DEV-OTOI-1.0.2  
 **Scope:** Organization-Wide (NeuroLift Technologies)  
 **Repository:** `NeuroLift-Technologies/.github-private`  
 **Maintained by:** Joshua W. Dorsey, Sr. — Final authority on all architectural, deployment, and strategic decisions  
@@ -71,7 +71,7 @@ Every agent beginning a session in any NLT repo should self-register using the f
     "entry_date":         "[ISO 8601 date, e.g. 2026-03-31]",
     "entry_point":        "[Which file, task, or conversation brought you in]",
     "acknowledged_otoi":  true,
-    "otoi_version":       "ORG-DEV-OTOI-1.0.0",
+    "otoi_version":       "ORG-DEV-OTOI-1.0.2",
     "working_repo":       "[e.g. NeuroLift-Technologies/some-repo]",
     "working_branch":     "[e.g. feature/my-feature]",
     "capabilities_self_reported": [
@@ -93,11 +93,12 @@ The standalone template is also available at `templates/agent-registration.json`
 
 ### 4.1 Session Start Protocol
 
-1. Read this document (ORG-DEV-OTOI-1.0.0)
+1. Read this document (ORG-DEV-OTOI-1.0.2)
 2. Read the repo-level CLAUDE.md (if present)
 3. Read `docs/active-threads.md` in the working repo (if present)
 4. Self-register (Section 3)
 5. Confirm task scope with the human before beginning significant work
+6. Work from a feature branch — never commit or push directly to `main`. All changes reach `main` through a pull request (see Section 4.4).
 
 ### 4.2 Commit Format
 
@@ -153,6 +154,7 @@ When escalating, use this format (also available as `templates/escalation.md`):
 - **No credential creation or storage** in code or version control
 - **No external service integrations** without Joshua's approval
 - **No changes to this document (NLT-DEV-OTOI.md)** without formal amendment process
+- **PR-only workflow** — agents never push directly to `main`. All changes land on a feature branch and reach `main` exclusively through a reviewed pull request. Direct commits or force-pushes to `main` are prohibited.
 
 ---
 
@@ -270,8 +272,9 @@ Agents may not self-amend this document.
 
 | Action | Protocol |
 |---|---|
-| Session start | Read OTOI → read repo CLAUDE.md → read active-threads → register |
+| Session start | Read OTOI → read repo CLAUDE.md → read active-threads → register → branch |
 | Commit format | `[AGENT_NAME] type(scope): description` |
+| Branch policy | Feature branch only; reach `main` via PR (never push to `main`) |
 | Escalation trigger | Scope unclear, arch decision needed, blocker, ethical concern |
 | Escalation target | Joshua W. Dorsey, Sr. |
 | Handoff required | End of every significant session |
@@ -279,4 +282,25 @@ Agents may not self-amend this document.
 
 ---
 
-*ORG-DEV-OTOI-1.0.0 | NeuroLift Technologies | Governed by Solidarity Framework & HAIEF*
+## Section 11 — Changelog
+
+### ORG-DEV-OTOI-1.0.2
+
+- Corrected the document title: the **OTOI** acronym expands to **Orchestrated Terms of Interaction** (prior revisions carried an incorrect expansion in the H1).
+- Added the **PR-only workflow** guardrail (Section 4.4): agents never push directly to `main`; all changes reach `main` through a reviewed pull request.
+- Added **Session Start step 6** (Section 4.1): work from a feature branch, never push to `main`.
+- Updated the Quick Reference (Section 10) to include the branch policy.
+
+### ORG-DEV-OTOI-1.0.1
+
+- Clarified the Fork Repository Exception under the commit-format protocol (Section 4.2).
+- Minor editorial alignment of scope and authority language across sections.
+
+### ORG-DEV-OTOI-1.0.0
+
+- Initial organization-wide governance contract for NeuroLift Technologies.
+- Established authority structure, collaboration principles, agent registration, operational protocols, handoff and intent logging, ethical commitments, and amendment process.
+
+---
+
+*ORG-DEV-OTOI-1.0.2 | NeuroLift Technologies | Governed by Solidarity Framework & HAIEF*

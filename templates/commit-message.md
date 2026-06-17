@@ -70,4 +70,4 @@ workflow is added later, document the workflow path here and in
 
 ---
 
-*ORG-DEV-OTOI-1.0.0 | templates/commit-message.md*
+*ORG-DEV-OTOI-1.0.2 | templates/commit-message.md*
