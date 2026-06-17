@@ -8,14 +8,14 @@
 
 ## Active Threads
 
-### Continuity user_id fix (Task B)
-- **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
-- **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)
-- **Status:** Implemented, tests passing (43 passed). PR open for Joshua's review.
-- **Summary:** `assess_interaction` keyed continuity on the message text instead of a
-  stable user id, so continuity always returned "no history". Threaded a real
-  `user_id` through `SWP.__init__` and `assess_interaction`; added two behavioral
-  tests (second assessment for the same user now sees the first's context).
+### Thread: 2026-06-17-docs-automation-pr15
+**Status:** open
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation is reviewing closed PR #15 and current source/docs state for any source-verified documentation gaps.
+**Blockers:** None.
+**Next action:** Inspect the PR diff and update only focused engineering documentation if verified gaps remain.
 
 ### Governance fork #4 vs #5 (Task A — diagnosis only)
 - **Agent:** Claude Code — read-only diagnosis for Joshua.
@@ -28,6 +28,15 @@
 ---
 
 ## Resolved Threads
+
+### Thread: 2026-06-01-continuity-user-id-fix
+**Status:** resolved
+**Owner:** Claude Code
+**Started:** 2026-06-01
+**Last updated:** 2026-06-17
+**Summary:** `assess_interaction` now keys continuity on a stable user id instead of message text. The fix is present on `main`, with `user_id` support in `SWP.__init__` and `assess_interaction`, hash-backed continuity filenames, and behavioral coverage for repeated assessments.
+**Blockers:** None.
+**Next action:** Use the documented stable `user_id` and `maintain_continuity()` pattern in future Python examples and integrations.
 
 ### Thread: 2026-06-17-docs-follow-up-pr14
 **Status:** resolved

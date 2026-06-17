@@ -11,8 +11,10 @@
 The `validate-governance.sh` script provides:
 
 - ✅ Required file existence checks
-- ✅ Document ID header validation (`ORG-DEV-OTOI-1.0.2`)
+- ✅ Document ID marker validation (`ORG-DEV-OTOI-1.0.2`)
 - ✅ Authority marker checks
+- ✅ Ethical framework marker checks in `NLT-DEV-OTOI.md` (`Solidarity
+  Framework`, `HAIEF`)
 - ✅ Repository marker checks for `NeuroLift-Technologies/sleepwalker`
 - ✅ `--strict` flag parsing for future warning-producing checks
 - ✅ Exit code reporting for CI integration
@@ -42,7 +44,9 @@ no effect unless future checks increment the warning counter.
 
 - [ ] Check that OTOI sections (1–10) are all present
 - [ ] Check that escalation template sections are complete
-- [ ] Verify ethical framework markers (Solidarity Framework, HAIEF references)
+- [ ] Extend ethical framework marker checks beyond `NLT-DEV-OTOI.md` to
+  downstream gateway, instruction, and template files where those markers are
+  required
 
 ### v1.4 — Downstream Repo Validation
 

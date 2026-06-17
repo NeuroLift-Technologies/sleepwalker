@@ -1,0 +1,24 @@
+{
+  "agent_registration": {
+    "agent_name": "Cursor Automation GPT-5.5",
+    "platform": "Cursor Cloud Agent",
+    "version": "GPT-5.5",
+    "session_id": "2026-06-17-docs-automation-pr15",
+    "entry_date": "2026-06-17",
+    "entry_point": "Automation trigger for closed PR #15: engineering documentation updates",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/sleepwalker",
+    "working_branch": "cursor/engineering-documentation-updates-35a1",
+    "capabilities_self_reported": [
+      "source-verified documentation maintenance",
+      "repository inspection",
+      "focused validation"
+    ],
+    "known_limitations": [
+      "does not make architectural or deployment decisions",
+      "does not amend canonical governance contracts without human approval"
+    ],
+    "preferred_handoff_format": "structured JSON handoff plus concise summary"
+  }
+}

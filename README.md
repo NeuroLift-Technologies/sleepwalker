@@ -412,8 +412,12 @@ swp = SWP(
     user_id="stable-user-id",
 )
 
-# Check user's emotional state and preferences
-assessment = swp.assess_interaction(user_input, session_history)
+# Check user's emotional state, preferences, and prior continuity context
+assessment = swp.assess_interaction(
+    user_input,
+    session_history,
+    user_id="stable-user-id",
+)
 
 # Generate SWP-compliant response
 response = swp.generate_response(
@@ -421,11 +425,22 @@ response = swp.generate_response(
     detected_state=assessment["emotional_state"],
     intervention_level=assessment["consent_level"],
 )
+
+# Persist continuity explicitly for later assessments
+swp.maintain_continuity(
+    "stable-user-id",
+    {
+        "emotional_state": assessment["emotional_state"].state_type,
+        "protective_state_active": assessment["protective_state_active"],
+    },
+)
 ```
 
 Use a stable `user_id` for continuity. Do not derive continuity keys from
 message text; the continuity manager stores local per-user context under the
-configured storage path.
+configured storage path. `assess_interaction()` returns `continuity_context`;
+call `maintain_continuity()` when the current session should affect future
+assessments.
 
 **3. Initialize in Your AI System (TypeScript)**
 
@@ -445,9 +460,13 @@ const response = swp.generateResponse(
 );
 ```
 
-The TypeScript package exports `SWP`, `SleepwalkerProtocol`, `StateDetector`,
-`ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader` from
-`src/index.ts`; `npm run build` emits the publishable `dist/` files.
+The TypeScript package exports `SWP`, `SleepwalkerProtocol`, `EmotionalState`,
+`StateDetector`, `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and
+`TOILoader` from `src/index.ts`; `npm run build` emits the publishable `dist/`
+files. Unlike Python `SWP.assess_interaction()`, TypeScript
+`SWP.assessInteraction()` does not attach continuity context; use the exported
+`ContinuityManager` directly when JavaScript integrations need persisted
+per-user state.
 
 **4. Integrate with RRTA**
 

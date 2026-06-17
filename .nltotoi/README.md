@@ -53,9 +53,12 @@ bash .nltotoi/scripts/validate-governance.sh --strict
 The script currently verifies:
 
 - Required governance, template, SOP, and GitHub workflow files exist
-- Core content markers are present, including `ORG-DEV-OTOI-1.0.2`,
-  `Joshua W. Dorsey`, `Solidarity Framework`, `HAIEF`, and
-  `NeuroLift-Technologies/sleepwalker`
+- `NLT-DEV-OTOI.md` contains `ORG-DEV-OTOI-1.0.2`, `Joshua W. Dorsey`,
+  `Solidarity Framework`, and `HAIEF`
+- `AGENTS.md` contains the `NLT-DEV-OTOI.md` reference and
+  `ORG-DEV-OTOI-1.0.2`
+- `nltotoi.json` contains `NeuroLift-Technologies/sleepwalker`,
+  `ORG-DEV-OTOI-1.0.2`, and `NLT-DEV-OTOI.md`
 
 The script defines helpers for empty-file and stale-file warnings, but those
 helpers are not invoked in the current validation flow. It does not yet validate

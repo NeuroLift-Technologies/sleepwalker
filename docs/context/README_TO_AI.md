@@ -47,6 +47,12 @@ Important contracts:
 - `SWP` is an alias of `SleepwalkerProtocol`.
 - `assess_interaction(..., user_id=...)` uses a stable user identifier for
   continuity lookup. Do not use message text as the continuity key.
+- `assess_interaction()` returns `continuity_context`; call
+  `maintain_continuity()` before later assessments if the current session
+  should become history.
+- `SWP(user_toi_path=...)` uses `TOILoader` internally. Direct loader imports
+  use the submodule path: `from sleepwalker_protocol.toi_loader import
+  TOILoader`.
 - `TOILoader` accepts YAML and JSON TOI files and falls back to a conservative
   default when no file is provided or parsing fails.
 - `ContinuityManager` stores local JSON state under the configured storage path
@@ -74,8 +80,12 @@ const response = swp.generateResponse(
 
 Important contracts:
 
-- `src/index.ts` exports `SleepwalkerProtocol`, `SWP`, `StateDetector`,
-  `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader`.
+- `src/index.ts` exports `SleepwalkerProtocol`, `SWP`, `EmotionalState`,
+  `StateDetector`, `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and
+  `TOILoader`.
+- TypeScript `SWP.assessInteraction()` does not attach continuity context; use
+  the exported `ContinuityManager` directly when JavaScript integrations need
+  persisted per-user state.
 - `tsconfig.json` emits CommonJS JavaScript and declarations to `dist/`.
 - `package.json` publishes only `dist/**/*`, `README.md`, and `LICENSE`.
 - `prepublishOnly` runs `npm run build`, so publish dry-runs should compile
@@ -112,6 +122,9 @@ new workflow is added.
 - The Python and TypeScript implementations use different naming conventions
   (`assess_interaction` vs. `assessInteraction`, `user_toi_path` vs.
   `userToiPath`). Match the ecosystem you are editing.
+- Continuity behavior is not identical: Python `SWP.assess_interaction()`
+  reads stored context, while TypeScript `SWP.assessInteraction()` currently
+  returns only state/consent/SWP flags.
 - The root `LICENSE` and npm `package.json` currently use `Apache-2.0`; Python
   package metadata still declares MIT. Do not make licensing changes without
   explicit maintainer direction.

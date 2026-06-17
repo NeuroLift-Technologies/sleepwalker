@@ -43,6 +43,37 @@ from sleepwalker_protocol import SWP
 swp = SWP(user_toi_path="my_toi.yaml")
 ```
 
+## Continuity Pattern
+
+When an example should carry context across sessions, initialize SWP with a
+stable `user_id` and a local `storage_path`, read the returned
+`continuity_context`, and persist session state explicitly:
+
+```python
+from sleepwalker_protocol import SWP
+
+swp = SWP(
+    user_toi_path="my_toi.yaml",
+    storage_path=".swp_storage",
+    user_id="stable-user-id",
+)
+
+assessment = swp.assess_interaction("I feel numb today", user_id="stable-user-id")
+print(assessment["continuity_context"]["has_history"])
+
+swp.maintain_continuity(
+    "stable-user-id",
+    {
+        "emotional_state": assessment["emotional_state"].state_type,
+        "protective_state_active": assessment["protective_state_active"],
+    },
+)
+```
+
+Never use message text as the continuity key; use a stable, pseudonymous user
+identifier and keep the storage path local unless the user has explicitly
+chosen another persistence model.
+
 ## Running All Examples
 
 To run all Python examples:

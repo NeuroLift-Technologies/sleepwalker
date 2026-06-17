@@ -129,11 +129,15 @@ surfaces change.
 - Follow PEP 8 style guidelines
 - Use type hints where appropriate
 - Maximum line length: 100 characters
-- Run `black` and `flake8` before committing
+- Run `black` before committing; it is configured in `pyproject.toml`
+- Run `flake8` only if you maintain a local config for the files you are
+  changing
 
 **JavaScript/TypeScript:**
 - Follow standard JavaScript style guide
-- Use ESLint and Prettier
+- Use `npm run format` when changing TypeScript; `npm run lint` exists, but no
+  project-specific ESLint config is committed yet, so treat lint failures as a
+  tooling follow-up rather than a release gate until maintainers add config
 - Prefer TypeScript for new code
 - Include JSDoc comments for public APIs
 
@@ -230,8 +234,8 @@ Protocol updates are released quarterly based on:
 ## Recognition
 
 All contributors are acknowledged in:
-- CONTRIBUTORS.md file
 - Release notes for their contributions
+- Project documentation maintained by the repository owners
 - Academic publications citing community input
 
 We value all contributions equally - user experience reports are just as important as code contributions.

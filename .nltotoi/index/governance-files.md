@@ -8,6 +8,11 @@
 
 ## Core Governance Files
 
+`Required` means the file is part of the governance inventory for this
+repository. Automated enforcement is narrower: CI currently runs only
+`.nltotoi/scripts/validate-governance.sh`, and the machine-readable required
+path list lives in `nltotoi.json`.
+
 | File | Type | Purpose | Required |
 |---|---|---|---|
 | `NLT-DEV-OTOI.md` | Contract | Org-level coding agent contract (ORG-DEV-OTOI-1.0.2) | ✅ |
