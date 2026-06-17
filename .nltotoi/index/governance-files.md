@@ -1,6 +1,6 @@
 # Governance File Index — NeuroLift Technologies `sleepwalker`
 
-**Last updated:** 2026-05-22  
+**Last updated:** 2026-06-17
 **Maintained by:** `.nltotoi/` namespace tooling  
 **Scope:** `NeuroLift-Technologies/sleepwalker`
 
@@ -16,6 +16,7 @@
 | `README.md` | Overview | Repository overview and purpose | ✅ |
 | `file-structure.md` | ADR | Architecture decision record for this repo structure | ✅ |
 | `CLAUDE.md` | Instructions | Agent session instructions and plan | ✅ |
+| `docs/context/README_TO_AI.md` | Context | Source-verified codepath and workflow guide for agents | ✅ |
 
 ---
 
@@ -83,7 +84,7 @@
 ## Roadmap / Not Yet Present
 
 The following workflow and agent-profile families are referenced by SOPs or roadmap
-discussion but are not present in this repository as of 2026-05-22:
+discussion but are not present in this repository as of 2026-06-17:
 
 - Reusable org-wide governance checks beyond `.github/workflows/validate-governance.yml`
 - Agent commit-format and handoff-gate workflows
@@ -109,7 +110,7 @@ index only when files land in the repository.
 
 | Category | Count |
 |---|---|
-| Core governance | 6 |
+| Core governance | 7 |
 | .nltotoi namespace | 5 |
 | Templates | 5 |
 | GitHub templates | 3 |
@@ -117,7 +118,7 @@ index only when files land in the repository.
 | SOPs | 3 |
 | Agent profiles | 1 |
 | Agent coordination records | 4 |
-| **Total** | **28** |
+| **Total** | **29** |
 
 ---
 

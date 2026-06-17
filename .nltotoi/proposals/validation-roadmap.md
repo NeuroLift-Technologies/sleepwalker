@@ -1,6 +1,6 @@
 # Validation Roadmap — NLT Governance
 
-**Status:** v1.0 — Basic file existence validation implemented  
+**Status:** v1.0 — Basic file existence and marker validation implemented
 **Scope:** `NeuroLift-Technologies/sleepwalker`  
 **Owner:** Joshua W. Dorsey, Sr.
 
@@ -14,8 +14,12 @@ The `validate-governance.sh` script provides:
 - ✅ Document ID header validation (`ORG-DEV-OTOI-1.0.2`)
 - ✅ Authority marker checks
 - ✅ Repository marker checks for `NeuroLift-Technologies/sleepwalker`
-- ✅ `--strict` mode for treating warnings as failures
+- ✅ `--strict` flag parsing for future warning-producing checks
 - ✅ Exit code reporting for CI integration
+
+The current script defines helper functions for empty-file and stale-file
+warnings, but it does not invoke them yet. Running with `--strict` therefore has
+no effect unless future checks increment the warning counter.
 
 ---
 
@@ -23,6 +27,7 @@ The `validate-governance.sh` script provides:
 
 ### v1.1 — JSON Schema Validation
 
+- [ ] Invoke existing empty-file and stale-file warning helpers
 - [ ] Add `jsonschema` validation for `nltotoi.json`
 - [ ] Validate `templates/agent-registration.json` against defined schema
 - [ ] Validate `templates/handoff-record.json` against defined schema

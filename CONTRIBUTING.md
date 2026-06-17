@@ -89,20 +89,39 @@ pip install -e ".[dev]"
 ```bash
 git clone https://github.com/NeuroLift-Technologies/sleepwalker.git
 cd sleepwalker
-npm install
+npm ci
 ```
+
+`package-lock.json` is committed for reproducible Node installs. Use
+`npm install` only when intentionally changing dependencies and committing the
+resulting lockfile update.
 
 ### Running Tests
 
 **Python:**
 ```bash
-pytest tests/
+python3 -m pytest tests/
 ```
 
-**JavaScript:**
+**JavaScript/TypeScript:**
 ```bash
+npm run build
 npm test
+npm pack --dry-run
 ```
+
+The TypeScript package builds from `src/` into `dist/`; `dist/` is ignored and
+should not be committed. `prepublishOnly` runs `npm run build`, so a dry-run
+pack is the closest local check for publish readiness.
+
+**Governance docs and templates:**
+```bash
+bash .nltotoi/scripts/validate-governance.sh
+```
+
+At present, `.github/workflows/validate-governance.yml` is the only tracked CI
+workflow in this repository. Run Python and TypeScript checks locally when those
+surfaces change.
 
 ### Code Style
 
@@ -120,7 +139,7 @@ npm test
 
 ### Commit Messages
 
-Follow conventional commits format:
+Human-authored commits should use conventional commits:
 
 ```
 type(scope): brief description
@@ -137,6 +156,12 @@ Types:
 - `test`: Adding or updating tests
 - `refactor`: Code refactoring
 - `chore`: Maintenance tasks
+
+Coding-agent commits must follow the OTOI agent format:
+
+```
+[AGENT_NAME] type(scope): description
+```
 
 ### Pull Request Process
 
@@ -219,7 +244,9 @@ We value all contributions equally - user experience reports are just as importa
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+By contributing, you agree that your contributions will be licensed under the
+terms that apply to this repository and the package manifest you are changing.
+See [LICENSE](LICENSE) before submitting changes.
 
 ---
 

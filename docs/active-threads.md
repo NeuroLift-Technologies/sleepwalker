@@ -2,11 +2,20 @@
 
 > This file tracks active work threads. Agents must read this at session start and update it during and at the end of each session.
 
-**Last updated:** 2026-06-01
+**Last updated:** 2026-06-17
 
 ---
 
 ## Active Threads
+
+### Thread: 2026-06-17-docs-follow-up-pr14
+**Status:** open
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation is aligning developer and operations docs with PR #14, which upgraded governance to ORG-DEV-OTOI-1.0.2 and prepared the TypeScript/Python package surfaces for publication.
+**Blockers:** None.
+**Next action:** Inspect PR #14 source changes, update existing docs, validate, then write handoff.
 
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
