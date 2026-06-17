@@ -44,7 +44,7 @@ Run governance validation from the repository root:
 bash .nltotoi/scripts/validate-governance.sh
 ```
 
-Strict mode treats warnings as failures:
+The script accepts `--strict` for warning-producing checks:
 
 ```bash
 bash .nltotoi/scripts/validate-governance.sh --strict
@@ -56,7 +56,10 @@ The script currently verifies:
 - Core content markers are present, including `ORG-DEV-OTOI-1.0.2`,
   `Joshua W. Dorsey`, `Solidarity Framework`, `HAIEF`, and
   `NeuroLift-Technologies/sleepwalker`
-- Empty or stale file checks produce warnings unless `--strict` is used
+
+The script defines helpers for empty-file and stale-file warnings, but those
+helpers are not invoked in the current validation flow. It does not yet validate
+JSON schema, manifest/index drift, or orphaned governance files.
 
 GitHub Actions runs the same command through
 `.github/workflows/validate-governance.yml` on `push` and `pull_request`.
