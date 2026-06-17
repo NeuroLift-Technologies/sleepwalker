@@ -22,7 +22,7 @@
     "trauma-informed"
   ],
   "author": "NeuroLift Technologies / HAIEF <haief@neuroliftsolutions.com>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/NeuroLift-Technologies/sleepwalker.git"
