@@ -51,6 +51,6 @@
       "python3 -m pytest tests/"
     ],
     "tests_passing": true,
-    "pr_url": "Pending OpenGitPr automation step after final handoff commit"
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/15"
   }
 }
