@@ -27,7 +27,7 @@
 **Last updated:** 2026-06-17
 **Summary:** Documentation automation reviewed merged PR #15, found remaining source-verified developer and governance-inventory doc gaps, and updated non-contested docs for Python continuity persistence, TypeScript exports and continuity constraints, contributor tooling caveats, examples guidance, and validator/manifest alignment.
 **Blockers:** None.
-**Next action:** Review the documentation PR. The active governance fork thread remains unresolved, so contested governance files were not modified.
+**Next action:** Review PR #18. The active governance fork thread remains unresolved, so contested governance files were not modified.
 
 ### Thread: 2026-06-01-continuity-user-id-fix
 **Status:** resolved

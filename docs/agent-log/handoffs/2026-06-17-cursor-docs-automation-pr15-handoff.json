@@ -47,6 +47,6 @@
       "python3 source-doc contract check for TypeScript exports, validator-required paths, and continuity documentation"
     ],
     "tests_passing": true,
-    "pr_url": "Pending PR creation from cursor/engineering-documentation-updates-35a1"
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/18"
   }
 }
