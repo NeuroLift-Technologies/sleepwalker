@@ -8,15 +8,6 @@
 
 ## Active Threads
 
-### Thread: 2026-06-17-docs-automation-pr15
-**Status:** open
-**Owner:** Cursor Automation GPT-5.5
-**Started:** 2026-06-17
-**Last updated:** 2026-06-17
-**Summary:** Documentation automation is reviewing closed PR #15 and current source/docs state for any source-verified documentation gaps.
-**Blockers:** None.
-**Next action:** Inspect the PR diff and update only focused engineering documentation if verified gaps remain.
-
 ### Governance fork #4 vs #5 (Task A — diagnosis only)
 - **Agent:** Claude Code — read-only diagnosis for Joshua.
 - **Status:** AWAITING JOSHUA'S DECISION. Do not merge or modify the contested files.
@@ -28,6 +19,15 @@
 ---
 
 ## Resolved Threads
+
+### Thread: 2026-06-17-docs-automation-pr15
+**Status:** resolved
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation reviewed merged PR #15, found remaining source-verified developer and governance-inventory doc gaps, and updated non-contested docs for Python continuity persistence, TypeScript exports and continuity constraints, contributor tooling caveats, examples guidance, and validator/manifest alignment.
+**Blockers:** None.
+**Next action:** Review the documentation PR. The active governance fork thread remains unresolved, so contested governance files were not modified.
 
 ### Thread: 2026-06-01-continuity-user-id-fix
 **Status:** resolved

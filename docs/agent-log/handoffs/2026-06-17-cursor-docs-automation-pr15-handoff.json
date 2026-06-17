@@ -1,0 +1,52 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-17-docs-automation-pr15",
+    "agent_name": "Cursor Automation GPT-5.5",
+    "date": "2026-06-17",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "cursor/engineering-documentation-updates-35a1",
+    "work_completed": [
+      "Reviewed merged PR #15 and source-checked the remaining documentation surface for the PR #14 package/governance changes.",
+      "Updated README.md, docs/context/README_TO_AI.md, and examples/README.md with the Python stable user_id, continuity_context, and maintain_continuity persistence pattern.",
+      "Documented the TypeScript export of EmotionalState and the current TypeScript/Python continuity parity constraint.",
+      "Tightened CONTRIBUTING.md guidance for Python/TypeScript style tooling and removed the stale CONTRIBUTORS.md reference.",
+      "Aligned non-contested governance inventory docs by adding validator-required files to nltotoi.json and clarifying validator marker checks in .nltotoi docs.",
+      "Moved the stale continuity user_id active thread to resolved and resolved this documentation automation thread."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Left AGENTS.md, NLT-DEV-OTOI.md, file-structure.md, and SOPs untouched because docs/active-threads.md still marks the governance fork thread as awaiting Joshua's decision and says not to modify contested files.",
+      "Kept the examples update in README form instead of editing executable examples to keep this documentation-only PR focused."
+    ],
+    "decisions_pending": [
+      "Joshua or maintainers should resolve the active governance fork thread before contested governance files are edited.",
+      "Maintainers should decide whether to add project-specific ESLint configuration before treating npm lint as a release gate."
+    ],
+    "escalations": [],
+    "next_agent_notes": "Validation passed. Remaining known governance-doc inconsistencies in contested files were intentionally not edited under the active-thread guardrail.",
+    "files_modified": [
+      ".nltotoi/README.md",
+      ".nltotoi/index/governance-files.md",
+      ".nltotoi/proposals/validation-roadmap.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      "docs/active-threads.md",
+      "docs/agent-log/handoffs/2026-06-17-cursor-docs-automation-pr15-handoff.json",
+      "docs/agent-log/registrations/2026-06-17-cursor-docs-automation-pr15.json",
+      "docs/context/README_TO_AI.md",
+      "examples/README.md",
+      "nltotoi.json"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "python3 -m json.tool nltotoi.json",
+      "python3 -m json.tool docs/agent-log/registrations/2026-06-17-cursor-docs-automation-pr15.json",
+      "git diff --check origin/main..HEAD",
+      "python3 source-doc contract check for TypeScript exports, validator-required paths, and continuity documentation"
+    ],
+    "tests_passing": true,
+    "pr_url": "Pending PR creation from cursor/engineering-documentation-updates-35a1"
+  }
+}
