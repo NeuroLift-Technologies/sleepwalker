@@ -10,7 +10,7 @@
 
 | File | Type | Purpose | Required |
 |---|---|---|---|
-| `NLT-DEV-OTOI.md` | Contract | Org-level coding agent contract (ORG-DEV-OTOI-1.0.0) | ✅ |
+| `NLT-DEV-OTOI.md` | Contract | Org-level coding agent contract (ORG-DEV-OTOI-1.0.2) | ✅ |
 | `AGENTS.md` | Gateway | Internal agent coordination gateway | ✅ |
 | `nltotoi.json` | Manifest | Machine-readable discovery manifest | ✅ |
 | `README.md` | Overview | Repository overview and purpose | ✅ |
@@ -65,7 +65,7 @@
 
 | File | Purpose | Required |
 |---|---|---|
-| `agents/nlt-governance-steward.md` | Governance steward agent — enforces ORG-DEV-OTOI-1.0.0 | ✅ |
+| `agents/nlt-governance-steward.md` | Governance steward agent — enforces ORG-DEV-OTOI-1.0.2 | ✅ |
 
 ---
 
@@ -121,4 +121,4 @@ index only when files land in the repository.
 
 ---
 
-*Generated from `.nltotoi/index/governance-files.md` | NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*
+*Generated from `.nltotoi/index/governance-files.md` | NeuroLift Technologies | ORG-DEV-OTOI-1.0.2*

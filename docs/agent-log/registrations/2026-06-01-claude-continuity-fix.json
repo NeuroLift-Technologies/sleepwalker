@@ -7,7 +7,7 @@
     "entry_date": "2026-06-01",
     "entry_point": "Follow-up pass: (A) read-only diagnosis of the PR #4 / PR #5 governance fork, and (B) fix the continuity user_id bug in sleepwalker_protocol/protocol.py.",
     "acknowledged_otoi": true,
-    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
     "working_repo": "NeuroLift-Technologies/sleepwalker",
     "working_branch": "claude/friendly-bardeen-5kuHW",
     "capabilities_self_reported": [

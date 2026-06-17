@@ -30,7 +30,7 @@ The `.nltotoi/` namespace is the machine-readable and tooling-oriented layer of 
 
 The canonical governance contract is: **`NLT-DEV-OTOI.md`** (repository root)
 
-Document ID: `ORG-DEV-OTOI-1.0.0`
+Document ID: `ORG-DEV-OTOI-1.0.2`
 
 ## Discovery
 
@@ -53,7 +53,7 @@ bash .nltotoi/scripts/validate-governance.sh --strict
 The script currently verifies:
 
 - Required governance, template, SOP, and GitHub workflow files exist
-- Core content markers are present, including `ORG-DEV-OTOI-1.0.0`,
+- Core content markers are present, including `ORG-DEV-OTOI-1.0.2`,
   `Joshua W. Dorsey`, `Solidarity Framework`, `HAIEF`, and
   `NeuroLift-Technologies/sleepwalker`
 - Empty or stale file checks produce warnings unless `--strict` is used
@@ -65,4 +65,4 @@ Future validation improvements are tracked in
 
 ---
 
-*Internal namespace — NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*
+*Internal namespace — NeuroLift Technologies | ORG-DEV-OTOI-1.0.2*

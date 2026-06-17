@@ -3,7 +3,7 @@
     "session_id": "2026-06-01-continuity-fix-and-pr-diagnosis",
     "agent_name": "Claude Code",
     "date": "2026-06-01",
-    "otoi_version": "ORG-DEV-OTOI-1.0.0",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
     "repo": "NeuroLift-Technologies/sleepwalker",
     "branch": "claude/friendly-bardeen-5kuHW",
     "work_completed": [
