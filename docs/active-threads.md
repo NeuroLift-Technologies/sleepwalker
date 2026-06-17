@@ -8,15 +8,6 @@
 
 ## Active Threads
 
-### Thread: 2026-06-17-docs-follow-up-pr14
-**Status:** open
-**Owner:** Cursor Automation GPT-5.5
-**Started:** 2026-06-17
-**Last updated:** 2026-06-17
-**Summary:** Documentation automation is aligning developer and operations docs with PR #14, which upgraded governance to ORG-DEV-OTOI-1.0.2 and prepared the TypeScript/Python package surfaces for publication.
-**Blockers:** None.
-**Next action:** Inspect PR #14 source changes, update existing docs, validate, then write handoff.
-
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
 - **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)
@@ -37,6 +28,15 @@
 ---
 
 ## Resolved Threads
+
+### Thread: 2026-06-17-docs-follow-up-pr14
+**Status:** resolved
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation aligned developer and operations docs with PR #14 by adding the missing agent context page, documenting TypeScript package build/test/publish checks, correcting Python/TypeScript usage examples, and clarifying the current governance validator scope.
+**Blockers:** None.
+**Next action:** Review the documentation PR and decide whether dependency audit warnings or Python/npm license metadata drift need a separate maintainer-directed follow-up.
 
 ### Thread: 2026-05-22-docs-governance-inventory
 **Status:** resolved
