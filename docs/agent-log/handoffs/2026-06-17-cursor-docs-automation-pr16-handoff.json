@@ -43,6 +43,6 @@
       "npm pack --dry-run"
     ],
     "tests_passing": true,
-    "pr_url": ""
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/17"
   }
 }
