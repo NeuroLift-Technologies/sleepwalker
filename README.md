@@ -387,7 +387,7 @@ swp:
 ```bash
 pip install sleepwalker-protocol
 # or
-npm install sleepwalker-protocol
+npm install @neurolift-technologies/sleepwalker-protocol
 ```
 
 For repository development, install from the checkout instead:
@@ -430,7 +430,7 @@ configured storage path.
 **3. Initialize in Your AI System (TypeScript)**
 
 ```ts
-import { SWP } from "sleepwalker-protocol";
+import { SWP } from "@neurolift-technologies/sleepwalker-protocol";
 
 const swp = new SWP({
   userToiPath: "path/to/user/toi.yaml",
@@ -447,7 +447,10 @@ const response = swp.generateResponse(
 
 The TypeScript package exports `SWP`, `SleepwalkerProtocol`, `StateDetector`,
 `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader` from
-`src/index.ts`; `npm run build` emits the publishable `dist/` files.
+`src/index.ts`; `npm run build` emits the publishable `dist/` files. The npm
+package is scoped as `@neurolift-technologies/sleepwalker-protocol` and
+`package.json` sets `publishConfig.access` to `public`, so release checks should
+verify the scoped package name and public access during `npm publish --dry-run`.
 
 **4. Integrate with RRTA**
 

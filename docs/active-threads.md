@@ -8,6 +8,15 @@
 
 ## Active Threads
 
+### Thread: 2026-06-17-docs-follow-up-pr16
+**Status:** open
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation is inspecting merged PR #16 (`@neurolift-technologies/sleepwalker-protocol@1.0.0` package-scope update) and will align source-verified developer docs with the changed TypeScript package surface.
+**Blockers:** None.
+**Next action:** Inspect PR #16 diff and update the closest existing docs for any package metadata, setup, or publish workflow drift.
+
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
 - **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)

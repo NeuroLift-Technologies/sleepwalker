@@ -57,7 +57,7 @@ Important contracts:
 Primary public entry point:
 
 ```ts
-import { SWP, ConsentLevel } from "sleepwalker-protocol";
+import { SWP, ConsentLevel } from "@neurolift-technologies/sleepwalker-protocol";
 
 const swp = new SWP({
   userToiPath: "examples/sample_toi.yaml",
@@ -77,9 +77,13 @@ Important contracts:
 - `src/index.ts` exports `SleepwalkerProtocol`, `SWP`, `StateDetector`,
   `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader`.
 - `tsconfig.json` emits CommonJS JavaScript and declarations to `dist/`.
-- `package.json` publishes only `dist/**/*`, `README.md`, and `LICENSE`.
+- `package.json` names the public npm package
+  `@neurolift-technologies/sleepwalker-protocol` at version `1.0.0`, publishes
+  only `dist/**/*`, `README.md`, and `LICENSE`, and sets
+  `publishConfig.access` to `public`.
 - `prepublishOnly` runs `npm run build`, so publish dry-runs should compile
-  before producing a tarball.
+  before producing a tarball; verify `npm publish --dry-run` reports the scoped
+  package name and public access.
 - `package-lock.json` is committed; use `npm ci` for reproducible Node setup.
 
 ## Verification Commands

@@ -112,7 +112,11 @@ npm pack --dry-run
 
 The TypeScript package builds from `src/` into `dist/`; `dist/` is ignored and
 should not be committed. `prepublishOnly` runs `npm run build`, so a dry-run
-pack is the closest local check for publish readiness.
+pack is the closest local check for publish readiness. The npm package is
+published as `@neurolift-technologies/sleepwalker-protocol@1.0.0`, and
+`publishConfig.access` is `public`; if release metadata changes, confirm
+`npm publish --dry-run` reports the scoped package name and public access before
+publishing.
 
 **Governance docs and templates:**
 ```bash
