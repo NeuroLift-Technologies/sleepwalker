@@ -1,0 +1,43 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-17-cursor-docs-automation-pr19",
+    "agent_name": "Cursor Automation GPT-5.5",
+    "date": "2026-06-17",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "cursor/engineering-documentation-updates-baa0",
+    "work_completed": [
+      "Verified PR #19 merge commit 54cfe82 and payload diff range; no .github/workflows/publish-npm.yml file exists in source.",
+      "Updated contributor docs with the current npm publishing state and trusted-publishing constraints for any future workflow.",
+      "Updated README and agent context examples to use the scoped npm package name from package.json.",
+      "Recorded the PR #19 documentation follow-up in active-thread and session registration logs."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Documented the absence of npm publish automation instead of describing PR #19's intended workflow as live behavior.",
+      "Kept changes documentation-only and avoided adding the missing workflow because production release automation requires explicit maintainer direction."
+    ],
+    "decisions_pending": [
+      "Joshua or maintainers should decide whether to add .github/workflows/publish-npm.yml and configure npmjs.com trusted publishing for @neurolift-technologies/sleepwalker-protocol."
+    ],
+    "escalations": [],
+    "next_agent_notes": "The package metadata says the root npm package is @neurolift-technologies/sleepwalker-protocol, publishConfig.access is public, files are dist/**/*, README.md, and LICENSE, and prepublishOnly runs npm run build. As of this handoff, .github/workflows/validate-governance.yml is the only tracked workflow.",
+    "files_modified": [
+      "README.md",
+      "CONTRIBUTING.md",
+      "docs/context/README_TO_AI.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-17-cursor-docs-automation-pr19.json",
+      "docs/agent-log/handoffs/2026-06-17-cursor-docs-automation-pr19-handoff.json"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "python3 -m json.tool docs/agent-log/registrations/2026-06-17-cursor-docs-automation-pr19.json",
+      "git diff --check origin/main..HEAD",
+      "python3 source-doc consistency check for package metadata, README/context imports, CONTRIBUTING publish note, and absent publish-npm workflow"
+    ],
+    "tests_passing": true,
+    "pr_url": "Pending OpenGitPr after handoff commit"
+  }
+}

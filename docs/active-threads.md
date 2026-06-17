@@ -8,15 +8,6 @@
 
 ## Active Threads
 
-### Thread: 2026-06-17-docs-follow-up-pr19
-**Status:** open
-**Owner:** Cursor Automation GPT-5.5
-**Started:** 2026-06-17
-**Last updated:** 2026-06-17
-**Summary:** Documentation automation is aligning developer and operations docs with PR #19, which was intended to add npm OIDC trusted publishing workflow support but merged with an empty diff.
-**Blockers:** None.
-**Next action:** Finish source-verified docs updates for the current publish-workflow gap, then validate and open a documentation PR.
-
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
 - **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)
@@ -37,6 +28,15 @@
 ---
 
 ## Resolved Threads
+
+### Thread: 2026-06-17-docs-follow-up-pr19
+**Status:** resolved
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation aligned developer and operations docs with PR #19 by documenting the verified npm publish-workflow gap: PR #19 was intended to add trusted publishing, but the merge commit and `origin/main` contain no `.github/workflows/publish-npm.yml`.
+**Blockers:** None.
+**Next action:** Review the documentation PR and decide whether npm trusted publishing should be reintroduced in a separate maintainer-approved workflow change.
 
 ### Thread: 2026-06-17-docs-follow-up-pr14
 **Status:** resolved
