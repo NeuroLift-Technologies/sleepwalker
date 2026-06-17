@@ -2,7 +2,7 @@
 
 > This file tracks active work threads. Agents must read this at session start and update it during and at the end of each session.
 
-**Last updated:** 2026-06-01
+**Last updated:** 2026-06-17
 
 ---
 
@@ -28,6 +28,15 @@
 ---
 
 ## Resolved Threads
+
+### Thread: 2026-06-17-docs-follow-up-pr14
+**Status:** resolved
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation aligned developer and operations docs with PR #14 by adding the missing agent context page, documenting TypeScript package build/test/publish checks, correcting Python/TypeScript usage examples, and clarifying the current governance validator scope.
+**Blockers:** None.
+**Next action:** Review the documentation PR and decide whether dependency audit warnings or Python/npm license metadata drift need a separate maintainer-directed follow-up.
 
 ### Thread: 2026-05-22-docs-governance-inventory
 **Status:** resolved

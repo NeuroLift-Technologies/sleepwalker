@@ -127,21 +127,21 @@ The key insight: the **principles** are public (Solidarity Framework is open-sou
 
 **Agent:** [Name]  
 **Session:** [Branch/session ID]  
-**Governed by:** DEV-OTOI-1.0.0
+**Governed by:** ORG-DEV-OTOI-1.0.2
 
 ### Before Merging
-- [ ] Governance validation script passed (`.nltotoi/scripts/validate-governance.sh`)
+- [ ] Governance validation script passed (`bash .nltotoi/scripts/validate-governance.sh`)
 - [ ] `docs/active-threads.md` updated
 - [ ] Handoff record written to `docs/agent-log/handoffs/`
 - [ ] Escalations resolved or documented in `docs/escalations/`
-- [ ] No LLM provider locked in without Josh's approval
-- [ ] No architecture decisions made without Josh's approval
+- [ ] No LLM provider locked in without Joshua's approval
+- [ ] No architecture decisions made without Joshua's approval
 
 ### Commit Format Used
 `[AGENT_NAME] type(scope): description`
 ```
 
-**`workflows/validate-governance.yml`** — New CI wrapper:
+**`.github/workflows/validate-governance.yml`** — CI wrapper:
 ```yaml
 name: Governance Validation
 on: [push, pull_request]

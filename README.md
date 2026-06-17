@@ -390,7 +390,17 @@ pip install sleepwalker-protocol
 npm install sleepwalker-protocol
 ```
 
-**2. Initialize in Your AI System**
+For repository development, install from the checkout instead:
+
+```bash
+# Python
+python3 -m pip install -e ".[dev]"
+
+# TypeScript / JavaScript
+npm ci
+```
+
+**2. Initialize in Your AI System (Python)**
 
 ```python
 from sleepwalker_protocol import SWP
@@ -398,21 +408,48 @@ from sleepwalker_protocol import SWP
 swp = SWP(
     user_toi_path="path/to/user/toi.yaml",
     privacy_mode="local_only",
-    logging=True
+    logging_enabled=True,
+    user_id="stable-user-id",
 )
 
 # Check user's emotional state and preferences
-user_state = swp.assess_interaction(user_input, session_history)
+assessment = swp.assess_interaction(user_input, session_history)
 
 # Generate SWP-compliant response
 response = swp.generate_response(
     user_input=user_input,
-    detected_state=user_state,
-    intervention_level=swp.determine_appropriate_level(user_state)
+    detected_state=assessment["emotional_state"],
+    intervention_level=assessment["consent_level"],
 )
 ```
 
-**3. Integrate with RRTA**
+Use a stable `user_id` for continuity. Do not derive continuity keys from
+message text; the continuity manager stores local per-user context under the
+configured storage path.
+
+**3. Initialize in Your AI System (TypeScript)**
+
+```ts
+import { SWP } from "sleepwalker-protocol";
+
+const swp = new SWP({
+  userToiPath: "path/to/user/toi.yaml",
+  storagePath: ".swp_storage",
+  loggingEnabled: false,
+});
+
+const assessment = swp.assessInteraction(userInput, sessionHistory);
+const response = swp.generateResponse(
+  userInput,
+  assessment.emotionalState,
+);
+```
+
+The TypeScript package exports `SWP`, `SleepwalkerProtocol`, `StateDetector`,
+`ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader` from
+`src/index.ts`; `npm run build` emits the publishable `dist/` files.
+
+**4. Integrate with RRTA**
 
 ```python
 from sleepwalker_protocol import SWP
@@ -485,9 +522,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
-**MIT License** - Open source for community benefit.
-
-See [LICENSE](LICENSE) for full terms.
+See [LICENSE](LICENSE) for the current repository license terms. Package
+manifests may include ecosystem-specific metadata; verify the target manifest
+before publishing.
 
 ## Related Projects
 
