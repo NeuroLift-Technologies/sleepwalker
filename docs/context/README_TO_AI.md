@@ -13,6 +13,11 @@ or governance contracts change.
 - `.nltotoi/scripts/validate-governance.sh` is the only tracked governance CI
   validator. It checks required files and marker strings, and it is run by
   `.github/workflows/validate-governance.yml` on `push` and `pull_request`.
+- As of `origin/main` commit `54cfe82`, `.github/workflows/validate-governance.yml`
+  is still the only tracked GitHub Actions workflow. PR #19 was titled as an
+  npm trusted-publishing workflow change, but its merged diff is empty and
+  `.github/workflows/publish-npm.yml` is not present. Do not assume npm publish
+  automation exists until that workflow file lands in source.
 - Session records belong in `docs/agent-log/registrations/` and
   `docs/agent-log/handoffs/`; active work state belongs in
   `docs/active-threads.md`.
@@ -57,7 +62,7 @@ Important contracts:
 Primary public entry point:
 
 ```ts
-import { SWP, ConsentLevel } from "sleepwalker-protocol";
+import { SWP, ConsentLevel } from "@neurolift-technologies/sleepwalker-protocol";
 
 const swp = new SWP({
   userToiPath: "examples/sample_toi.yaml",
@@ -76,10 +81,13 @@ Important contracts:
 
 - `src/index.ts` exports `SleepwalkerProtocol`, `SWP`, `StateDetector`,
   `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader`.
+- The root npm package is `@neurolift-technologies/sleepwalker-protocol`.
 - `tsconfig.json` emits CommonJS JavaScript and declarations to `dist/`.
 - `package.json` publishes only `dist/**/*`, `README.md`, and `LICENSE`.
 - `prepublishOnly` runs `npm run build`, so publish dry-runs should compile
   before producing a tarball.
+- `publishConfig.access` is `public`; no npm token or trusted-publishing
+  workflow is currently tracked in the repository.
 - `package-lock.json` is committed; use `npm ci` for reproducible Node setup.
 
 ## Verification Commands
@@ -103,7 +111,9 @@ npm pack --dry-run
 
 Only the governance validation workflow is tracked in `.github/workflows/` at
 the time of writing, so Python and TypeScript package checks are manual unless a
-new workflow is added.
+new workflow is added. If an npm publish workflow is introduced, verify that the
+workflow file exists in source, uses `npm ci`, runs from the repository root,
+and publishes the root package only after `npm run build` succeeds.
 
 ## Known Constraints and Pitfalls
 

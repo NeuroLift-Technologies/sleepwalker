@@ -8,6 +8,15 @@
 
 ## Active Threads
 
+### Thread: 2026-06-17-docs-follow-up-pr19
+**Status:** open
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-17
+**Last updated:** 2026-06-17
+**Summary:** Documentation automation is aligning developer and operations docs with PR #19, which was intended to add npm OIDC trusted publishing workflow support but merged with an empty diff.
+**Blockers:** None.
+**Next action:** Finish source-verified docs updates for the current publish-workflow gap, then validate and open a documentation PR.
+
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
 - **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)

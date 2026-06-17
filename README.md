@@ -387,7 +387,7 @@ swp:
 ```bash
 pip install sleepwalker-protocol
 # or
-npm install sleepwalker-protocol
+npm install @neurolift-technologies/sleepwalker-protocol
 ```
 
 For repository development, install from the checkout instead:
@@ -430,7 +430,7 @@ configured storage path.
 **3. Initialize in Your AI System (TypeScript)**
 
 ```ts
-import { SWP } from "sleepwalker-protocol";
+import { SWP } from "@neurolift-technologies/sleepwalker-protocol";
 
 const swp = new SWP({
   userToiPath: "path/to/user/toi.yaml",

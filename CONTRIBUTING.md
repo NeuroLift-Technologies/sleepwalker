@@ -114,6 +114,28 @@ The TypeScript package builds from `src/` into `dist/`; `dist/` is ignored and
 should not be committed. `prepublishOnly` runs `npm run build`, so a dry-run
 pack is the closest local check for publish readiness.
 
+### npm Publishing State
+
+The repository root package is `@neurolift-technologies/sleepwalker-protocol`.
+`package.json` publishes `dist/**/*`, `README.md`, and `LICENSE` with
+`publishConfig.access` set to `public`.
+
+There is currently no tracked npm publishing workflow. As of `origin/main`
+commit `54cfe82`, `.github/workflows/validate-governance.yml` is still the only
+workflow in `.github/workflows/`; PR #19 was merged with an empty diff, so
+`.github/workflows/publish-npm.yml` does not exist in source. Before relying on
+GitHub Actions trusted publishing, confirm that the workflow file has landed and
+that npmjs.com has a matching trusted-publisher entry for this package,
+repository, and workflow path.
+
+For any future publish workflow, keep these source-verified constraints aligned:
+
+- run from the repository root, because the npm package lives at root;
+- use `npm ci` against the committed `package-lock.json`;
+- let `prepublishOnly` run `npm run build` before `npm publish`;
+- publish only the root package contents declared in `package.json#files`;
+- avoid long-lived npm tokens when trusted publishing/OIDC is configured.
+
 **Governance docs and templates:**
 ```bash
 bash .nltotoi/scripts/validate-governance.sh
