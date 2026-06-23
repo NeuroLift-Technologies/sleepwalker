@@ -112,7 +112,10 @@ npm pack --dry-run
 
 The TypeScript package builds from `src/` into `dist/`; `dist/` is ignored and
 should not be committed. `prepublishOnly` runs `npm run build`, so a dry-run
-pack is the closest local check for publish readiness.
+pack should be run after `npm run build` and inspected for `dist/**`,
+`README.md`, and `LICENSE`. `npm pack --dry-run` can still exit successfully
+when `dist/` is missing, which would produce package metadata without runnable
+entrypoints.
 
 ### Package Release Metadata
 

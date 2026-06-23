@@ -81,6 +81,8 @@ Important contracts:
   `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader`.
 - `tsconfig.json` emits CommonJS JavaScript and declarations to `dist/`.
 - `package.json` publishes only `dist/**/*`, `README.md`, and `LICENSE`.
+- `npm pack --dry-run` should be inspected after `npm run build`; it can exit 0
+  even when ignored `dist/` artifacts are absent from the tarball.
 - The top-of-file README prototype/not-medical-advice banner is part of the npm
   tarball because `README.md` is in the package `files` allowlist; keep it above
   the project title so npm and GitHub readers see it first.
