@@ -387,7 +387,7 @@ swp:
 ```bash
 pip install sleepwalker-protocol
 # or
-npm install sleepwalker-protocol
+npm install @neurolift-technologies/sleepwalker-protocol
 ```
 
 For repository development, install from the checkout instead:
@@ -414,6 +414,7 @@ swp = SWP(
 
 # Check user's emotional state and preferences
 assessment = swp.assess_interaction(user_input, session_history)
+continuity_context = assessment["continuity_context"]
 
 # Generate SWP-compliant response
 response = swp.generate_response(
@@ -421,33 +422,56 @@ response = swp.generate_response(
     detected_state=assessment["emotional_state"],
     intervention_level=assessment["consent_level"],
 )
+
+# Persist continuity only after you have session data to preserve.
+swp.maintain_continuity(
+    "stable-user-id",
+    {
+        "emotional_state": "numbing",
+        "protective_state_active": True,
+    },
+)
 ```
 
 Use a stable `user_id` for continuity. Do not derive continuity keys from
-message text; the continuity manager stores local per-user context under the
-configured storage path.
+message text. `assess_interaction()` reads local continuity context, while
+`maintain_continuity()` writes session state. The continuity manager stores
+per-user JSON under the configured storage path using traversal-safe,
+hash-backed filenames.
 
 **3. Initialize in Your AI System (TypeScript)**
 
 ```ts
-import { SWP } from "sleepwalker-protocol";
+import { SWP } from "@neurolift-technologies/sleepwalker-protocol";
 
 const swp = new SWP({
   userToiPath: "path/to/user/toi.yaml",
   storagePath: ".swp_storage",
   loggingEnabled: false,
+  userId: "stable-user-id",
 });
 
 const assessment = swp.assessInteraction(userInput, sessionHistory);
+const continuityContext = assessment.continuityContext;
 const response = swp.generateResponse(
   userInput,
   assessment.emotionalState,
 );
+
+swp.maintainContinuity("stable-user-id", {
+  emotionalState: "numbing",
+  protectiveStateActive: true,
+});
 ```
 
 The TypeScript package exports `SWP`, `SleepwalkerProtocol`, `StateDetector`,
 `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader` from
 `src/index.ts`; `npm run build` emits the publishable `dist/` files.
+`assessInteraction(input, history, userId?)` reads continuity for the explicit
+`userId` when provided, otherwise the stable `userId` configured on the
+instance. `maintainContinuity(userId, data)` is the explicit write path. The
+TypeScript `ContinuityManager` mirrors Python storage safety by hashing the full
+user id into a slug plus SHA-256 JSON filename inside `storagePath`.
 
 **4. Integrate with RRTA**
 

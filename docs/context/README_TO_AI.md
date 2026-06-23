@@ -57,25 +57,39 @@ Important contracts:
 Primary public entry point:
 
 ```ts
-import { SWP, ConsentLevel } from "sleepwalker-protocol";
+import { SWP } from "@neurolift-technologies/sleepwalker-protocol";
 
 const swp = new SWP({
   userToiPath: "examples/sample_toi.yaml",
   storagePath: ".swp_storage",
   loggingEnabled: false,
+  userId: "stable-user-id",
 });
 
 const assessment = swp.assessInteraction("I feel numb today");
+const continuityContext = assessment.continuityContext;
 const response = swp.generateResponse(
   "I feel numb today",
   assessment.emotionalState,
 );
+swp.maintainContinuity("stable-user-id", {
+  emotionalState: "numbing",
+  protectiveStateActive: true,
+});
 ```
 
 Important contracts:
 
 - `src/index.ts` exports `SleepwalkerProtocol`, `SWP`, `StateDetector`,
   `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader`.
+- `SWPOptions.userId` is the stable continuity key for an instance. It falls
+  back to a top-level or `swp.user_id` TOI value, then to `default_user`.
+- `assessInteraction(input, history, userId?)` includes a `continuityContext`
+  read keyed by the explicit `userId` or the instance `userId`.
+- `maintainContinuity(userId, data)` is the explicit write path. Assessment does
+  not implicitly persist session state.
+- `ContinuityManager` stores local JSON state under the configured storage path
+  using traversal-safe, hash-backed filenames that mirror Python storage.
 - `tsconfig.json` emits CommonJS JavaScript and declarations to `dist/`.
 - `package.json` publishes only `dist/**/*`, `README.md`, and `LICENSE`.
 - `prepublishOnly` runs `npm run build`, so publish dry-runs should compile
@@ -112,9 +126,9 @@ new workflow is added.
 - The Python and TypeScript implementations use different naming conventions
   (`assess_interaction` vs. `assessInteraction`, `user_toi_path` vs.
   `userToiPath`). Match the ecosystem you are editing.
-- The root `LICENSE` and npm `package.json` currently use `Apache-2.0`; Python
-  package metadata still declares MIT. Do not make licensing changes without
-  explicit maintainer direction.
+- The root `LICENSE`, npm `package.json`, Python `pyproject.toml`, and
+  `sleepwalker_protocol.__license__` currently use `Apache-2.0`. Do not make
+  licensing changes without explicit maintainer direction.
 - `file-structure.md` includes historical architecture notes for the private
   governance repository. Verify against actual files before treating it as an
   inventory of this checkout.

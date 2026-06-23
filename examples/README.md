@@ -40,7 +40,15 @@ Then use it with SWP:
 ```python
 from sleepwalker_protocol import SWP
 
-swp = SWP(user_toi_path="my_toi.yaml")
+swp = SWP(user_toi_path="my_toi.yaml", user_id="stable-user-id")
+assessment = swp.assess_interaction("I feel numb today")
+swp.maintain_continuity(
+    "stable-user-id",
+    {
+        "emotional_state": "numbing",
+        "protective_state_active": assessment["protective_state_active"],
+    },
+)
 ```
 
 ## Running All Examples
@@ -61,7 +69,8 @@ When creating your own implementations:
 1. **Always respect user boundaries** - Check TOI configuration before intervening
 2. **Log observations, don't intervene** - SWP detects states but doesn't force processing
 3. **Use graduated consent** - Offer support at appropriate levels only
-4. **Maintain continuity** - Preserve emotional boundaries across sessions
+4. **Maintain continuity** - Use a stable user identifier and explicit
+   `maintain_continuity()` calls to preserve boundaries across sessions
 5. **Privacy first** - Store emotional state data locally only
 
 See the main README for detailed API documentation and integration guides.

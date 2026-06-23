@@ -8,20 +8,16 @@
 
 ## Active Threads
 
-### TS port security parity (hash user_id filenames + key continuity on user_id)
-- **Agent:** Claude Code — session `2026-06-23-harden-ts-continuity`
-- **Branch:** `claude/harden-ts-continuity` (own branch + draft PR)
-- **Status:** Implemented, tests passing (jest 29 passed; tsc clean; pytest 46 passed). Draft PR open for Joshua's review.
-- **Summary:** Brought the published `@neurolift-technologies/sleepwalker-protocol`
-  TS port to parity with the already-fixed Python code: `src/continuity.ts` wrote a
-  raw `${userId}.json` filename (a `../` escape — a **live path-traversal exposure in
-  the published package**), now SHA-256-hashes the user_id for the on-disk filename
-  (mirrors `ContinuityManager._user_file`); `src/protocol.ts` `assessInteraction` now
-  keys continuity on a stable `user_id` instead of ignoring continuity entirely.
-  Also aligned Python license metadata (`pyproject.toml`, `__init__.py`) MIT -> Apache-2.0
-  to match LICENSE + package.json.
-- **Follow-up (Joshua):** npm version bump + republish of the patched package needs
-  Joshua's 2FA OTP + sign-off — **not** done in this session.
+### Thread: 2026-06-23-docs-follow-up-pr21
+**Status:** open
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-23
+**Last updated:** 2026-06-23
+**Summary:** Documentation automation is aligning developer-facing docs with merged PR #21, which hardened TypeScript continuity storage by hashing user_id filenames, using stable user_id continuity keys, and aligning Python package license metadata with Apache-2.0.
+**Blockers:** None.
+**Next action:** Verify the merged source and update the existing docs without adding redundant pages.
+
+---
 
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
@@ -43,6 +39,21 @@
 ---
 
 ## Resolved Threads
+
+### TS port security parity (hash user_id filenames + key continuity on user_id)
+- **Agent:** Claude Code — session `2026-06-23-harden-ts-continuity`
+- **Branch:** `claude/harden-ts-continuity` (own branch + draft PR)
+- **Status:** Resolved by merged PR #21; tests passed in the implementation session (jest 29 passed; tsc clean; pytest 46 passed).
+- **Summary:** Brought the published `@neurolift-technologies/sleepwalker-protocol`
+  TS port to parity with the already-fixed Python code: `src/continuity.ts` wrote a
+  raw `${userId}.json` filename (a `../` escape — a **live path-traversal exposure in
+  the published package**), now SHA-256-hashes the user_id for the on-disk filename
+  (mirrors `ContinuityManager._user_file`); `src/protocol.ts` `assessInteraction` now
+  keys continuity on a stable `user_id` instead of ignoring continuity entirely.
+  Also aligned Python license metadata (`pyproject.toml`, `__init__.py`) MIT -> Apache-2.0
+  to match LICENSE + package.json.
+- **Follow-up (Joshua):** npm version bump + republish of the patched package needs
+  Joshua's 2FA OTP + sign-off — **not** done in this session.
 
 ### Thread: 2026-06-17-docs-follow-up-pr14
 **Status:** resolved
