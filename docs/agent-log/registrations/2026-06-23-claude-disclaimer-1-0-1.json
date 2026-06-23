@@ -1,0 +1,26 @@
+{
+  "agent_registration": {
+    "agent_name": "Claude Code",
+    "platform": "claude-code",
+    "version": "Opus 4.8 (1M context)",
+    "session_id": "2026-06-23-disclaimer-patch-1-0-1",
+    "entry_date": "2026-06-23",
+    "entry_point": "Add a prototype / not-medical-advice safety disclaimer to the already-published npm package @neurolift-technologies/sleepwalker-protocol@1.0.0 and ship it as a 1.0.1 patch release for Joshua to publish.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/sleepwalker",
+    "working_branch": "claude/disclaimer-1-0-1",
+    "capabilities_self_reported": [
+      "Documentation and package-metadata authoring",
+      "npm version / release-hygiene changes (docs + metadata only)",
+      "Governance compliance logging"
+    ],
+    "known_limitations": [
+      "No architectural decisions without Joshua approval",
+      "No OTOI amendment authority",
+      "Did not touch LICENSE, src/, or dist/",
+      "Did not publish to npm — publishing requires Joshua's OTP and sign-off"
+    ],
+    "preferred_handoff_format": "structured JSON plus concise narrative summary"
+  }
+}

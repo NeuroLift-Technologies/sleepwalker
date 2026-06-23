@@ -1,0 +1,39 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-23-disclaimer-patch-1-0-1",
+    "agent_name": "Claude Code",
+    "date": "2026-06-23",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "claude/disclaimer-1-0-1",
+    "work_completed": [
+      "Added a 'PROTOTYPE — NOT A SAFETY SYSTEM' safety disclaimer banner at the very top of README.md (above the title and ai_assistant_directive yaml block). Banner states the package is experimental with stubbed intervention layers, is not medical advice / not a crisis service, can miss real crisis signals, and provides 988/911/findahelpline.com resources plus an AS-IS no-warranty notice. The existing 988/741741 resources footer near the bottom was left in place.",
+      "Prefixed package.json description with '⚠️ PROTOTYPE / not medical advice — ' (kept the original text) and added keywords 'prototype', 'experimental', 'not-medical-advice'.",
+      "Bumped version 1.0.0 -> 1.0.1 via `npm version patch --no-git-tag-version`; both package.json and package-lock.json updated, no git tag created.",
+      "Confirmed README.md is in the package 'files' allowlist so the banner ships to npm.",
+      "Compliance: registered this session and wrote this handoff per OTOI 1.0.2."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Docs + metadata only: did NOT edit LICENSE, src/, dist/, or any .github/workflows.",
+      "All edits made in an isolated git worktree at /tmp/nlt-wt-sw off origin/main to avoid disturbing the main checkout (a concurrent process was building it).",
+      "Did not publish to npm; the live package remains at 1.0.0 until Joshua publishes 1.0.1 with OTP."
+    ],
+    "decisions_pending": [
+      "Publishing @neurolift-technologies/sleepwalker-protocol@1.0.1 to npm (requires Joshua's OTP / 2FA and sign-off). Note repo gotcha: prior NLT npm packages once shipped without dist/ — ensure a built dist/ is present at publish time."
+    ],
+    "escalations": [],
+    "next_agent_notes": "This is a docs/metadata patch for the LIVE package. After the PR merges, Joshua publishes 1.0.1 with OTP. dist/ and src/ were intentionally untouched.",
+    "files_modified": [
+      "README.md",
+      "package.json",
+      "package-lock.json",
+      "docs/agent-log/registrations/2026-06-23-claude-disclaimer-1-0-1.json",
+      "docs/agent-log/handoffs/2026-06-23-claude-disclaimer-1-0-1-handoff.json"
+    ],
+    "tests_run": [],
+    "tests_passing": null,
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/23"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "@neurolift-technologies/sleepwalker-protocol",
-  "version": "1.0.0",
-  "description": "Emotional Continuity Governance for AI Systems",
+  "version": "1.0.1",
+  "description": "⚠️ PROTOTYPE / not medical advice — Emotional Continuity Governance for AI Systems",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
@@ -22,7 +22,10 @@
     "mental-health",
     "neurodivergent",
     "ai-ethics",
-    "trauma-informed"
+    "trauma-informed",
+    "prototype",
+    "experimental",
+    "not-medical-advice"
   ],
   "author": "NeuroLift Technologies / HAIEF <haief@neuroliftsolutions.com>",
   "license": "Apache-2.0",
