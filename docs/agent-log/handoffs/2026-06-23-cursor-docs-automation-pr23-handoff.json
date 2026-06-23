@@ -43,6 +43,6 @@
       "npm pack --dry-run --json"
     ],
     "tests_passing": true,
-    "pr_url": "Pending; automation opens/updates the PR after this handoff commit."
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/24"
   }
 }
