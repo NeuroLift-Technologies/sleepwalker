@@ -114,6 +114,23 @@ The TypeScript package builds from `src/` into `dist/`; `dist/` is ignored and
 should not be committed. `prepublishOnly` runs `npm run build`, so a dry-run
 pack is the closest local check for publish readiness.
 
+### Package Release Metadata
+
+The npm release surface is intentionally explicit about prototype status:
+
+- `package.json` names the package
+  `@neurolift-technologies/sleepwalker-protocol`; use that scoped name in npm
+  install and TypeScript import examples.
+- `package.json` and `package-lock.json` versions must stay aligned when
+  preparing a release.
+- The npm `description` and keywords are safety-warning surfaces. Preserve the
+  prototype/not-medical-advice language unless Joshua directs otherwise.
+- `README.md` is included in the npm `files` allowlist. Keep the top
+  "PROTOTYPE - NOT A SAFETY SYSTEM" banner above the project title so it is the
+  first thing users see on GitHub and npm.
+- Publishing requires maintainer approval and npm 2FA/OTP. Agents may prepare
+  metadata and dry-run checks, but must not publish packages.
+
 **Governance docs and templates:**
 ```bash
 bash .nltotoi/scripts/validate-governance.sh

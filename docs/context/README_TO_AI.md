@@ -57,7 +57,7 @@ Important contracts:
 Primary public entry point:
 
 ```ts
-import { SWP, ConsentLevel } from "sleepwalker-protocol";
+import { SWP, ConsentLevel } from "@neurolift-technologies/sleepwalker-protocol";
 
 const swp = new SWP({
   userToiPath: "examples/sample_toi.yaml",
@@ -74,10 +74,16 @@ const response = swp.generateResponse(
 
 Important contracts:
 
+- `package.json` publishes the TypeScript package as
+  `@neurolift-technologies/sleepwalker-protocol` and currently marks the npm
+  release as `1.0.1`.
 - `src/index.ts` exports `SleepwalkerProtocol`, `SWP`, `StateDetector`,
   `ConsentManager`, `ConsentLevel`, `ContinuityManager`, and `TOILoader`.
 - `tsconfig.json` emits CommonJS JavaScript and declarations to `dist/`.
 - `package.json` publishes only `dist/**/*`, `README.md`, and `LICENSE`.
+- The top-of-file README prototype/not-medical-advice banner is part of the npm
+  tarball because `README.md` is in the package `files` allowlist; keep it above
+  the project title so npm and GitHub readers see it first.
 - `prepublishOnly` runs `npm run build`, so publish dry-runs should compile
   before producing a tarball.
 - `package-lock.json` is committed; use `npm ci` for reproducible Node setup.
@@ -112,9 +118,8 @@ new workflow is added.
 - The Python and TypeScript implementations use different naming conventions
   (`assess_interaction` vs. `assessInteraction`, `user_toi_path` vs.
   `userToiPath`). Match the ecosystem you are editing.
-- The root `LICENSE` and npm `package.json` currently use `Apache-2.0`; Python
-  package metadata still declares MIT. Do not make licensing changes without
-  explicit maintainer direction.
+- The root `LICENSE`, npm `package.json`, and Python `pyproject.toml` currently
+  declare `Apache-2.0`. Verify the target manifest before publishing.
 - `file-structure.md` includes historical architecture notes for the private
   governance repository. Verify against actual files before treating it as an
   inventory of this checkout.
