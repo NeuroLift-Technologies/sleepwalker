@@ -45,4 +45,64 @@ describe('SleepwalkerProtocol', () => {
     const state = swp.detectEmotionalState('I want to kill myself');
     expect(swp.requiresRrtaHandoff(state)).toBe(true);
   });
+
+  it('keys continuity on a stable user_id, not the message text', () => {
+    // Persist a session for a specific user, then assess that user with a
+    // *different* message. Continuity must still be found because it is keyed on
+    // the user_id, not the input text.
+    const writer = new SleepwalkerProtocol({
+      loggingEnabled: false,
+      storagePath: dir,
+      userId: 'stable-user',
+    });
+    writer.maintainContinuity('stable-user', {
+      emotionalState: 'dissociation',
+      protectiveStateActive: true,
+    });
+
+    const reader = new SleepwalkerProtocol({
+      loggingEnabled: false,
+      storagePath: dir,
+      userId: 'stable-user',
+    });
+    const result = reader.assessInteraction('a completely unrelated message');
+
+    expect(result.continuityContext.hasHistory).toBe(true);
+    expect(result.continuityContext.lastSessionState).toBe('dissociation');
+    expect(result.continuityContext.protectiveStateActive).toBe(true);
+  });
+
+  it('reports no history when continuity is keyed on the message text (regression guard)', () => {
+    // The old TS port did not consult continuity at all, and keying on message
+    // text (the original Python bug) would always report "no history". Here a
+    // session exists for the real user, but assessing under a different id (as
+    // message-text keying effectively does) must NOT leak that user's history.
+    const swp = new SleepwalkerProtocol({
+      loggingEnabled: false,
+      storagePath: dir,
+      userId: 'real-user',
+    });
+    swp.maintainContinuity('real-user', { emotionalState: 'numbing' });
+
+    const wrongKey = swp.assessInteraction('hello', [], 'I feel numb today');
+    expect(wrongKey.continuityContext.hasHistory).toBe(false);
+
+    // Same instance, default (real) id -> history is found.
+    const rightKey = swp.assessInteraction('hello');
+    expect(rightKey.continuityContext.hasHistory).toBe(true);
+    expect(rightKey.continuityContext.lastSessionState).toBe('numbing');
+  });
+
+  it('isolates continuity per user_id across instances', () => {
+    const a = new SleepwalkerProtocol({ loggingEnabled: false, storagePath: dir, userId: 'alice' });
+    a.maintainContinuity('alice', { emotionalState: 'avoidance' });
+
+    const b = new SleepwalkerProtocol({ loggingEnabled: false, storagePath: dir, userId: 'bob' });
+    const bobCtx = b.assessInteraction('hi').continuityContext;
+    expect(bobCtx.hasHistory).toBe(false);
+
+    const aliceCtx = a.assessInteraction('hi').continuityContext;
+    expect(aliceCtx.hasHistory).toBe(true);
+    expect(aliceCtx.lastSessionState).toBe('avoidance');
+  });
 });

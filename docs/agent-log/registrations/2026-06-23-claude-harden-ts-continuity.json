@@ -1,0 +1,27 @@
+{
+  "agent_registration": {
+    "agent_name": "Claude Code",
+    "platform": "claude-code",
+    "version": "Opus 4.8 (1M context)",
+    "session_id": "2026-06-23-harden-ts-continuity",
+    "entry_date": "2026-06-23",
+    "entry_point": "Bring the published TypeScript port (@neurolift-technologies/sleepwalker-protocol) to security parity with the already-fixed Python code: (1) SHA-256-hash user_id to derive on-disk filenames in src/continuity.ts (close a live '../' path-traversal exposure), (2) key continuity on a stable user_id in src/protocol.ts, and (3) align Python license metadata (pyproject.toml, __init__.py) from MIT to Apache-2.0 to match LICENSE + package.json.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/sleepwalker",
+    "working_branch": "claude/harden-ts-continuity",
+    "capabilities_self_reported": [
+      "TypeScript/Node implementation and Jest behavioral test authoring",
+      "Cross-language parity analysis (Python <-> TypeScript)",
+      "Security hardening (path traversal, filesystem isolation)",
+      "Governance compliance logging"
+    ],
+    "known_limitations": [
+      "No architectural decisions without Joshua approval",
+      "No OTOI amendment authority",
+      "Did not bump the npm version or publish (republish needs Joshua's 2FA OTP + sign-off)",
+      "Did not edit LICENSE (Apache-2.0, rule-blocked) or any .github/workflows file (token lacks workflow scope)"
+    ],
+    "preferred_handoff_format": "structured JSON plus concise narrative summary"
+  }
+}
