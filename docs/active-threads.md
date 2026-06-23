@@ -9,13 +9,13 @@
 ## Active Threads
 
 ### Thread: 2026-06-23-docs-follow-up-pr21
-**Status:** open
+**Status:** resolved
 **Owner:** Cursor Automation GPT-5.5
 **Started:** 2026-06-23
 **Last updated:** 2026-06-23
-**Summary:** Documentation automation is aligning developer-facing docs with merged PR #21, which hardened TypeScript continuity storage by hashing user_id filenames, using stable user_id continuity keys, and aligning Python package license metadata with Apache-2.0.
+**Summary:** Documentation automation aligned developer-facing docs with merged PR #21 by updating the README, agent context, contributor checks, and examples for TypeScript stable `userId` continuity, explicit persistence, hash-backed local storage filenames, scoped npm package usage, and Apache-2.0 Python metadata alignment.
 **Blockers:** None.
-**Next action:** Verify the merged source and update the existing docs without adding redundant pages.
+**Next action:** Review PR #22 and decide whether the existing npm audit warnings need a separate dependency follow-up.
 
 ---
 

@@ -1,0 +1,52 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-23-cursor-docs-automation-pr21",
+    "agent_name": "Cursor Automation GPT-5.5",
+    "date": "2026-06-23",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "cursor/engineering-documentation-updates-bf86",
+    "work_completed": [
+      "Updated README.md to document the scoped TypeScript npm package, stable userId initialization, continuityContext reads, explicit maintainContinuity writes, and hash-backed TypeScript continuity storage filenames.",
+      "Updated docs/context/README_TO_AI.md with the TypeScript continuity contracts introduced by PR #21 and corrected Python license metadata guidance to Apache-2.0.",
+      "Added CONTRIBUTING.md continuity contract checks for stable user identifiers, read/write separation, and SHA-256 storage filenames.",
+      "Updated examples/README.md to show Python examples using stable user_id and explicit maintain_continuity persistence.",
+      "Added the session registration and resolved the PR #21 docs follow-up active thread.",
+      "Opened PR #22 for review."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Updated existing developer-facing docs instead of creating a new page because README.md, CONTRIBUTING.md, examples/README.md, and docs/context/README_TO_AI.md already own the affected public API and contributor workflow guidance.",
+      "Documented source-verified behavior only: TypeScript assessInteraction reads continuity context keyed by userId, maintainContinuity is the explicit write path, and ContinuityManager uses a slug plus SHA-256 filename inside storagePath."
+    ],
+    "decisions_pending": [
+      "Maintainers should decide whether the existing npm audit warnings from npm ci require a separate dependency update PR.",
+      "Joshua must still handle any npm version bump and republish of the patched package, which requires sign-off and 2FA outside this docs automation session."
+    ],
+    "escalations": [],
+    "next_agent_notes": "PR #22 is documentation-only and validation passed. npm ci completed but reported existing audit warnings (25 vulnerabilities: 19 moderate, 6 high); no dependency changes were made.",
+    "files_modified": [
+      "CONTRIBUTING.md",
+      "README.md",
+      "docs/active-threads.md",
+      "docs/agent-log/handoffs/2026-06-23-cursor-docs-automation-pr21-handoff.json",
+      "docs/agent-log/registrations/2026-06-23-cursor-docs-automation-pr21.json",
+      "docs/context/README_TO_AI.md",
+      "examples/README.md"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "python3 -m json.tool docs/agent-log/registrations/2026-06-23-cursor-docs-automation-pr21.json >/tmp/registration-pr21.json",
+      "git diff --check origin/main..HEAD",
+      "npm ci",
+      "npm run build",
+      "npm test",
+      "npm pack --dry-run",
+      "targeted Python source-doc continuity contract assertions",
+      "python3 -m pip install -e \".[dev]\" && python3 -m pytest tests/"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/22"
+  }
+}
