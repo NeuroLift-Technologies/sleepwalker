@@ -8,15 +8,6 @@
 
 ## Active Threads
 
-### Thread: 2026-06-23-docs-follow-up-pr23
-**Status:** open
-**Owner:** Cursor Automation GPT-5.5
-**Started:** 2026-06-23
-**Last updated:** 2026-06-23
-**Summary:** Documentation automation is aligning developer and package-release docs with merged PR #23, which added the top-level prototype/not-medical-advice safety banner and bumped the scoped npm package metadata to 1.0.1.
-**Blockers:** None.
-**Next action:** Update source-verified docs for the npm package safety-disclaimer release surface, validate, then hand off for review.
-
 ### TS port security parity (hash user_id filenames + key continuity on user_id)
 - **Agent:** Claude Code — session `2026-06-23-harden-ts-continuity`
 - **Branch:** `claude/harden-ts-continuity` (own branch + draft PR)
@@ -52,6 +43,15 @@
 ---
 
 ## Resolved Threads
+
+### Thread: 2026-06-23-docs-follow-up-pr23
+**Status:** resolved
+**Owner:** Cursor Automation GPT-5.5
+**Started:** 2026-06-23
+**Last updated:** 2026-06-23
+**Summary:** Documentation automation aligned developer and package-release docs with merged PR #23 by documenting the scoped npm package name, the prototype/not-medical-advice release metadata, and the npm tarball pitfall where `npm pack --dry-run` exits successfully even when ignored `dist/` artifacts are absent.
+**Blockers:** None.
+**Next action:** Review the documentation PR and decide whether existing npm audit findings need a maintainer-directed dependency update.
 
 ### Thread: 2026-06-17-docs-follow-up-pr14
 **Status:** resolved

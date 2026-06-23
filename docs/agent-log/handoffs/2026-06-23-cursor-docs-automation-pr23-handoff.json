@@ -1,0 +1,48 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-23-cursor-docs-automation-pr23",
+    "agent_name": "Cursor Automation GPT-5.5",
+    "date": "2026-06-23",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "cursor/engineering-documentation-updates-187e",
+    "work_completed": [
+      "Verified merged PR #23 changed README/package metadata for the prototype/not-medical-advice safety disclaimer and npm version 1.0.1.",
+      "Updated README TypeScript install/import examples to use the scoped npm package name.",
+      "Updated docs/context/README_TO_AI.md with the scoped npm package contract, npm README disclaimer tarball behavior, dry-run missing-dist pitfall, and current Apache-2.0 package metadata.",
+      "Updated CONTRIBUTING.md with package release metadata constraints, safety-warning metadata requirements, maintainer-only publish boundary, and npm pack dry-run inspection guidance.",
+      "Resolved this documentation automation entry in docs/active-threads.md."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Kept the change documentation-only and scoped to package release surfaces affected by PR #23.",
+      "Documented the npm dry-run missing-dist behavior because source verification showed npm pack exits 0 before build while omitting dist files."
+    ],
+    "decisions_pending": [
+      "Maintainers should decide whether the npm audit findings reported during npm ci require a separate dependency update."
+    ],
+    "escalations": [],
+    "next_agent_notes": "Generated dist/ and node_modules artifacts from validation were removed before handoff. Do not publish the npm package from automation; Joshua/maintainers must handle npm OTP and publish approval.",
+    "files_modified": [
+      "README.md",
+      "CONTRIBUTING.md",
+      "docs/context/README_TO_AI.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-23-cursor-docs-automation-pr23.json",
+      "docs/agent-log/handoffs/2026-06-23-cursor-docs-automation-pr23-handoff.json"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "git diff --check origin/main..HEAD",
+      "python3 -m json.tool docs/agent-log/registrations/2026-06-23-cursor-docs-automation-pr23.json",
+      "Python source-doc package metadata assertion script",
+      "npm ci",
+      "npm run build",
+      "npm test",
+      "npm pack --dry-run --json"
+    ],
+    "tests_passing": true,
+    "pr_url": "Pending; automation opens/updates the PR after this handoff commit."
+  }
+}
