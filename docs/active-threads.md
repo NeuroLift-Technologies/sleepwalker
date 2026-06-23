@@ -2,11 +2,26 @@
 
 > This file tracks active work threads. Agents must read this at session start and update it during and at the end of each session.
 
-**Last updated:** 2026-06-17
+**Last updated:** 2026-06-23
 
 ---
 
 ## Active Threads
+
+### TS port security parity (hash user_id filenames + key continuity on user_id)
+- **Agent:** Claude Code — session `2026-06-23-harden-ts-continuity`
+- **Branch:** `claude/harden-ts-continuity` (own branch + draft PR)
+- **Status:** Implemented, tests passing (jest 29 passed; tsc clean; pytest 46 passed). Draft PR open for Joshua's review.
+- **Summary:** Brought the published `@neurolift-technologies/sleepwalker-protocol`
+  TS port to parity with the already-fixed Python code: `src/continuity.ts` wrote a
+  raw `${userId}.json` filename (a `../` escape — a **live path-traversal exposure in
+  the published package**), now SHA-256-hashes the user_id for the on-disk filename
+  (mirrors `ContinuityManager._user_file`); `src/protocol.ts` `assessInteraction` now
+  keys continuity on a stable `user_id` instead of ignoring continuity entirely.
+  Also aligned Python license metadata (`pyproject.toml`, `__init__.py`) MIT -> Apache-2.0
+  to match LICENSE + package.json.
+- **Follow-up (Joshua):** npm version bump + republish of the patched package needs
+  Joshua's 2FA OTP + sign-off — **not** done in this session.
 
 ### Continuity user_id fix (Task B)
 - **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
