@@ -8,7 +8,7 @@ which governs long-term emotional continuity in human-AI interactions.
 
 __version__ = "0.1.0"
 __author__ = "NeuroLift Technologies / HAIEF"
-__license__ = "MIT"
+__license__ = "Apache-2.0"
 
 from .protocol import SleepwalkerProtocol, SWP
 from .state_detection import EmotionalState, StateDetector

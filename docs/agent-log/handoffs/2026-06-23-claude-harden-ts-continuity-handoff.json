@@ -1,0 +1,54 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-23-harden-ts-continuity",
+    "agent_name": "Claude Code",
+    "date": "2026-06-23",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "claude/harden-ts-continuity",
+    "work_completed": [
+      "Task 1 (path-traversal-safe storage): src/continuity.ts wrote a raw `${userId}.json` filename, so a user_id like '../../etc/passwd' escaped the storage dir in the PUBLISHED @neurolift-technologies/sleepwalker-protocol package. Mirrored the Python ContinuityManager._user_file: filenames are now derived from a SHA-256 of the full user_id (filesystem-safe hex) prefixed with a sanitized human-readable slug. Traversal-safe and collision-safe. Also restored declaredBoundaries persistence and declaredBoundaries/sessionCount in getContext to match Python semantics.",
+      "Task 2 (user_id continuity keying): src/protocol.ts assessInteraction never consulted the continuity manager. Added a stable instance user_id (constructor `userId` option, then a TOI-declared user_id, then 'default_user'), an optional userId arg on assessInteraction, a continuityContext keyed on that id (never the message text), and a maintainContinuity write method — matching the Python protocol.py parity landed in PR #6.",
+      "Task 3 (license metadata drift): pyproject.toml and sleepwalker_protocol/__init__.py declared MIT while LICENSE + package.json are Apache-2.0. Updated both Python metadata declarations to Apache-2.0 (license field + the OSI classifier). Did NOT touch the LICENSE file.",
+      "Tests: added TS regression tests in tests/continuity.test.ts (traversal containment via hashed filename; slug-collision separation) and tests/protocol.test.ts (continuity keyed on user_id not message text; per-user isolation across instances). Updated the one existing continuity test that read a raw 'user-1.json' filename to read through the public API instead.",
+      "Negative control: temporarily reverted continuity.ts to the raw-filename version and confirmed the traversal test FAILS (it attempts to write outside the storage root to /tmp/etc/passwd.json), proving the test exercises the fix. Restored the hardened version.",
+      "Verification: npx tsc --noEmit clean (exit 0); npm run build clean; jest 29 passed (was 24, +5 new); python pytest 46 passed (was 46, no collateral from the license change).",
+      "Compliance: registered this session and wrote this handoff per AGENTS.md / OTOI; updated docs/active-threads.md."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Mirrored the Python hashing scheme exactly (slug[:32] of [A-Za-z0-9_-] chars, fallback 'user', plus a full sha256 hex) so on-disk layout and isolation guarantees match across the two ports.",
+      "Kept the read/write separation: assessInteraction reads continuity, maintainContinuity persists it — no implicit disk write on assessment, consistent with the privacy posture and the Python side.",
+      "Default instance user_id is 'default_user' so a single SWP instance keeps continuity across calls even when callers do not pass an explicit id.",
+      "dist/ is gitignored and NOT tracked in this repo, so build output was NOT committed (build was run only to verify the fix compiles into the published artifact)."
+    ],
+    "decisions_pending": [
+      "Version bump + npm republish of @neurolift-technologies/sleepwalker-protocol (this fix closes a live path-traversal exposure in the published 1.0.0). Republish needs Joshua W. Dorsey, Sr.'s 2FA OTP and sign-off — explicitly NOT done in this session. Flagged as a follow-up in the PR body."
+    ],
+    "escalations": [
+      "The published 1.0.0 of @neurolift-technologies/sleepwalker-protocol contains the path-traversal exposure. A patched-version publish is reserved for Joshua (2FA OTP) and is recorded as a PR follow-up."
+    ],
+    "next_agent_notes": "Do NOT fold a version bump into this PR. After Joshua signs off, bump the npm version and republish (republish requires 2FA OTP). The Python metadata is now Apache-2.0; if a Python release is cut, no further license edits are needed.",
+    "files_modified": [
+      "src/continuity.ts",
+      "src/protocol.ts",
+      "tests/continuity.test.ts",
+      "tests/protocol.test.ts",
+      "pyproject.toml",
+      "sleepwalker_protocol/__init__.py",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-23-claude-harden-ts-continuity.json",
+      "docs/agent-log/handoffs/2026-06-23-claude-harden-ts-continuity-handoff.json"
+    ],
+    "tests_run": [
+      "npx tsc --noEmit: clean (exit 0)",
+      "npm run build: clean (exit 0)",
+      "npx jest (full suite): 29 passed, 5 suites",
+      "Negative control: traversal test run against the raw-filename continuity.ts — confirmed failing",
+      "python -m pytest (full suite): 46 passed"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/21"
+  }
+}
