@@ -46,6 +46,20 @@ describe('SleepwalkerProtocol', () => {
     expect(swp.requiresRrtaHandoff(state)).toBe(true);
   });
 
+  it('prioritizes the crisis/check-in flow when a state is both protective and a crisis', () => {
+    // "numb" -> dissociation (protective); "kill myself" -> suicidal ideation
+    // (requiresCheckIn). The crisis path must win — never stable_low_demand.
+    const swp = makeSwp();
+    const state = swp.detectEmotionalState('I feel numb and want to kill myself');
+    expect(state.protective).toBe(true);
+    expect(state.requiresCheckIn).toBe(true);
+
+    const res = swp.generateResponse('I feel numb and want to kill myself');
+    expect(res.responseType).toBe('consent_offer');
+    expect(res.level).toBe(ConsentLevel.RRTA_HANDOFF);
+    expect(res.intervention).toBe('consent_required');
+  });
+
   it('keys continuity on a stable user_id, not the message text', () => {
     // Persist a session for a specific user, then assess that user with a
     // *different* message. Continuity must still be found because it is keyed on

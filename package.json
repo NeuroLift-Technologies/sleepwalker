@@ -1,6 +1,6 @@
 {
   "name": "@neurolift-technologies/sleepwalker-protocol",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "⚠️ PROTOTYPE / not medical advice — Emotional Continuity Governance for AI Systems",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

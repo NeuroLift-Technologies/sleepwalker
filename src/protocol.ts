@@ -88,13 +88,12 @@ export class SleepwalkerProtocol {
 
   generateResponse(userInput: string, detectedState?: EmotionalState): any {
     const state = detectedState || this.detectEmotionalState(userInput);
-    if ((this.userToi.swp?.active !== false) && state.protective) {
-      return {
-        responseType: 'stable_low_demand',
-        guidance: 'Maintain stable, task-focused interaction',
-        intervention: 'none',
-      };
-    }
+    // Crisis / check-in states are handled BEFORE the protective low-demand
+    // branch. An input can be both protective (e.g. "numb" -> dissociation) and a
+    // crisis ("kill myself" -> suicidal ideation); the crisis path must win so a
+    // safety check / RRTA handoff is never masked by a stable-low-demand response.
+    // This matches ConsentManager.determineLevel, which already ranks crisis
+    // (RRTA_HANDOFF) and check-in (SAFETY_CHECK) above protective.
     if (state.requiresCheckIn) {
       const level = this.consentManager.determineLevel(state);
       return {
@@ -102,6 +101,13 @@ export class SleepwalkerProtocol {
         level,
         guidance: this.consentManager.getConsentMessage(level),
         intervention: 'consent_required',
+      };
+    }
+    if ((this.userToi.swp?.active !== false) && state.protective) {
+      return {
+        responseType: 'stable_low_demand',
+        guidance: 'Maintain stable, task-focused interaction',
+        intervention: 'none',
       };
     }
     return {
