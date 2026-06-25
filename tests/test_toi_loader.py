@@ -1,110 +1,38 @@
+"""Conformance port of ``tests/toiLoader.test.ts``.
+
+Mirrors every assertion from the TypeScript Jest suite. ``js-yaml`` on the TS side
+maps to PyYAML here, so the same documents load to the same structures.
 """
-Tests for TOI Loader Module
-"""
+from __future__ import annotations
 
-import pytest
-import tempfile
-import os
-from sleepwalker_protocol.toi_loader import TOILoader
+import json
+
+from sleepwalker_protocol import TOILoader
 
 
-def test_toi_loader_with_no_file():
-    """Test TOI loader returns default when no file provided."""
-    loader = TOILoader()
-    toi = loader.load()
-    
-    assert 'swp' in toi
-    assert toi['swp']['active'] == True
-    assert toi['swp']['intervention_threshold'] == 'user_initiated_only'
+def test_returns_default_toi_when_no_path_given():
+    toi = TOILoader().load()
+    assert toi["swp"]["active"] is True
+    assert toi["swp"]["intervention_threshold"] == "user_initiated_only"
 
 
-def test_load_yaml_toi():
-    """Test loading TOI from YAML file."""
-    yaml_content = """
-swp:
-  active: true
-  protective_state: "managing"
-  intervention_preference: "offer_support_without_pressure"
-  protected_topics:
-    - "trauma"
-    - "relationships"
-"""
-    
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
-        f.write(yaml_content)
-        temp_path = f.name
-    
-    try:
-        loader = TOILoader(temp_path)
-        toi = loader.load()
-        
-        assert toi['swp']['active'] == True
-        assert toi['swp']['protective_state'] == 'managing'
-        assert 'trauma' in toi['swp']['protected_topics']
-        assert 'relationships' in toi['swp']['protected_topics']
-    finally:
-        os.unlink(temp_path)
+def test_returns_default_toi_for_nonexistent_path(tmp_path):
+    toi = TOILoader(str(tmp_path / "non-existent.yaml")).load()
+    assert toi["swp"]["active"] is True
 
 
-def test_load_json_toi():
-    """Test loading TOI from JSON file."""
-    json_content = """{
-  "swp": {
-    "active": true,
-    "protective_state": "processing",
-    "protected_topics": ["work", "family"]
-  }
-}"""
-    
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-        f.write(json_content)
-        temp_path = f.name
-    
-    try:
-        loader = TOILoader(temp_path)
-        toi = loader.load()
-        
-        assert toi['swp']['active'] == True
-        assert toi['swp']['protective_state'] == 'processing'
-        assert 'work' in toi['swp']['protected_topics']
-    finally:
-        os.unlink(temp_path)
+def test_loads_json_toi_document(tmp_path):
+    file = tmp_path / "toi.json"
+    file.write_text(json.dumps({"swp": {"active": False}}), encoding="utf-8")
+    toi = TOILoader(str(file)).load()
+    assert toi["swp"]["active"] is False
 
 
-def test_invalid_file_returns_default():
-    """Test that invalid file returns default TOI."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
-        f.write("invalid: yaml: content::: [[[")
-        temp_path = f.name
-    
-    try:
-        loader = TOILoader(temp_path)
-        toi = loader.load()
-        
-        # Should return default TOI
-        assert 'swp' in toi
-        assert toi['swp']['active'] == True
-    finally:
-        os.unlink(temp_path)
-
-
-def test_nonexistent_file_returns_default():
-    """Test that nonexistent file returns default TOI."""
-    loader = TOILoader("/nonexistent/path/to/toi.yaml")
-    toi = loader.load()
-    
-    assert 'swp' in toi
-    assert toi['swp']['active'] == True
-
-
-def test_default_toi_structure():
-    """Test structure of default TOI."""
-    loader = TOILoader()
-    toi = loader._get_default_toi()
-    
-    assert 'swp' in toi
-    assert 'active' in toi['swp']
-    assert 'intervention_threshold' in toi['swp']
-    assert 'processing_consent' in toi['swp']
-    assert 'protected_topics' in toi['swp']
-    assert isinstance(toi['swp']['protected_topics'], list)
+def test_loads_yaml_toi_document(tmp_path):
+    file = tmp_path / "toi.yaml"
+    file.write_text(
+        "swp:\n  active: true\n  intervention_threshold: offer_support_without_pressure\n",
+        encoding="utf-8",
+    )
+    toi = TOILoader(str(file)).load()
+    assert toi["swp"]["intervention_threshold"] == "offer_support_without_pressure"
