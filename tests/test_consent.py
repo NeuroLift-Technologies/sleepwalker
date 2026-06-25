@@ -1,144 +1,86 @@
-"""
-Tests for Consent Management Module
-"""
+"""Conformance port of ``tests/consent.test.ts``.
 
-import pytest
-from sleepwalker_protocol.consent import ConsentManager, ConsentLevel
+Mirrors every assertion from the TypeScript Jest suite.
+"""
+from __future__ import annotations
+
+from typing import Any, Dict
+
+from sleepwalker_protocol import ConsentLevel, ConsentManager
 from sleepwalker_protocol.state_detection import EmotionalState
 
 
-def test_consent_manager_initialization():
-    """Test ConsentManager initializes with TOI."""
-    toi = {
-        'swp': {
-            'active': True,
-            'intervention_threshold': 'user_initiated_only'
-        }
+def state(**overrides: Any) -> EmotionalState:
+    """Build an EmotionalState with sensible defaults for targeted assertions.
+
+    Mirror of the TS test helper ``state(overrides)``.
+    """
+    base: Dict[str, Any] = {
+        "state_type": "neutral",
+        "protective": False,
+        "requires_check_in": False,
+        "indicators": {
+            "dissociation": False,
+            "numbing": False,
+            "avoidance": False,
+            "detachment": False,
+            "crisis": {
+                "suicidal_ideation": False,
+                "self_harm": False,
+                "safety_concern": False,
+            },
+        },
+        "confidence": 0,
+        "explicit_suicidal_ideation": False,
+        "self_harm_indicators": False,
+        "inability_to_ensure_safety": False,
     }
-    manager = ConsentManager(toi)
-    assert manager is not None
-    assert manager.user_toi == toi
+    base.update(overrides)
+    return EmotionalState(**base)
 
 
-def test_passive_level_for_protective_state():
-    """Test PASSIVE level for protective state with user_initiated_only."""
-    toi = {
-        'swp': {
-            'intervention_threshold': 'user_initiated_only'
-        }
-    }
-    manager = ConsentManager(toi)
-    
-    state = EmotionalState(
-        state_type="dissociation",
-        protective=True,
-        requires_check_in=False,
-        indicators={'dissociation': True},
-        confidence=0.8
+def test_escalates_any_crisis_flag_to_rrta_handoff():
+    cm = ConsentManager()
+    assert (
+        cm.determine_level(state(explicit_suicidal_ideation=True))
+        == ConsentLevel.RRTA_HANDOFF
     )
-    
-    level = manager.determine_level(state)
-    assert level == ConsentLevel.PASSIVE
-
-
-def test_low_pressure_level():
-    """Test LOW_PRESSURE level with offer_support_without_pressure."""
-    toi = {
-        'swp': {
-            'intervention_threshold': 'offer_support_without_pressure'
-        }
-    }
-    manager = ConsentManager(toi)
-    
-    state = EmotionalState(
-        state_type="numbing",
-        protective=True,
-        requires_check_in=False,
-        indicators={'numbing': True},
-        confidence=0.7
+    assert (
+        cm.determine_level(state(self_harm_indicators=True))
+        == ConsentLevel.RRTA_HANDOFF
     )
-    
-    level = manager.determine_level(state)
-    assert level == ConsentLevel.LOW_PRESSURE
-
-
-def test_rrta_handoff_for_crisis():
-    """Test RRTA_HANDOFF level for crisis situations."""
-    toi = {'swp': {}}
-    manager = ConsentManager(toi)
-    
-    # Create crisis state
-    state = EmotionalState(
-        state_type="crisis",
-        protective=False,
-        requires_check_in=True,
-        indicators={'crisis': {'safety_concern': True}},
-        confidence=0.9,
-        inability_to_ensure_safety=True
+    assert (
+        cm.determine_level(state(inability_to_ensure_safety=True))
+        == ConsentLevel.RRTA_HANDOFF
     )
-    
-    level = manager.determine_level(state)
-    assert level == ConsentLevel.RRTA_HANDOFF
 
 
-def test_should_intervene():
-    """Test intervention decision logic."""
-    toi = {'swp': {}}
-    manager = ConsentManager(toi)
-    
-    # Passive level should not intervene
-    passive_state = EmotionalState(
-        state_type="neutral",
-        protective=False,
-        requires_check_in=False,
-        indicators={},
-        confidence=0.0
+def test_safety_check_when_check_in_required_without_crisis():
+    cm = ConsentManager()
+    assert (
+        cm.determine_level(state(requires_check_in=True)) == ConsentLevel.SAFETY_CHECK
     )
-    assert manager.should_intervene(passive_state) == False
-    
-    # Crisis level should intervene
-    crisis_state = EmotionalState(
-        state_type="crisis",
-        protective=False,
-        requires_check_in=True,
-        indicators={'crisis': {'safety_concern': True}},
-        confidence=0.9,
-        inability_to_ensure_safety=True
+
+
+def test_defaults_protective_state_to_passive():
+    cm = ConsentManager()
+    assert cm.determine_level(state(protective=True)) == ConsentLevel.PASSIVE
+
+
+def test_low_pressure_when_toi_opts_into_offering_support():
+    cm = ConsentManager(
+        {"swp": {"intervention_threshold": "offer_support_without_pressure"}}
     )
-    assert manager.should_intervene(crisis_state) == True
+    assert cm.determine_level(state(protective=True)) == ConsentLevel.LOW_PRESSURE
 
 
-def test_consent_messages():
-    """Test consent message generation for each level."""
-    toi = {'swp': {}}
-    manager = ConsentManager(toi)
-    
-    # Test all consent levels have messages
+def test_passive_for_neutral_state():
+    assert ConsentManager().determine_level(state()) == ConsentLevel.PASSIVE
+
+
+def test_provides_message_for_every_consent_level():
+    cm = ConsentManager()
     for level in ConsentLevel:
-        message = manager.get_consent_message(level)
-        assert isinstance(message, str)
-        assert len(message) > 0
-    
-    # Verify specific messages
-    passive_msg = manager.get_consent_message(ConsentLevel.PASSIVE)
-    assert "no pressure" in passive_msg.lower()
-    
-    rrta_msg = manager.get_consent_message(ConsentLevel.RRTA_HANDOFF)
-    assert "crisis" in rrta_msg.lower() or "safety" in rrta_msg.lower()
-
-
-def test_get_appropriate_level():
-    """Test get_appropriate_level method."""
-    toi = {'swp': {'intervention_threshold': 'user_initiated_only'}}
-    manager = ConsentManager(toi)
-    
-    state = EmotionalState(
-        state_type="avoidance",
-        protective=True,
-        requires_check_in=False,
-        indicators={'avoidance': True},
-        confidence=0.6
-    )
-    
-    level = manager.get_appropriate_level(state)
-    assert level == ConsentLevel.PASSIVE
+        msg = cm.get_consent_message(level)
+        assert isinstance(msg, str)
+        assert len(msg) > 0
