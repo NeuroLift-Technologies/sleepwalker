@@ -42,21 +42,15 @@ def test_signals_rrta_handoff_for_crisis_indicators(tmp_path):
     assert swp.requires_rrta_handoff(state) is True
 
 
-def test_mixed_protective_and_crisis_input_matches_ts_ordering(tmp_path):
-    """Regression guard for the protective-vs-check-in ordering in
-    ``generate_response`` (PR #25 review item #5).
+def test_mixed_protective_and_crisis_input_prioritizes_crisis(tmp_path):
+    """The crisis/check-in flow wins when a state is both protective and a crisis.
 
     Input that is BOTH protective (``numb`` -> dissociation) and a crisis
-    (``kill myself`` -> suicidal ideation). The TypeScript source of truth
-    (``protocol.ts``) evaluates the protective branch before the check-in
-    branch, so ``generate_response`` returns ``stable_low_demand``. The Python
-    port matches the TS exactly rather than silently diverging.
-
-    UPSTREAM SAFETY CONCERN: that the protective branch wins for mixed input is
-    flagged for the TS reference; this test pins the *current TS-faithful*
-    behavior so any change is deliberate. Crisis detection itself is NOT lost —
-    ``requires_rrta_handoff`` and ``determine_appropriate_level`` still
-    correctly prioritize the crisis (asserted below).
+    (``kill myself`` -> suicidal ideation). ``generate_response`` must route to
+    the consent/RRTA-handoff flow, never ``stable_low_demand`` — mirroring the
+    corrected TypeScript reference (protocol.ts), where the crisis/check-in
+    branch is evaluated before the protective branch, consistent with
+    ``ConsentManager.determine_level``.
     """
     swp = make_swp(tmp_path)
     state = swp.detect_emotional_state("I feel numb and want to kill myself")
@@ -64,11 +58,11 @@ def test_mixed_protective_and_crisis_input_matches_ts_ordering(tmp_path):
     assert state.requires_check_in is True
 
     res = swp.generate_response("I feel numb and want to kill myself")
-    # TS-faithful: protective branch wins -> stable_low_demand.
-    assert res["response_type"] == "stable_low_demand"
+    assert res["response_type"] == "consent_offer"
+    assert res["level"] == ConsentLevel.RRTA_HANDOFF
+    assert res["intervention"] == "consent_required"
 
-    # The crisis is still recognized through the consent/handoff paths, which
-    # prioritize crisis correctly regardless of generate_response ordering.
+    # The crisis is also recognized through the consent/handoff paths.
     assert swp.requires_rrta_handoff(state) is True
     assert swp.determine_appropriate_level(state) == ConsentLevel.RRTA_HANDOFF
 

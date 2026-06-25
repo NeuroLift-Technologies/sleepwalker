@@ -124,27 +124,19 @@ class SleepwalkerProtocol:
         detected_state: Optional[EmotionalState] = None,
         intervention_level: Any = None,
     ) -> Dict[str, Any]:
-        """Mirror of TS ``generateResponse``.
+        """Mirror of TS ``generateResponse`` (protocol.ts, source of truth).
 
-        Branch ordering follows the TypeScript source of truth EXACTLY: the
-        ``protective`` / ``stable_low_demand`` branch is evaluated *before* the
-        ``requires_check_in`` / consent branch (see ``protocol.ts`` — protective
-        is checked at ``generateResponse`` first, consent second). This is a
-        deliberate parity decision, NOT an oversight, so the Python port does not
-        silently diverge from upstream.
+        Crisis / check-in states are handled BEFORE the protective low-demand
+        branch. An input can be both ``protective`` (e.g. "numb" -> dissociation)
+        and a crisis ("kill myself" -> suicidal ideation); the crisis path must
+        win so a safety check / RRTA handoff is never masked by a
+        ``stable_low_demand`` response. This is consistent with
+        ``ConsentManager.determine_level``, which already ranks crisis
+        (RRTA_HANDOFF) and check-in (SAFETY_CHECK) above protective.
 
-        .. warning::
-
-           UPSTREAM SAFETY CONCERN (carried over from the TS source). A state can
-           be both ``protective`` and ``requires_check_in`` (e.g. input matching a
-           dissociation pattern *and* a crisis pattern). Because protective wins
-           here, such mixed input returns ``stable_low_demand`` and never reaches
-           the consent/crisis offer. ``requires_rrta_handoff`` and
-           ``ConsentManager.determine_level`` are unaffected — they correctly
-           prioritize crisis — so this only changes the ``generate_response``
-           *response_type*. Fixing the ordering must happen in the TS reference
-           first to preserve parity; it has been flagged upstream rather than
-           patched divergently here.
+        (This ordering was corrected upstream in the TypeScript reference, and the
+        Python port mirrors it; pure-protective input such as "I feel numb" is
+        unaffected and still returns ``stable_low_demand``.)
 
         ``intervention_level`` is accepted for backward compatibility with the
         previously documented Python signature
@@ -153,14 +145,6 @@ class SleepwalkerProtocol:
         takes no such argument.
         """
         state = detected_state or self.detect_emotional_state(user_input)
-        # NOTE: ordering is intentionally protective-first to match protocol.ts.
-        # See the warning in this method's docstring (upstream safety concern).
-        if self._swp_active() and state.protective:
-            return {
-                "response_type": "stable_low_demand",
-                "guidance": "Maintain stable, task-focused interaction",
-                "intervention": "none",
-            }
         if state.requires_check_in:
             level = self.consent_manager.determine_level(state)
             return {
@@ -168,6 +152,12 @@ class SleepwalkerProtocol:
                 "level": level,
                 "guidance": self.consent_manager.get_consent_message(level),
                 "intervention": "consent_required",
+            }
+        if self._swp_active() and state.protective:
+            return {
+                "response_type": "stable_low_demand",
+                "guidance": "Maintain stable, task-focused interaction",
+                "intervention": "none",
             }
         return {
             "response_type": "neutral",
