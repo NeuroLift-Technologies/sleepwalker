@@ -8,7 +8,9 @@ either implementation is readable by the other.
 """
 from __future__ import annotations
 
+import json
 import os
+import re
 
 from sleepwalker_protocol import ContinuityManager
 
@@ -29,6 +31,67 @@ def test_round_trips_saved_session_into_context(tmp_path):
     assert ctx["has_history"] is True
     assert ctx["last_session_state"] == "dissociation"
     assert ctx["protective_state_active"] is True
+
+
+def test_accepts_snake_case_session_input_and_preserves_continuity(tmp_path):
+    """Regression guard for PR #25 review item #3.
+
+    Python callers may persist continuity with the documented snake_case keys
+    (``emotional_state`` / ``protective_state_active`` / ``declared_boundaries``,
+    as shown in docs/context/README_TO_AI.md and the prior Python API). These
+    must be normalized to the TS camelCase on-disk names so ``get_context``
+    (which reads camelCase) does not silently lose the state.
+    """
+    cm = ContinuityManager(str(tmp_path))
+    cm.save_session(
+        "user-snake",
+        {
+            "emotional_state": "numbing",
+            "protective_state_active": True,
+            "declared_boundaries": ["no_family_topics"],
+        },
+    )
+    ctx = cm.get_context("user-snake")
+    assert ctx["has_history"] is True
+    assert ctx["last_session_state"] == "numbing"
+    assert ctx["protective_state_active"] is True
+    assert ctx["declared_boundaries"] == ["no_family_topics"]
+
+
+def test_snake_case_input_is_stored_with_camelcase_on_disk_keys(tmp_path):
+    """On-disk parity with TS: snake_case input is persisted under the camelCase
+    keys the TypeScript ``ContinuityManager`` writes/reads."""
+    cm = ContinuityManager(str(tmp_path))
+    cm.save_session(
+        "user-disk",
+        {"emotional_state": "dissociation", "protective_state_active": True},
+    )
+    json_files = [f for f in os.listdir(tmp_path) if f.endswith(".json")]
+    assert len(json_files) == 1
+    raw = (tmp_path / json_files[0]).read_text(encoding="utf-8")
+    assert '"emotionalState"' in raw
+    assert '"protectiveStateActive"' in raw
+    assert '"emotional_state"' not in raw
+    assert '"protective_state_active"' not in raw
+
+
+def test_save_session_does_not_mutate_input_dict(tmp_path):
+    """Regression guard for PR #25 review item #2: the input dict is copied."""
+    cm = ContinuityManager(str(tmp_path))
+    payload = {"emotionalState": "neutral"}
+    cm.save_session("user-nomutate", payload)
+    assert payload == {"emotionalState": "neutral"}
+    assert "timestamp" not in payload
+
+
+def test_iso_timestamp_format_matches_js_toisostring(tmp_path):
+    """Regression guard for PR #25 review item #1: ms precision, trailing Z."""
+    cm = ContinuityManager(str(tmp_path))
+    cm.save_session("user-ts", {"emotionalState": "neutral"})
+    json_files = [f for f in os.listdir(tmp_path) if f.endswith(".json")]
+    data = json.loads((tmp_path / json_files[0]).read_text(encoding="utf-8"))
+    timestamp = data["lastSession"]["timestamp"]
+    assert re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z", timestamp)
 
 
 def test_increments_session_count_and_isolates_users(tmp_path):

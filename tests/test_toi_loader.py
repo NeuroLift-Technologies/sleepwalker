@@ -36,3 +36,33 @@ def test_loads_yaml_toi_document(tmp_path):
     )
     toi = TOILoader(str(file)).load()
     assert toi["swp"]["intervention_threshold"] == "offer_support_without_pressure"
+
+
+def test_returns_empty_dict_for_valid_empty_yaml_document(tmp_path):
+    """Regression guard for PR #25 review item #6.
+
+    A valid but empty mapping (``{}``) is truthy in JS, so the TS
+    ``yaml.load(content) || getDefaultToi()`` returns it as-is. The Python port
+    must do the same and NOT fall back to the default just because ``{}`` is
+    falsy in Python. Fallback happens only for a nullish (``None``) parse.
+    """
+    file = tmp_path / "empty.yaml"
+    file.write_text("{}\n", encoding="utf-8")
+    toi = TOILoader(str(file)).load()
+    assert toi == {}
+
+
+def test_returns_empty_list_for_valid_empty_yaml_sequence(tmp_path):
+    """An empty sequence (``[]``) is likewise truthy in JS and must survive."""
+    file = tmp_path / "empty-seq.yaml"
+    file.write_text("[]\n", encoding="utf-8")
+    toi = TOILoader(str(file)).load()
+    assert toi == []
+
+
+def test_returns_default_toi_for_whitespace_only_yaml(tmp_path):
+    """A whitespace-only document parses to ``None`` -> default TOI (matches TS)."""
+    file = tmp_path / "blank.yaml"
+    file.write_text("\n   \n", encoding="utf-8")
+    toi = TOILoader(str(file)).load()
+    assert toi["swp"]["active"] is True

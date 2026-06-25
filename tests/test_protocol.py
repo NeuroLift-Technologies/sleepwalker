@@ -42,6 +42,59 @@ def test_signals_rrta_handoff_for_crisis_indicators(tmp_path):
     assert swp.requires_rrta_handoff(state) is True
 
 
+def test_mixed_protective_and_crisis_input_matches_ts_ordering(tmp_path):
+    """Regression guard for the protective-vs-check-in ordering in
+    ``generate_response`` (PR #25 review item #5).
+
+    Input that is BOTH protective (``numb`` -> dissociation) and a crisis
+    (``kill myself`` -> suicidal ideation). The TypeScript source of truth
+    (``protocol.ts``) evaluates the protective branch before the check-in
+    branch, so ``generate_response`` returns ``stable_low_demand``. The Python
+    port matches the TS exactly rather than silently diverging.
+
+    UPSTREAM SAFETY CONCERN: that the protective branch wins for mixed input is
+    flagged for the TS reference; this test pins the *current TS-faithful*
+    behavior so any change is deliberate. Crisis detection itself is NOT lost —
+    ``requires_rrta_handoff`` and ``determine_appropriate_level`` still
+    correctly prioritize the crisis (asserted below).
+    """
+    swp = make_swp(tmp_path)
+    state = swp.detect_emotional_state("I feel numb and want to kill myself")
+    assert state.protective is True
+    assert state.requires_check_in is True
+
+    res = swp.generate_response("I feel numb and want to kill myself")
+    # TS-faithful: protective branch wins -> stable_low_demand.
+    assert res["response_type"] == "stable_low_demand"
+
+    # The crisis is still recognized through the consent/handoff paths, which
+    # prioritize crisis correctly regardless of generate_response ordering.
+    assert swp.requires_rrta_handoff(state) is True
+    assert swp.determine_appropriate_level(state) == ConsentLevel.RRTA_HANDOFF
+
+
+def test_generate_response_consent_offer_for_pure_crisis(tmp_path):
+    """A crisis-only input (not protective) reaches the consent-offer branch."""
+    swp = make_swp(tmp_path)
+    res = swp.generate_response("I don't feel safe")
+    assert res["response_type"] == "consent_offer"
+    assert res["intervention"] == "consent_required"
+
+
+def test_determine_appropriate_level_backcompat_wrapper(tmp_path):
+    """Back-compat wrapper used by examples/crisis_detection.py (review item #4)."""
+    swp = make_swp(tmp_path)
+    state = swp.detect_emotional_state("I feel numb")
+    assert swp.determine_appropriate_level(state) == ConsentLevel.PASSIVE
+
+
+def test_generate_response_accepts_legacy_intervention_level_kwarg(tmp_path):
+    """The documented ``intervention_level=`` kwarg stays accepted (review item #4)."""
+    swp = make_swp(tmp_path)
+    res = swp.generate_response("I feel numb", intervention_level=ConsentLevel.PASSIVE)
+    assert res["response_type"] == "stable_low_demand"
+
+
 def test_keys_continuity_on_stable_user_id_not_message_text(tmp_path):
     # Persist a session for a specific user, then assess that user with a
     # *different* message. Continuity must still be found because it is keyed on

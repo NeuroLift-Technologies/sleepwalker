@@ -34,10 +34,21 @@ class TOILoader:
                 content = f.read()
             if self.toi_path.endswith(".json"):
                 return json.loads(content)
-            # ``yaml.load(content) || getDefaultToi()`` — an empty/``None`` parse
-            # falls back to the default, matching the TS ``|| this.getDefaultToi()``.
-            return yaml.safe_load(content) or self._get_default_toi()
-        except Exception:
+            parsed = yaml.safe_load(content)
+            # Match the TS ``yaml.load(content) || this.getDefaultToi()``: JS ``||``
+            # only falls back when the parse yields a *nullish* value (an empty or
+            # whitespace-only document parses to ``None``/``undefined``). A valid
+            # but empty document (``{}`` / ``[]``) is truthy in JS and must be
+            # returned as-is, so we fall back ONLY on ``None`` (not Python's
+            # broader falsiness, which would discard ``{}`` and ``[]``).
+            return self._get_default_toi() if parsed is None else parsed
+        # Narrowed to the failure modes the TS ``try`` block can actually hit and
+        # that its bare ``catch`` swallows into the default TOI: file-access errors
+        # from the read (``OSError`` — covers permission/IsADirectory/IO) and
+        # parse errors (``json.JSONDecodeError`` for ``.json``, ``yaml.YAMLError``
+        # for YAML). A blanket ``except Exception`` additionally hid unrelated
+        # programming bugs; those now surface instead of silently degrading.
+        except (OSError, json.JSONDecodeError, yaml.YAMLError):
             return self._get_default_toi()
 
     def _get_default_toi(self) -> Any:

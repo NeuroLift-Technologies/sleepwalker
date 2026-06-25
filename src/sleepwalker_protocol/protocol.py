@@ -122,9 +122,39 @@ class SleepwalkerProtocol:
         self,
         user_input: str,
         detected_state: Optional[EmotionalState] = None,
+        intervention_level: Any = None,
     ) -> Dict[str, Any]:
-        """Mirror of TS ``generateResponse``."""
+        """Mirror of TS ``generateResponse``.
+
+        Branch ordering follows the TypeScript source of truth EXACTLY: the
+        ``protective`` / ``stable_low_demand`` branch is evaluated *before* the
+        ``requires_check_in`` / consent branch (see ``protocol.ts`` — protective
+        is checked at ``generateResponse`` first, consent second). This is a
+        deliberate parity decision, NOT an oversight, so the Python port does not
+        silently diverge from upstream.
+
+        .. warning::
+
+           UPSTREAM SAFETY CONCERN (carried over from the TS source). A state can
+           be both ``protective`` and ``requires_check_in`` (e.g. input matching a
+           dissociation pattern *and* a crisis pattern). Because protective wins
+           here, such mixed input returns ``stable_low_demand`` and never reaches
+           the consent/crisis offer. ``requires_rrta_handoff`` and
+           ``ConsentManager.determine_level`` are unaffected — they correctly
+           prioritize crisis — so this only changes the ``generate_response``
+           *response_type*. Fixing the ordering must happen in the TS reference
+           first to preserve parity; it has been flagged upstream rather than
+           patched divergently here.
+
+        ``intervention_level`` is accepted for backward compatibility with the
+        previously documented Python signature
+        (``generate_response(..., intervention_level=...)``); it is advisory and
+        does not alter the response, mirroring that the TS ``generateResponse``
+        takes no such argument.
+        """
         state = detected_state or self.detect_emotional_state(user_input)
+        # NOTE: ordering is intentionally protective-first to match protocol.ts.
+        # See the warning in this method's docstring (upstream safety concern).
         if self._swp_active() and state.protective:
             return {
                 "response_type": "stable_low_demand",
@@ -144,6 +174,16 @@ class SleepwalkerProtocol:
             "guidance": "Provide task-focused support",
             "intervention": "none",
         }
+
+    def determine_appropriate_level(self, emotional_state: EmotionalState):
+        """Backward-compatible wrapper around ``ConsentManager.determine_level``.
+
+        The previously documented Python API exposed
+        ``SWP.determine_appropriate_level(state)`` (still used by
+        ``examples/crisis_detection.py``). It delegates to the consent manager so
+        existing call sites keep working without a ``AttributeError``.
+        """
+        return self.consent_manager.determine_level(emotional_state)
 
     def requires_rrta_handoff(self, user_state: EmotionalState) -> bool:
         """Mirror of TS ``requiresRrtaHandoff``."""
