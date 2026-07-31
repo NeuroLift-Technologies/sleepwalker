@@ -2,7 +2,7 @@
 
 > This file tracks active work threads. Agents must read this at session start and update it during and at the end of each session.
 
-**Last updated:** 2026-06-23
+**Last updated:** 2026-07-31
 
 ---
 
@@ -10,8 +10,8 @@
 
 ### TS port security parity (hash user_id filenames + key continuity on user_id)
 - **Agent:** Claude Code — session `2026-06-23-harden-ts-continuity`
-- **Branch:** `claude/harden-ts-continuity` (own branch + draft PR)
-- **Status:** Implemented, tests passing (jest 29 passed; tsc clean; pytest 46 passed). Draft PR open for Joshua's review.
+- **Branch:** `claude/harden-ts-continuity` (merged via PR #25)
+- **Status:** Merged into `main` (PR #25). Tests passing (jest 29 passed; tsc clean; pytest 46 passed).
 - **Summary:** Brought the published `@neurolift-technologies/sleepwalker-protocol`
   TS port to parity with the already-fixed Python code: `src/continuity.ts` wrote a
   raw `${userId}.json` filename (a `../` escape — a **live path-traversal exposure in
@@ -21,16 +21,7 @@
   Also aligned Python license metadata (`pyproject.toml`, `__init__.py`) MIT -> Apache-2.0
   to match LICENSE + package.json.
 - **Follow-up (Joshua):** npm version bump + republish of the patched package needs
-  Joshua's 2FA OTP + sign-off — **not** done in this session.
-
-### Continuity user_id fix (Task B)
-- **Agent:** Claude Code — session `2026-06-01-continuity-fix-and-pr-diagnosis`
-- **Branch:** `claude/friendly-bardeen-5kuHW` (own branch + PR)
-- **Status:** Implemented, tests passing (43 passed). PR open for Joshua's review.
-- **Summary:** `assess_interaction` keyed continuity on the message text instead of a
-  stable user id, so continuity always returned "no history". Threaded a real
-  `user_id` through `SWP.__init__` and `assess_interaction`; added two behavioral
-  tests (second assessment for the same user now sees the first's context).
+  Joshua's 2FA OTP + sign-off — **not yet done**.
 
 ### Governance fork #4 vs #5 (Task A — diagnosis only)
 - **Agent:** Claude Code — read-only diagnosis for Joshua.
@@ -39,6 +30,17 @@
   (`governance/otoi-compliance`), not a superset — the two move in opposite directions
   on the same governance docs. Diagnosis delivered in the session report; no merge
   recommended.
+
+### Cleanup: archive legacy artifacts (this session)
+- **Agent:** SWE — session `2026-07-31-cleanup-sleepwalker-legacy-archive`
+- **Branch:** `cleanup/sleepwalker-legacy-archive`
+- **Status:** In progress.
+- **Summary:** Archived legacy gitignored artifacts into `legacy/` subdirectory:
+  root `sleepwalker_protocol/` (pre-PR#25 flat-layout `__pycache__` remnants),
+  `sleepwalker_protocol.egg-info/` (stale flat-layout metadata), `.pytest_cache/`,
+  `.coverage`, `tests/__pycache__/`, and `.swp_storage/`. All moved to `legacy/`;
+  none deleted. Python/PyPI source (`src/sleepwalker_protocol/`) and npm package
+  source (`src/*.ts`, `dist/`) untouched.
 
 ---
 
@@ -52,6 +54,19 @@
 **Summary:** Documentation automation aligned developer and operations docs with PR #14 by adding the missing agent context page, documenting TypeScript package build/test/publish checks, correcting Python/TypeScript usage examples, and clarifying the current governance validator scope.
 **Blockers:** None.
 **Next action:** Review the documentation PR and decide whether dependency audit warnings or Python/npm license metadata drift need a separate maintainer-directed follow-up.
+
+### Thread: 2026-06-01-continuity-user-id-fix
+**Status:** resolved
+**Owner:** Claude Code
+**Started:** 2026-06-01
+**Last updated:** 2026-07-31
+**Summary:** `assess_interaction` keyed continuity on the message text instead of a
+  stable user id, so continuity always returned "no history". Threaded a real
+  `user_id` through `SWP.__init__` and `assess_interaction`; added two behavioral
+  tests (second assessment for the same user now sees the first's context).
+  Merged via PR. No further follow-up needed.
+**Blockers:** None.
+**Next action:** None.
 
 ### Thread: 2026-05-22-docs-governance-inventory
 **Status:** resolved
