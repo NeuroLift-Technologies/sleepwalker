@@ -9,7 +9,7 @@
 ## Active Threads
 
 ### Thread: 2026-11-22-codex-sleepwalker-archive
-**Status:** in progress
+**Status:** pending review
 **Owner:** Codex
 **Branch:** `codex/retire-sleepwalker-archive`
 **Task:** Retire the Sleepwalker archive and reconcile the work tracker.
@@ -17,45 +17,27 @@
 **Related PR:** Pending.
 **Started:** 2026-11-22
 **Last updated:** 2026-11-22
-**Next action:** Validate package payloads and prepare the draft PR.
-
-### TS port security parity (hash user_id filenames + key continuity on user_id)
-- **Agent:** Claude Code — session `2026-06-23-harden-ts-continuity`
-- **Branch:** `claude/harden-ts-continuity` (merged via PR #25)
-- **Status:** Merged into `main` (PR #25). Tests passing (jest 29 passed; tsc clean; pytest 46 passed).
-- **Summary:** Brought the published `@neurolift-technologies/sleepwalker-protocol`
-  TS port to parity with the already-fixed Python code: `src/continuity.ts` wrote a
-  raw `${userId}.json` filename (a `../` escape — a **live path-traversal exposure in
-  the published package**), now SHA-256-hashes the user_id for the on-disk filename
-  (mirrors `ContinuityManager._user_file`); `src/protocol.ts` `assessInteraction` now
-  keys continuity on a stable `user_id` instead of ignoring continuity entirely.
-  Also aligned Python license metadata (`pyproject.toml`, `__init__.py`) MIT -> Apache-2.0
-  to match LICENSE + package.json.
-- **Follow-up (Joshua):** npm version bump + republish of the patched package needs
-  Joshua's 2FA OTP + sign-off — **not yet done**.
-
-### Governance fork #4 vs #5 (Task A — diagnosis only)
-- **Agent:** Claude Code — read-only diagnosis for Joshua.
-- **Status:** AWAITING JOSHUA'S DECISION. Do not merge or modify the contested files.
-- **Finding:** PR #5 (`claude/governance-docs-restore-yB5sI`) is **divergent** from PR #4
-  (`governance/otoi-compliance`), not a superset — the two move in opposite directions
-  on the same governance docs. Diagnosis delivered in the session report; no merge
-  recommended.
-
-### Cleanup: archive legacy artifacts (this session)
-- **Agent:** SWE — session `2026-07-31-cleanup-sleepwalker-legacy-archive`
-- **Branch:** `cleanup/sleepwalker-legacy-archive`
-- **Status:** In progress.
-- **Summary:** Archived legacy gitignored artifacts into `legacy/` subdirectory:
-  root `sleepwalker_protocol/` (pre-PR#25 flat-layout `__pycache__` remnants),
-  `sleepwalker_protocol.egg-info/` (stale flat-layout metadata), `.pytest_cache/`,
-  `.coverage`, `tests/__pycache__/`, and `.swp_storage/`. All moved to `legacy/`;
-  none deleted. Python/PyPI source (`src/sleepwalker_protocol/`) and npm package
-  source (`src/*.ts`, `dist/`) untouched.
+**Next action:** Review the archive retirement PR.
 
 ---
 
 ## Resolved Threads
+
+### TS port security parity
+- **Agent:** Claude Code, session `2026-06-23-harden-ts-continuity`
+- **Status:** [PR #25](https://github.com/NeuroLift-Technologies/sleepwalker/pull/25) merged on 2026-06-25. The published [npm 1.0.2 package](https://www.npmjs.com/package/@neurolift-technologies/sleepwalker-protocol/v/1.0.2) contains the patched continuity and protocol modules.
+- **Summary:** Aligned TypeScript continuity file naming and user identity handling with the Python implementation, and aligned package license metadata.
+
+### Governance fork #4 vs #5
+- **Agent:** Claude Code
+- **Status:** [PR #5](https://github.com/NeuroLift-Technologies/sleepwalker/pull/5) merged on 2026-06-03. [PR #4](https://github.com/NeuroLift-Technologies/sleepwalker/pull/4) closed without merging.
+- **Summary:** The two branches took different approaches to restoring repository governance files.
+
+### Cleanup: archive legacy artifacts
+- **Agent:** SWE, session `2026-07-31-cleanup-sleepwalker-legacy-archive`
+- **Branch:** `cleanup/sleepwalker-legacy-archive`
+- **Status:** [PR #29](https://github.com/NeuroLift-Technologies/sleepwalker/pull/29) merged on 2026-07-31.
+- **Summary:** Documented deprecated flat-layout build artifacts. The [archived migration note](https://github.com/NeuroLift-Technologies/sleepwalker/blob/137c1eac1578455007614021531346c44d920ab9/legacy/DEPRECATED.md) remains available in Git history.
 
 ### Thread: 2026-06-17-docs-follow-up-pr14
 **Status:** resolved
@@ -70,7 +52,7 @@
 **Status:** resolved
 **Owner:** Claude Code
 **Started:** 2026-06-01
-**Last updated:** 2026-11-22
+**Last updated:** 2026-07-31
 **Summary:** `assess_interaction` keyed continuity on the message text instead of a
   stable user id, so continuity always returned "no history". Threaded a real
   `user_id` through `SWP.__init__` and `assess_interaction`; added two behavioral
