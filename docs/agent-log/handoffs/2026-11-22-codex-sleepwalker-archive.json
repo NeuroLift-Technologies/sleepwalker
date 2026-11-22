@@ -1,0 +1,43 @@
+{
+  "handoff_record": {
+    "session_id": "codex-sleepwalker-archive-2026-11-22",
+    "agent_name": "Codex",
+    "date": "2026-11-22",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/sleepwalker",
+    "branch": "codex/retire-sleepwalker-archive",
+    "work_completed": [
+      "Retired the two tracked files under legacy/ and linked the pinned historical note.",
+      "Reconciled three resolved coordination threads with GitHub PR status and compared the published npm 1.0.2 continuity and protocol modules against the build from main.",
+      "Linked the PR template, REVIEW.md, and organization minimum from AGENTS.md."
+    ],
+    "work_in_progress": [
+      "Maintainer review"
+    ],
+    "blockers": [],
+    "decisions_made": [
+      "Archive scope is limited to the two tracked files and coordination records."
+    ],
+    "decisions_pending": [],
+    "escalations": [],
+    "next_agent_notes": "Review the archive PR separately from dependency PR #30 and template PR #32. ADR-001 interface work and public submission backend are separate scopes.",
+    "files_modified": [
+      "AGENTS.md",
+      "docs/active-threads.md",
+      "legacy/.gitkeep",
+      "legacy/DEPRECATED.md",
+      "docs/agent-log/registrations/2026-11-22-codex-sleepwalker-archive.json",
+      "docs/agent-log/handoffs/2026-11-22-codex-sleepwalker-archive.json"
+    ],
+    "tests_run": [
+      "29 governance checks",
+      "30 Jest tests and TypeScript build",
+      "40 Python tests",
+      "Matched npm, Python sdist, and Python wheel payloads against main",
+      "Installed npm and Python import smoke checks",
+      "git diff --check"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/sleepwalker/pull/34"
+  }
+}
