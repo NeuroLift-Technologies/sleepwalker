@@ -14,7 +14,7 @@
 **Branch:** `codex/retire-sleepwalker-archive`
 **Task:** Retire the Sleepwalker archive and reconcile the work tracker.
 **Scope:** The two tracked archive files and repository coordination records.
-**Related PR:** Pending.
+**Related PR:** [#34](https://github.com/NeuroLift-Technologies/sleepwalker/pull/34).
 **Started:** 2026-11-22
 **Last updated:** 2026-11-22
 **Next action:** Review the archive retirement PR.
