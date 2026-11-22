@@ -2,11 +2,22 @@
 
 > This file tracks active work threads. Agents must read this at session start and update it during and at the end of each session.
 
-**Last updated:** 2026-07-31
+**Last updated:** 2026-11-22
 
 ---
 
 ## Active Threads
+
+### Thread: 2026-11-22-codex-sleepwalker-archive
+**Status:** in progress
+**Owner:** Codex
+**Branch:** `codex/retire-sleepwalker-archive`
+**Task:** Retire the Sleepwalker archive and reconcile the work tracker.
+**Scope:** The two tracked archive files and repository coordination records.
+**Related PR:** Pending.
+**Started:** 2026-11-22
+**Last updated:** 2026-11-22
+**Next action:** Validate package payloads and prepare the draft PR.
 
 ### TS port security parity (hash user_id filenames + key continuity on user_id)
 - **Agent:** Claude Code — session `2026-06-23-harden-ts-continuity`
@@ -59,7 +70,7 @@
 **Status:** resolved
 **Owner:** Claude Code
 **Started:** 2026-06-01
-**Last updated:** 2026-07-31
+**Last updated:** 2026-11-22
 **Summary:** `assess_interaction` keyed continuity on the message text instead of a
   stable user id, so continuity always returned "no history". Threaded a real
   `user_id` through `SWP.__init__` and `assess_interaction`; added two behavioral
